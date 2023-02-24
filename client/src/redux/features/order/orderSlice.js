@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../../utils/axios.js';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from '../../../utils/axios';
 
 export const createOrder = createAsyncThunk(
   '/orders/createOrder',

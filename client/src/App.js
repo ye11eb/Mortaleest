@@ -1,20 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, React } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { Main } from './components/Main.jsx';
-import { Navbar } from './components/Navbar.jsx';
+import { useDispatch } from 'react-redux';
+import { Main } from './components/Main';
+
+import { Navbar } from './components/Navbar';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Register } from './components/Register.jsx';
-import { ItemOverlay } from './components/ItemOverlay.jsx';
-import { Login } from './components/Login.jsx';
-import { useDispatch } from 'react-redux';
-import { getMe } from './redux/features/auth/authSlice.js';
-import Profile from './components/profile/Profile.jsx';
-import EditInfo from './components/profile/EditInfo/EditFirstInfo.jsx';
-import Terms from './components/faqs_pages/Terms.jsx';
-import { Cart } from './components/Cart.jsx';
-import Delivery from './components/faqs_pages/Delivery.jsx';
+// import { Register } from './components/Register';
+import { ItemOverlay } from './components/ItemOverlay';
+import { Login } from './components/Login';
+import { getMe } from './redux/features/auth/authSlice';
+import Profile from './components/profile/Profile';
+import EditInfo from './components/profile/EditInfo/EditFirstInfo';
+import Terms from './components/faqs_pages/Terms';
+import Cart from './components/Cart';
+import Delivery from './components/faqs_pages/Delivery';
+import ForMainRoute from './components/ForMainRoute';
 
 function App() {
   const dispatch = useDispatch();
@@ -22,23 +24,32 @@ function App() {
   const [openedItem, setOpenedItem] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   // const [isOverlayed, setIsOverlayed] = useState(false)
-  const [sortedCollections, setSortedCollections] = useState([]);
-  const [sortedClothes, setSortedClothes] = useState([]);
+  const [sortedCollections, setSortedCollections] = useState();
+  const [sortedClothes, setSortedClothes] = useState();
+  const [titleAnim, setTitleAnim] = useState(false);
+  // const sortedClothes = [];
+  // const sortedCollections = [];
+  // const sortedClothes = [];
   const [itemForEdit, setItemForEdit] = useState('');
   const [pickedSortOption, setPickedSortOption] = useState({
     eng: 'all manufactures',
     ukr: 'всі вироби',
   });
-  const [mainTitle, setMainTitle] = useState('Mortaleest');
+  const [mainTitle, setMainTitle] = useState('');
 
   useEffect(() => {
     dispatch(getMe());
-  }, []);
+    setCartItems(JSON.parse(localStorage.getItem('cart')));
+  }, [dispatch]);
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const [ukrLoc, setUkrLoc] = useState(false);
 
   return (
-    <>
+    <div>
       <Navbar
         ukrLoc={ukrLoc}
         setUkrLoc={setUkrLoc}
@@ -49,6 +60,7 @@ function App() {
         pickedSortOption={pickedSortOption}
         mainTitle={mainTitle}
         setMainTitle={setMainTitle}
+        setTitleAnim={setTitleAnim}
       />
       <Main
         setOpenedItem={setOpenedItem}
@@ -59,10 +71,13 @@ function App() {
         sortedCollections={sortedCollections}
         sortedClothes={sortedClothes}
         mainTitle={mainTitle}
+        setSortedCollections={setSortedCollections}
+        setSortedClothes={setSortedClothes}
+        titleAnim={titleAnim}
       />
       <ToastContainer position="bottom-right" />
       <Routes>
-        {/* <Route path='/' element={<Cart />} /> */}
+        <Route path="/" element={<ForMainRoute />} />
 
         {openedItem && (
         <Route
@@ -78,7 +93,7 @@ function App() {
               setCartItems={setCartItems}
               cartItems={cartItems}
             />
-                          )}
+          )}
         />
         )}
 
@@ -91,7 +106,7 @@ function App() {
               setCartItems={setCartItems}
               cartItems={cartItems}
             />
-                      )}
+          )}
         />
 
         <Route path="login" element={<Login />} />
@@ -100,7 +115,7 @@ function App() {
           path="profile"
           element={
             <Profile isStaff={isStaff} itemForEdit={itemForEdit} />
-                    }
+          }
         />
 
         <Route path="editAddres" element={<EditInfo />} />
@@ -109,7 +124,7 @@ function App() {
 
         <Route path="Delivery" element={<Delivery />} />
       </Routes>
-    </>
+    </div>
   );
 }
 

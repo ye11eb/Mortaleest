@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from '../../../utils/axios.js';
+import axios from '../../../utils/axios';
 
 const initialState = {
   user: null,
@@ -117,7 +117,7 @@ export const authSlice = createSlice({
   reducers: {},
   extraReducers: {
     // register user
-    [registerUser.pending]: (state, action) => {
+    [registerUser.pending]: (state) => {
       state.isLoading = true;
       state.status = null;
     },
@@ -135,7 +135,7 @@ export const authSlice = createSlice({
 
     // loginUser
 
-    [loginUser.pending]: (state, action) => {
+    [loginUser.pending]: (state) => {
       state.isLoading = true;
       state.status = null;
     },
@@ -153,7 +153,7 @@ export const authSlice = createSlice({
 
     // get me
 
-    [getMe.pending]: (state, action) => {
+    [getMe.pending]: (state) => {
       state.isLoading = true;
       state.status = null;
     },
