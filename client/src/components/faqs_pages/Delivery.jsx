@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Delivery() {
+function Delivery({ setIsMainOverlayed }) {
   const [isHiden, setIsHiden] = useState(false);
+
+  useEffect(() => {
+    setIsMainOverlayed(true);
+  }, []);
 
   const navigate = useNavigate();
 
   const hiDeOverlay = () => {
     setIsHiden(true);
     setTimeout(() => {
+      setIsMainOverlayed(false);
       navigate('/');
     }, 500);
   };
@@ -17,7 +22,10 @@ function Delivery() {
     <div
       className={isHiden ? 'Overlay hideOverlay' : 'Overlay showOverlay'}
     >
-      <div className="crossHair_close" onClick={() => hiDeOverlay()}>
+      <div
+        className="crossHair_close"
+        onClick={() => hiDeOverlay()}
+      >
         <p className="close">+</p>
       </div>
       <div className="terms_container container">

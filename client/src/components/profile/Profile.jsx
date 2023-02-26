@@ -6,7 +6,7 @@ import EditFirstInfo from './EditInfo/EditFirstInfo';
 import EditEmailPass from './EditMail/EditEmailPass';
 import OrderDetails from './OrderDetails';
 
-function Profile({ isStaff, itemForEdit }) {
+function Profile({ isStaff, itemForEdit, setIsMainOverlayed }) {
   const navigate = useNavigate();
   const [isHiden, setIsHiden] = useState(false);
   const [addShippingAddress, SetAddShippingAddress] = useState(false);
@@ -41,6 +41,7 @@ function Profile({ isStaff, itemForEdit }) {
 
   useEffect(() => {
     fetchUserInfo();
+    setIsMainOverlayed(true);
   }, []);
 
   const fetchUserOrders = (ordersData, data) => {
@@ -67,6 +68,7 @@ function Profile({ isStaff, itemForEdit }) {
     setIsHiden(true);
     setTimeout(() => {
       func();
+      setIsMainOverlayed(false);
     }, 500);
   };
 

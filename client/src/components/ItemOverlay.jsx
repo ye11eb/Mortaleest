@@ -15,6 +15,7 @@ export function ItemOverlay({
   cartItems,
   isStaff,
   setItemForEdit,
+  setIsMainOverlayed,
 }) {
   const [options, setOptions] = useState(
     ukrLoc ? openedItem.options : openedItem.optionsEng,
@@ -55,6 +56,10 @@ export function ItemOverlay({
     );
   }, [ukrLoc]);
 
+  useEffect(() => {
+    setIsMainOverlayed(true);
+  }, []);
+
   const navigateToMain = () => {
     navigate('/');
   };
@@ -67,6 +72,7 @@ export function ItemOverlay({
     setIsHiden(true);
     setTimeout(() => {
       navigateFunc();
+      setIsMainOverlayed(false);
     }, 500);
   };
 

@@ -37,15 +37,25 @@ export function Navbar({
     const windowsize = window.innerWidth;
     // setScrollPosition(position);
     if (windowsize < 600) {
-      if (position >= 62) {
-        changeBar('higer');
-        // setTitleSize('S');
+      if (position >= 1) {
+        setHeaderAnim(true);
+        setTitleAnim(true);
+        if (position >= 62) {
+          changeBar('higer');
+          setHeaderLogo(false);
+          // setTitleSize('L');
+        }
       } else if (position < 62) {
-        changeBar('lover');
+        setHeaderAnim(false);
+        setTitleAnim(false);
+        if (position < 40) {
+          setHeaderLogo(true);
+          changeBar('lover');
+        }
         // setTitleSize(false);
       }
     } else if ((windowsize >= 600)) {
-      if (position >= 120) {
+      if (position >= 60) {
         setHeaderAnim(true);
         setTitleAnim(true);
         if (position >= 198) {
@@ -180,7 +190,7 @@ export function Navbar({
                       <p>{item.eng}</p>
                     )}
                   </div>
-                  <div className="outline" />
+                  {sortedCollections.indexOf(item) !== sortedCollections.length - 1 ? (<div className="outline" />) : (<div />)}
                 </div>
               ))}
             </div>
@@ -222,7 +232,7 @@ export function Navbar({
                       <p>{item.eng}</p>
                     )}
                   </div>
-                  <div className="outline" />
+                  {sortedClothes.indexOf(item) !== sortedClothes.length - 1 ? (<div className="outline" />) : (<div />)}
                 </div>
               ))}
             </div>

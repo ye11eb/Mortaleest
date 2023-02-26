@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../utils/axios';
 import { createOrder } from '../redux/features/order/orderSlice';
 
-function Cart({ cartItems, setCartItems }) {
+function Cart({ cartItems, setCartItems, setIsMainOverlayed }) {
   const navigate = useNavigate();
   const [isHiden, setIsHiden] = useState(false);
   const [itemQuantity, setItemQuantity] = useState([]);
@@ -55,6 +55,7 @@ function Cart({ cartItems, setCartItems }) {
 
   useEffect(() => {
     setItemQuantityFunc();
+    setIsMainOverlayed(true);
     // setCartItems(localStorage.getItem('cart', cartItems));
   }, []);
 
@@ -100,6 +101,7 @@ function Cart({ cartItems, setCartItems }) {
     setIsHiden(true);
     setTimeout(() => {
       navigateToMain();
+      setIsMainOverlayed(false);
     }, 500);
   };
 
@@ -149,7 +151,6 @@ function Cart({ cartItems, setCartItems }) {
           <div>
             <div className="cart_title">
               <p className="cart_longer_part">Product</p>
-              <p className="cart_second_part">Quantity</p>
               <p>Total</p>
             </div>
             <div className="cart_items_container container">
@@ -180,18 +181,38 @@ function Cart({ cartItems, setCartItems }) {
                           </span>
                         </div>
                         <div className="cart_item_info_line2">
-                          <div>
-                            <p>Size</p>
-                            <p>{item.size}</p>
-                          </div>
-                          <div>
-                            <p>Color</p>
-                            <p>{item.color}</p>
+                          <div className="cart_item_info_item">
+                            <div>
+                              <div>
+                                <p>Size</p>
+                                <p>{item.size}</p>
+                              </div>
+                              <div>
+                                <p>Color</p>
+                                <p>{item.color}</p>
+                              </div>
+                            </div>
+                            <div className="cart_item_quantiti_div">
+                              <p>Quantity</p>
+                              <div className="cart_change_quantity">
+                                <div className="cart_item_minus cart_item_sign" onClick={() => ChangeQuantity(item, -1)}>
+                                  <div className="cart_sign_container">
+                                    <img src="./img/other/CartMinus.svg" alt="" />
+                                  </div>
+                                </div>
+                                <p className="cart_quantity_number">{item.quantity}</p>
+                                <div className="cart_item_plus cart_item_sign" onClick={() => ChangeQuantity(item, +1)}>
+                                  <div className="cart_sign_container">
+                                    <img src="./img/other/CartPlus.svg" alt="" />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="cart_quantity">
+                    {/* <div className="cart_quantity">
                       <div className="cart_change_quantity">
                         <div
                           className="cart_item_minus cart_item_sign"
@@ -214,7 +235,7 @@ function Cart({ cartItems, setCartItems }) {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="cart_total">
                       <p>{item.totalItemPrice}</p>
                       <div className="cart_delete_item">

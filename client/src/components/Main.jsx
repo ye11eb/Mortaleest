@@ -153,7 +153,9 @@ export function Main({
               </Link>
             </div>
             <div>
+            <Link to="Policy">
               <p>Privacy Policy </p>
+            </Link>
             </div>
           </div>
           <h1>CONTACTS</h1>

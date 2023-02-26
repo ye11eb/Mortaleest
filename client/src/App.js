@@ -17,6 +17,7 @@ import Terms from './components/faqs_pages/Terms';
 import Cart from './components/Cart';
 import Delivery from './components/faqs_pages/Delivery';
 import ForMainRoute from './components/ForMainRoute';
+import Policy from './components/faqs_pages/Policy';
 
 function App() {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ function App() {
     ukr: 'всі вироби',
   });
   const [mainTitle, setMainTitle] = useState('');
+  const [isMainOverlayed, setIsMainOverlayed] = useState(false);
 
   useEffect(() => {
     dispatch(getMe());
@@ -45,6 +47,20 @@ function App() {
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems]);
+
+  const hideBodyScroll = () => {
+    if (isMainOverlayed === true) {
+      document.body.style.overflow = 'hidden';
+      // document.body.style.paddingRight = '5px';
+    } else if (isMainOverlayed === false) {
+      document.body.style.overflow = 'visible';
+      // document.body.style.paddingRight = '0px';
+    }
+  };
+
+  useEffect(() => {
+    hideBodyScroll();
+  }, [isMainOverlayed]);
 
   const [ukrLoc, setUkrLoc] = useState(false);
 
@@ -92,6 +108,7 @@ function App() {
               ukrLoc={ukrLoc}
               setCartItems={setCartItems}
               cartItems={cartItems}
+              setIsMainOverlayed={setIsMainOverlayed}
             />
           )}
         />
@@ -105,6 +122,7 @@ function App() {
             <Cart
               setCartItems={setCartItems}
               cartItems={cartItems}
+              setIsMainOverlayed={setIsMainOverlayed}
             />
           )}
         />
@@ -113,16 +131,22 @@ function App() {
 
         <Route
           path="profile"
-          element={
-            <Profile isStaff={isStaff} itemForEdit={itemForEdit} />
-          }
+          element={(
+            <Profile
+              isStaff={isStaff}
+              itemForEdit={itemForEdit}
+              setIsMainOverlayed={setIsMainOverlayed}
+            />
+          )}
         />
 
         <Route path="editAddres" element={<EditInfo />} />
 
-        <Route path="Terms" element={<Terms />} />
+        <Route path="Terms" element={<Terms setIsMainOverlayed={setIsMainOverlayed} />} />
 
-        <Route path="Delivery" element={<Delivery />} />
+        <Route path="Delivery" element={<Delivery setIsMainOverlayed={setIsMainOverlayed} />} />
+
+        <Route path="Policy" element={<Policy setIsMainOverlayed={setIsMainOverlayed} />} />
       </Routes>
     </div>
   );
