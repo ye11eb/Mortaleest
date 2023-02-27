@@ -8,6 +8,10 @@
     margin: 0;
 }
 
+/* #root > div{
+    overflow-y: scroll;
+} */
+
 a:-webkit-any-link {
     color: var(--mainFontColor);
 }
@@ -1666,16 +1670,15 @@ body::-webkit-scrollbar-thumb{
 
 /* slider */
 
-.slider {
+/* .slider {
     padding: 50% 0 auto 0;
-}
+} */
 
-.slide {
+/* .slide {
     height: 100vh;
     padding-left: 15%;
     display: flex !important;
     align-items: center;
-    /* justify-content: center; */
     flex-direction: row;
 }
 
@@ -1686,11 +1689,22 @@ body::-webkit-scrollbar-thumb{
 
 .slick-current img {
     height: 600px;
-}
+} */
 
 /* .slick-current .slide{
   height: 70vh;
 } */
+
+.slick-current .slide img{
+  height: 90vh;
+} 
+
+.slide img {
+    transition: all 0.5s;
+    height: 70vh;
+}
+
+/* the parent */
 
 .slick-next,
 .slick-prev {
@@ -1738,13 +1752,29 @@ body::-webkit-scrollbar-thumb{
     visibility: hidden;
 }
 
-.slider {
+.slide {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+ .slider {
     width: 55%;
 }
 
+.carousel{
+    display:flex!important;/* overrides previous values or set via js */
+    align-items:center;/* that's where centering happens and overflows on both sides */
+  }
+
+.slick-slider {
+    height: 100vh;
+    display: flex !important ;
+    align-items: center;
+}
+/*
 .slick-list {
     position: relative;
-    /* top: 7%; */
     height: 100%;
 }
 
@@ -1763,7 +1793,7 @@ body::-webkit-scrollbar-thumb{
 .slick-track {
     display: flex !important;
     align-items: center;
-}
+} */
 
 /* Auth */
 
@@ -2985,13 +3015,9 @@ effect 1
 
 /* MEDIA */
 
-@media (max-width: 800px) {
-}
-
 @media (max-width: 600px) {
-    /* default */
-    .container {
-        width: 100%;
+    #root > div{
+        overflow-y: scroll;
     }
 
     /* header */
@@ -3711,4 +3737,117 @@ body::-webkit-scrollbar-thumb{
     display: flex;
     flex-direction: row;
 }
+
+
+.itemOverlay{
+    max-height: 100vh;
 }
+
+.item_overlay_main{
+    margin-top: 20px;
+    flex-direction: column;
+    overflow: scroll;
+}
+
+ .slider{
+    padding-top: 70px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+.itemInfo{
+    width: 100%;
+    height: 120%;
+    position: sticky;
+    bottom:-50vh; 
+    overflow: visible;
+} 
+
+
+/* Slider */
+
+.slick-current .slide img{
+    height: 45vh;
+} 
+
+.slide img {
+    transition: all 0.5s;
+    height: 35vh;
+}
+
+.slick-next,
+.slick-prev {
+    top: 20% !important;
+}
+
+.slide {
+    display: flex !important;
+    align-items: flex-start;
+    justify-content: center;
+}
+.slick-track{
+    display: flex !important ;
+    align-items: center;
+}
+
+.slick-slider {
+    height: 100vh;
+    display: flex !important ;
+    align-items: flex-start;
+    
+}
+
+/* .slick-list{
+    margin-top: 50px !important;
+} */
+
+
+/* .itemOverlay {
+    top: 0;
+    overflow-y: none;
+    height: 100vh;
+} */
+
+/* .item_overlay_main{
+    overflow-y: scroll;
+    overflow-x: visible;
+    flex-direction: column;
+    overflow-y: scroll;
+    max-height: 100vh;
+    overflow: none !important;
+} */
+
+
+
+ /* .slider{
+    top: 0;
+    overflow: none !important;
+    position: absolute;
+ margin-top: 400px; 
+    width: 100vw;
+    overflow-y:auto; 
+} */
+/*
+.itemInfo{
+     position: sticky; 
+    position: relative;
+    z-index: 9;
+    width: 100vw;
+    overflow-y:visible;
+} */
+
+/* .itemInfo{
+    position: sticky;
+    width: 100vw;
+    margin-top: 70vh;
+   height: 100%;
+    overflow:visible; 
+    overflow: none !important;
+    z-index: 98; 
+    -height: 500px; 
+} */
+}
+
+

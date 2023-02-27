@@ -135,16 +135,11 @@ export function ItemOverlay({
             }
     >
       <div className="item_overlay_main">
-        <ItemSlider openedItem={openedItem} />
+        <ItemSlider openedItem={openedItem} setIsHiden={setIsHiden} />
         <div className="itemInfo">
           <div className="overlay-top">
             <h1 className="itemTitle">{title}</h1>
-            <div
-              className="crossHair_close"
-              onClick={() => hiDeOverlay(navigateToMain)}
-            >
-              <p className="close">+</p>
-            </div>
+
           </div>
           <span className="itemPrice">
             {price}

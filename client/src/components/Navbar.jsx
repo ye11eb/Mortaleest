@@ -37,7 +37,7 @@ export function Navbar({
     const windowsize = window.innerWidth;
     // setScrollPosition(position);
     if (windowsize < 600) {
-      if (position >= 1) {
+      if (position >= 20) {
         setHeaderAnim(true);
         setTitleAnim(true);
         if (position >= 62) {
