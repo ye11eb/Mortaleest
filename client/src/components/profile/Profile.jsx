@@ -6,7 +6,9 @@ import EditFirstInfo from './EditInfo/EditFirstInfo';
 import EditEmailPass from './EditMail/EditEmailPass';
 import OrderDetails from './OrderDetails';
 
-function Profile({ isStaff, itemForEdit, setIsMainOverlayed }) {
+function Profile({
+  isStaff, itemForEdit, setIsMainOverlayed, ukrLoc,
+}) {
   const navigate = useNavigate();
   const [isHiden, setIsHiden] = useState(false);
   const [addShippingAddress, SetAddShippingAddress] = useState(false);
@@ -15,10 +17,7 @@ function Profile({ isStaff, itemForEdit, setIsMainOverlayed }) {
   const [userInfo, setUserInfo] = useState([]);
   const [usersOrders, setUsersOrders] = useState([]);
   const [openedOrder, setOpenedOrder] = useState();
-  // const [toSaveOrders, setToSaveOrders] = useState([]);
-  //   const [manufactures, setManufactures] = useState([]);
-  // const ordersIDs = 0;
-  //   const [orders, setOrders] = useState([]);
+  const editOrder = false;
 
   const fetchUserInfo = async () => {
     try {
@@ -27,13 +26,6 @@ function Profile({ isStaff, itemForEdit, setIsMainOverlayed }) {
       setUserInfo(data);
       setUsersOrders([]);
       fetchUserOrders(ordersData, data);
-      // //   setOrdersIds(data.orders);
-      // console.log(data);
-      // console.log(userInfo['orders']);
-      // setOrders(userInfo['orders'])
-      // // setOrdersIds(orders)
-      // console.log(orders);
-      // fetchOrders(data);
     } catch (error) {
       console.log(error);
     }
@@ -45,14 +37,11 @@ function Profile({ isStaff, itemForEdit, setIsMainOverlayed }) {
   }, []);
 
   const fetchUserOrders = (ordersData, data) => {
-    // console.log(ordersData.data.orders);
     ordersData.data.orders.forEach((element) => {
       if (data.orders.includes(element._id)) {
-        // console.log(element);
         usersOrders.push(element);
         setUsersOrders(usersOrders);
       }
-      // console.log(usersOrders);
     });
   };
 
@@ -66,9 +55,9 @@ function Profile({ isStaff, itemForEdit, setIsMainOverlayed }) {
 
   const hiDeOverlay = (func) => {
     setIsHiden(true);
+    setIsMainOverlayed(false);
     setTimeout(() => {
       func();
-      setIsMainOverlayed(false);
     }, 500);
   };
 
@@ -102,14 +91,19 @@ function Profile({ isStaff, itemForEdit, setIsMainOverlayed }) {
             isHiden ? 'Overlay hideOverlay' : 'Overlay showOverlay'
           }
         >
-          <div
-            className="crossHair_close"
-            onClick={() => hiDeOverlay(navigateToMain)}
-          >
-            <p className="close">+</p>
-          </div>
           <div className="account_main">
-            <h1 className="headerOverlay">ACCOUNT</h1>
+            <div className="ItemOverlay_top-box">
+              <div className="titleWarapperForBlur">
+                <h1 className="headerOverlay">ACCOUNT</h1>
+                <div
+                  className="crossHair_close"
+                  onClick={() => hiDeOverlay(navigateToMain)}
+                >
+                  <p className="close">+</p>
+                </div>
+              </div>
+              <div className="overlay_Outline" />
+            </div>
             <div className="account_split">
               <div className="account_container">
                 {userInfo && (
@@ -125,86 +119,10 @@ function Profile({ isStaff, itemForEdit, setIsMainOverlayed }) {
                 <div className="email_container">
                   <p>Email</p>
                   <p className="email">{userInfo.email}</p>
-                  <div onClick={() => setNewEmail(true)}>
-                    EDIT EMAIL
-                    {' '}
-                    <span />
+                  <div onClick={() => setNewEmail(true)} className="btn">
+                    <p>EDIT EMAIL</p>
                   </div>
                 </div>
-
-                <div className="history">
-                  <div className="history_header">
-                    <p>History</p>
-                    <div />
-                  </div>
-                  <div className="history_orders">
-                    <div className="container_for_scroll scroll">
-                      {usersOrders && usersOrders.map((order) => (
-                        <div
-                          className="history_order"
-                          onClick={() => showOrderDetails(order)}
-                        >
-                          <div className="history_order_capture">
-                            <p>Order number</p>
-                            <p>Summ</p>
-                            <p>delivery price</p>
-                            <p>Order placed on</p>
-                            <p>Order status</p>
-                          </div>
-
-                          <div className="history_order_info">
-                            <p>{order._id}</p>
-                            <p>{order.deliveryPrice}</p>
-                            <p>{order.manufacturesPrice}</p>
-                            <p>{order.createdAt}</p>
-                            <p>Delivered</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* <div className="history_order">
-                      <div className="history_order_capture">
-                        <p>Order number</p>
-                        <p>Summ</p>
-                        <p>delivery price</p>
-                        <p>Order placed on</p>
-                        <p>Order status</p>
-                      </div>
-
-                      <div className="history_order_info">
-                        <p>63c9c9aff1218f3ed00bdec0</p>
-                        <p>$99</p>
-                        <p>19</p>
-                        <p>22.04.2024</p>
-                        <p>Delivered</p>
-                      </div>
-                    </div>
-
-                    <div className="history_order">
-                      <div className="history_order_capture">
-                        <p>Order number</p>
-                        <p>Summ</p>
-                        <p>delivery price</p>
-                        <p>Order placed on</p>
-                        <p>Order status</p>
-                      </div>
-
-                      <div className="history_order_info">
-                        <p>63c9c9aff1218f3ed00bdec0</p>
-                        <p>$99</p>
-                        <p>19</p>
-                        <p>22.04.2024</p>
-                        <p>Delivered</p>
-                      </div>
-                    </div> */}
-                  </div>
-                </div>
-              </div>
-
-              <div className="account_container_v2">
-                <h1 className="InfoHeader">Shipping adress</h1>
-
                 <div className="Personal_info_container">
                   <p>Personal information</p>
 
@@ -253,12 +171,54 @@ function Profile({ isStaff, itemForEdit, setIsMainOverlayed }) {
                     )}
                   </div>
                   <div
-                    className="Edit_shipping_adress"
+                    className="Edit_shipping_adress btn"
                     onClick={() => openOverlay(navigateToEditAddres())}
                   >
-                    EDIT SHIPPING ADRESS
-                    {' '}
-                    <span />
+                    <p>EDIT SHIPPING ADRESS</p>
+                  </div>
+                </div>
+
+              </div>
+
+              <div className="account_container_v2">
+                <div className="history">
+                  <div className="history_header">
+                    <p>History</p>
+                    <div />
+                  </div>
+                  <div className="history_orders">
+                    <div className="container_for_scroll">
+                      {usersOrders && usersOrders.map((order) => (
+                        <div
+                          className="history_order"
+                          onClick={() => showOrderDetails(order)}
+                        >
+                          <div className="history_order_capture">
+                            <p>Order number</p>
+                            <p>Summ</p>
+                            <p>delivery price</p>
+                            <p>Order placed on</p>
+                            <p>Order status</p>
+                          </div>
+
+                          <div className="history_order_info">
+                            <p>{order._id}</p>
+                            <p>{order.deliveryPrice}</p>
+                            <p>{order.manufacturesPrice}</p>
+                            <p>{order.createdAt}</p>
+                            <p>{ukrLoc ? order.orderStatus.ukr : order.orderStatus.eng}</p>
+                          </div>
+
+                          <div className="history_order_more">
+                            <div>
+                              <p>More</p>
+                              <div className="arrow" />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      <div className="bottom_outline" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -279,6 +239,8 @@ function Profile({ isStaff, itemForEdit, setIsMainOverlayed }) {
             )}
             {orderDetails && (
             <OrderDetails
+              editOrder={editOrder}
+              ukrLoc={ukrLoc}
               setOrderDetails={setOrderDetails}
               openedOrder={openedOrder}
             />

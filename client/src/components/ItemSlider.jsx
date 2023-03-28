@@ -14,29 +14,9 @@ export function ItemSlider({ openedItem, setIsHiden, setIsMainOverlayed }) {
     centerMode: true,
   };
 
-  const navigate = useNavigate();
-
-  const navigateToMain = () => {
-    navigate('/');
-  };
-
-  const hiDeOverlay = (navigateFunc) => {
-    setIsHiden(true);
-    console.log('setIsHiden');
-    setTimeout(() => {
-      navigateFunc();
-      setIsMainOverlayed(false);
-    }, 500);
-  };
-
   return (
     <div className="slider">
-      <div
-        className="crossHair_close"
-        onClick={() => hiDeOverlay(navigateToMain)}
-      >
-        <p className="close">+</p>
-      </div>
+
       <Slider {...settings}>
         {openedItem
                     && openedItem.imgUrl.map((img) => (

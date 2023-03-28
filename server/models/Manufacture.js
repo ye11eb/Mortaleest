@@ -34,6 +34,22 @@ const ManufactureSchema = new mongoose.Schema(
         type: Array,
         required: true,
       },
+      sizingText: {
+        type: String,
+        required: true,
+      },
+      sizingImg: {
+        type: String,
+        required: true,
+      },
+      materials: {
+        type: String,
+        required: true,
+      },
+      care: {
+        type: String,
+        required: true,
+      },
       titleEng: {
         type: String,
         required: true,
@@ -55,6 +71,22 @@ const ManufactureSchema = new mongoose.Schema(
         required: true,
       },
       descriptionEng: {
+        type: String,
+        required: true,
+      },
+      sizingTextEng: {
+        type: String,
+        required: true,
+      },
+      sizingImgEng: {
+        type: String,
+        required: true,
+      },
+      materialsEng: {
+        type: String,
+        required: true,
+      },
+      careEng: {
         type: String,
         required: true,
       },

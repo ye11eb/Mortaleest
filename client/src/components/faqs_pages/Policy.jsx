@@ -13,21 +13,31 @@ function Policy({ setIsMainOverlayed }) {
 
   const hiDeOverlay = () => {
     setIsHiden(true);
+    setIsMainOverlayed(false);
     setTimeout(() => {
-      setIsMainOverlayed(false);
       navigate('/');
     }, 500);
   };
 
   return (
     <div className={isHiden ? 'Overlay hideOverlay' : 'Overlay showOverlay'}>
-      <div className="crossHair_close" onClick={() => hiDeOverlay()}>
-        <p className="close">+</p>
+      <div className="overlay-top absolute_top faqs_page">
+        <div className="ItemOverlay_top-box ">
+          <div className="titleWarapperForBlur">
+            <h1 className="headerOverlay">Privacy Policy</h1>
+            <div
+              className="crossHair_close"
+              onClick={() => hiDeOverlay()}
+            >
+              <p className="close">+</p>
+            </div>
+          </div>
+          <div className="overlay_Outline" />
+        </div>
       </div>
       <div className="terms_container container">
-        <h1 className="headerOverlay">Privacy Policy</h1>
         <div className="terms_rules_container">
-          <div className="terms_rules scroll">
+          <div className="terms_rules">
 
             <p className="rule_subtitle">
               ПОЛІТИКА КОНФІДЕНЦІЙНОСТІ ТА ПРАВИЛА ОБРОБКИ COOKIE

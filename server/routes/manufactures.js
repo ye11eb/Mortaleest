@@ -13,6 +13,8 @@ router.post('/changeManufacture',checkAuth, ChangeManufacture)
 //GetManufactures
 router.get('/getAllManufactures', getManufactures)
 
+
+//DeleteManufactures
 router.post ('/deleteManufacture', deleteManufacture)
 
 export default router

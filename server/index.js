@@ -33,7 +33,11 @@ app.use('/api/orders', ordersRote)
 
 async function start() {
   try{
-    await mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.hvr4gil.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`)
+    // mortaleest
+    
+    await mongoose.connect(`mongodb+srv://mortaleest:${DB_PASSWORD}@mortaleest.jgl1wiz.mongodb.net/?retryWrites=true&w=majority`)
+    // await mongoose.connect(`mongodb+srv://mortaleest:${DB_PASSWORD}@mortaleest.jgl1wiz.mongodb.net/?retryWrites=true&w=majority`)
+    // await mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.hvr4gil.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`)
     app.listen(PORT, () => console.log(`server started on port: ${PORT}`))
   }
   catch (error){

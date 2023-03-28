@@ -65,11 +65,13 @@ export function Login() {
       <div
         className={isHiden ? 'login hideOverlay' : 'login showOverlay'}
       >
-        <div
-          className="crossHair_close"
-          onClick={() => hiDeOverlay(navigateToMain)}
-        >
-          <p className="close">+</p>
+        <div className="crossHair_close_wraper container">
+          <div
+            className="crossHair_close"
+            onClick={() => hiDeOverlay(navigateToMain)}
+          >
+            <p className="close">+</p>
+          </div>
         </div>
         <form
           className="Register_Container"
@@ -104,7 +106,6 @@ export function Login() {
           </div>
 
           <div className="auth_container Container_password">
-            {/* <p>password</p> */}
             <div className="inputContainer">
               <div className="field">
                 <label

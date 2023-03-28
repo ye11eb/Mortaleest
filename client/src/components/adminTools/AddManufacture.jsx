@@ -21,6 +21,10 @@ function AddManufacture({
   const [priceEng, setPriceEng] = useState();
   const [priceValueEng, setPriceValueEng] = useState('');
   const [descriptionEng, setDescriptionEng] = useState('');
+  const [sizingTextEng, setSizingTextEng] = useState('');
+  const [sizingImgEng, setSizingImgEng] = useState('');
+  const [materialsEng, setMaterialsEng] = useState('');
+  const [careEng, setCareEng] = useState('');
   const [optionsEng, setOptionsEng] = useState([]);
   const [colectionsEng, setColectionsEng] = useState('');
   const [clothesTypeEng, setClothesTypeEng] = useState('');
@@ -30,6 +34,10 @@ function AddManufacture({
   const [price, setPrice] = useState();
   const [priceValue, setPriceValue] = useState('');
   const [description, setDescription] = useState('');
+  const [sizingText, setSizingText] = useState('');
+  const [sizingImg, setSizingImg] = useState('');
+  const [materials, setMaterials] = useState('');
+  const [care, setCare] = useState('');
   const [options, setOptions] = useState([]);
   const [colections, setColections] = useState('');
   const [clothesType, setClothesType] = useState('');
@@ -49,6 +57,10 @@ function AddManufacture({
       setPriceEng(itemForEdit.priceEng);
       setPriceValueEng(itemForEdit.priceValueEng);
       setDescriptionEng(itemForEdit.descriptionEng);
+      setSizingTextEng(itemForEdit.sizingTextEng);
+      setSizingImgEng(itemForEdit.sizingImgEng);
+      setMaterialsEng(itemForEdit.materialsEng);
+      setCareEng(itemForEdit.careEng);
       setColectionsEng(itemForEdit.colectionsEng);
       setClothesTypeEng(itemForEdit.clothesTypeEng);
       setOptions(itemForEdit.options);
@@ -58,6 +70,10 @@ function AddManufacture({
       setPrice(itemForEdit.price);
       setPriceValue(itemForEdit.priceValue);
       setDescription(itemForEdit.description);
+      setSizingText(itemForEdit.sizingText);
+      setSizingImg(itemForEdit.sizingImg);
+      setMaterials(itemForEdit.materials);
+      setCare(itemForEdit.care);
       setColections(itemForEdit.colections);
       setClothesType(itemForEdit.clothesType);
       setOptionsEng(itemForEdit.optionsEng);
@@ -76,6 +92,10 @@ function AddManufacture({
         colections,
         clothesType,
         description,
+        sizingTextEng,
+        sizingImgEng,
+        materialsEng,
+        careEng,
         options,
         titleEng,
         nameEng,
@@ -84,6 +104,10 @@ function AddManufacture({
         colectionsEng,
         clothesTypeEng,
         descriptionEng,
+        sizingText,
+        sizingImg,
+        materials,
+        care,
         optionsEng,
       };
       clearformHeandler();
@@ -116,6 +140,10 @@ function AddManufacture({
         colections,
         clothesType,
         description,
+        sizingTextEng,
+        sizingImgEng,
+        materialsEng,
+        careEng,
         options,
         titleEng,
         nameEng,
@@ -124,6 +152,10 @@ function AddManufacture({
         colectionsEng,
         clothesTypeEng,
         descriptionEng,
+        sizingText,
+        sizingImg,
+        materials,
+        care,
         optionsEng,
       };
       clearformHeandler();
@@ -183,9 +215,15 @@ function AddManufacture({
   return (
     <div
       className={
-                    isHiden ? 'Overlay hideOverlay' : 'Overlay showOverlay'
+                    isHiden ? 'Overlay hideOverlay AdminTool' : 'Overlay showOverlay AdminTool'
                 }
     >
+      <div
+        className="crossHair_close"
+        onClick={() => hiDeOverlay(navigateToMain)}
+      >
+        <p className="close">+</p>
+      </div>
       <div className="branch scroll">
         <p className="capture addManu_capture">Options</p>
         <div className="options_item">
@@ -244,12 +282,6 @@ function AddManufacture({
             </div>
           ))}
         </div>
-      </div>
-      <div
-        className="crossHair_close"
-        onClick={() => hiDeOverlay(navigateToMain)}
-      >
-        <p className="close">+</p>
       </div>
       <div className="addManufacture_box">
         <form
@@ -381,6 +413,96 @@ function AddManufacture({
               >
                 <span className="field__label">
                   description
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <div className="inputContainer inputContainer_description">
+            <div className="field">
+              <label className="ha-screen-reader">
+                title
+              </label>
+              <textarea
+                className="field__input textArea"
+                rows={5}
+                cols={10}
+                type="text"
+                value={sizingText}
+                onChange={(e) => setSizingText(e.target.value)}
+              />
+              <span
+                className="field__label-wrap"
+                aria-hidden="true"
+              >
+                <span className="field__label">
+                  sizing text
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <div className="inputContainer">
+            <div className="field">
+              <label className="ha-screen-reader">
+                title
+              </label>
+              <input
+                className="field__input"
+                type="text"
+                value={sizingImg}
+                onChange={(e) => setSizingImg(e.target.value)}
+              />
+              <span
+                className="field__label-wrap"
+                aria-hidden="true"
+              >
+                <span className="field__label">
+                  sizing imgurl
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <div className="inputContainer">
+            <div className="field">
+              <label className="ha-screen-reader">
+                title
+              </label>
+              <input
+                className="field__input"
+                type="text"
+                value={care}
+                onChange={(e) => setCare(e.target.value)}
+              />
+              <span
+                className="field__label-wrap"
+                aria-hidden="true"
+              >
+                <span className="field__label">
+                  care
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <div className="inputContainer">
+            <div className="field">
+              <label className="ha-screen-reader">
+                title
+              </label>
+              <input
+                className="field__input"
+                type="text"
+                value={materials}
+                onChange={(e) => setMaterials(e.target.value)}
+              />
+              <span
+                className="field__label-wrap"
+                aria-hidden="true"
+              >
+                <span className="field__label">
+                  materials
                 </span>
               </span>
             </div>
@@ -596,6 +718,96 @@ function AddManufacture({
               >
                 <span className="field__label">
                   description
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <div className="inputContainer inputContainer_description">
+            <div className="field">
+              <label className="ha-screen-reader">
+                title
+              </label>
+              <textarea
+                className="field__input textArea"
+                rows={5}
+                cols={10}
+                type="text"
+                value={sizingTextEng}
+                onChange={(e) => setSizingTextEng(e.target.value)}
+              />
+              <span
+                className="field__label-wrap"
+                aria-hidden="true"
+              >
+                <span className="field__label">
+                  sizing text
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <div className="inputContainer">
+            <div className="field">
+              <label className="ha-screen-reader">
+                title
+              </label>
+              <input
+                className="field__input"
+                type="text"
+                value={sizingImgEng}
+                onChange={(e) => setSizingImgEng(e.target.value)}
+              />
+              <span
+                className="field__label-wrap"
+                aria-hidden="true"
+              >
+                <span className="field__label">
+                  sizing imgurl
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <div className="inputContainer">
+            <div className="field">
+              <label className="ha-screen-reader">
+                title
+              </label>
+              <input
+                className="field__input"
+                type="text"
+                value={careEng}
+                onChange={(e) => setCareEng(e.target.value)}
+              />
+              <span
+                className="field__label-wrap"
+                aria-hidden="true"
+              >
+                <span className="field__label">
+                  care
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <div className="inputContainer">
+            <div className="field">
+              <label className="ha-screen-reader">
+                title
+              </label>
+              <input
+                className="field__input"
+                type="text"
+                value={materialsEng}
+                onChange={(e) => setMaterialsEng(e.target.value)}
+              />
+              <span
+                className="field__label-wrap"
+                aria-hidden="true"
+              >
+                <span className="field__label">
+                  materials
                 </span>
               </span>
             </div>

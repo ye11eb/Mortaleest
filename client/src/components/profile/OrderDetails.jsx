@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllManufactures } from '../../redux/features/Manufactures/manuSlice';
+import {
+  changeOrder,
+} from '../../redux/features/order/orderSlice';
 
-function OrderDetails({ setOrderDetails, openedOrder }) {
+function OrderDetails({
+  setOrderDetails, openedOrder, ukrLoc, editOrder,
+}) {
+  const windowsize = window.innerWidth;
   const [isHiden, setIsHiden] = useState(false);
   const dispatch = useDispatch();
   const [ordersManu, setOrdersManu] = useState([]);
-  //   const [loadManu, setLoadManu] = useState();
+  const [trackNumber, setTrackNumber] = useState();
+  const [orderStatus, setOrderStatus] = useState();
   const manufactures = useSelector(
     (state) => state.manufactures.manufactures,
   );
@@ -14,7 +21,36 @@ function OrderDetails({ setOrderDetails, openedOrder }) {
   useEffect(() => {
     dispatch(getAllManufactures());
     fetchManuInfo();
+    setTrackNumber(openedOrder.trackNumber);
   }, []);
+
+  const changeOrderInfo = () => {
+    try {
+      const data = {
+        _id: openedOrder._id,
+        firstName: openedOrder.firstName,
+        secondName: openedOrder.secondName,
+        number: openedOrder.number,
+        adress1: openedOrder.adress1,
+        adress2: openedOrder.adress2,
+        country: openedOrder.country,
+        city: openedOrder.city,
+        state: openedOrder.state,
+        zipcode: openedOrder.zipcode,
+        userEmail: openedOrder.userEmail,
+        manufactures: openedOrder.manufactures,
+        deliveryPrice: openedOrder.deliveryPrice,
+        manufacturesPrice: openedOrder.manufacturesPrice,
+        totalPrice: openedOrder.totalPrice,
+        priceValue: openedOrder.priceValue,
+        orderStatus: JSON.parse(orderStatus),
+        trackNumber,
+      };
+      dispatch(changeOrder(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchManuInfo = () => {
     manufactures.forEach((manufacture) => {
@@ -34,28 +70,62 @@ function OrderDetails({ setOrderDetails, openedOrder }) {
   };
   return (
     <div className={isHiden ? 'Overlay orderOverlay hideRegister' : 'Overlay orderOverlay showRegister'}>
-      <div className="arrow_close" onClick={() => hiDeOverlay()}>
-        <img src="../../public/img/other/arrow_register.svg" alt="" />
-      </div>
       {/* <div className="account_main">
       </div> */}
       <div className="order_main_container">
-        <h1 className="headerOverlay">ORDER DETAILS</h1>
+        <div className="ItemOverlay_top-box">
+          <div className="titleWarapperForBlur">
+            <h1 className="headerOverlay">ORDER DETAILS</h1>
+            <div className="arrow_close" onClick={() => hiDeOverlay()}>
+              <img src="../../public/img/other/arrow_register.svg" alt="" />
+            </div>
+          </div>
+          <div className="cart_title">
+            <div className="cart_titles">
+              <p className="cart_longer_part">Product</p>
+              {windowsize > 800 && <p>Total</p>}
+            </div>
+            <div className="overlay_Outline" />
+          </div>
+        </div>
         <div className="order_split container">
           <div className="branch">
-            <div className="orderSubtitle orderBottomBorder"><p>Order status</p></div>
             <div className="order_info orderBottomBorder">
               <ul className="order_bold_text">
                 <li>Order status</li>
                 <li>Track number </li>
               </ul>
               <ul>
-                <li>Delivered</li>
-                <li>CB293678012PL</li>
+                <li>
+                  {editOrder ? (
+                    <form className="select_form">
+                      <select
+                        name="select "
+                        id="select_"
+                        onChange={() => setOrderStatus(document.getElementById('select_').value)}
+                      >
+                        <option value='{"eng":"accepted","ukr":"прийнято"}'>accepted</option>
+                        <option value='{"eng":"in the way","ukr":"В дорозі"}'>in the way</option>
+                        <option value='{"eng":"at the post office","ukr":"у відділені пошти"}'>at the post office</option>
+                        <option value='{"eng":"ended","ukr":"завершено"}'>ended</option>
+                      </select>
+                    </form>
+                  )
+                    : openedOrder.trackNumber}
+
+                </li>
+                {editOrder ? (
+                  <input
+                    type="text"
+                    value={trackNumber}
+                    onChange={(e) => setTrackNumber(e.target.value)}
+                  />
+                )
+                  : (<li>{ukrLoc ? openedOrder.orderStatus.ukr : openedOrder.orderStatus.eng}</li>)}
               </ul>
             </div>
 
-            <div className="orderSubtitle orderBottomBorder"><p>Customer information</p></div>
+            <div className="orderSubtitle"><p>Customer information</p></div>
             <div className="order_info orderBottomBorder">
               <ul className="order_bold_text">
                 <li>First name</li>
@@ -68,17 +138,17 @@ function OrderDetails({ setOrderDetails, openedOrder }) {
                 <li>State</li>
               </ul>
               <ul>
-                <li>First name</li>
-                <li>Second name</li>
-                <li>Number</li>
-                <li>Adress line 1</li>
-                <li>Adress line 2</li>
-                <li>Country / region</li>
-                <li>City / town</li>
-                <li>State</li>
+                <li>{openedOrder.firstName}</li>
+                <li>{openedOrder.secondName}</li>
+                <li>{openedOrder.number}</li>
+                <li>{openedOrder.adress1}</li>
+                <li>{openedOrder.adress2}</li>
+                <li>{openedOrder.country}</li>
+                <li>{openedOrder.city}</li>
+                <li>{openedOrder.state}</li>
               </ul>
             </div>
-            <div className="orderSubtitle orderBottomBorder"><p>Customer information</p></div>
+            <div className="orderSubtitle"><p>Customer information</p></div>
             <div className="order_info orderBottomBorder">
               <ul className="order_bold_text">
                 <li>Order number</li>
@@ -87,17 +157,24 @@ function OrderDetails({ setOrderDetails, openedOrder }) {
                 <li>Delivery</li>
               </ul>
               <ul>
-                <li>First name</li>
-                <li>Second name</li>
-                <li>Number</li>
-                <li>Adress line 1</li>
+                <li>
+                  {openedOrder._id}
+                </li>
+                <li>{openedOrder.createdAt}</li>
+                <li>
+                  {openedOrder.totalPrice}
+                  <span>{openedOrder.priceValue}</span>
+                </li>
+                <li>
+                  {openedOrder.deliveryPrice}
+                  <span>{openedOrder.priceValue}</span>
+                </li>
               </ul>
             </div>
           </div>
           <div className="branch">
             <div className="history_orders_manu">
-              <div className="container_for_scroll scroll">
-                {/* {console.log(ordersManu)} */}
+              <div className="container_for_scroll ">
                 {ordersManu && ordersManu.map((item) => (
                   <div className="history_order_manu" key={item.manufacture._id}>
                     <img src={item.manufacture.imgUrl[0]} alt="" />
@@ -123,6 +200,15 @@ function OrderDetails({ setOrderDetails, openedOrder }) {
                     </div>
                   </div>
                 ))}
+                {editOrder && (
+                <div
+                  className="Edit_shipping_adress btn"
+                  onClick={() => changeOrderInfo()}
+                >
+                  <p>SAVE INFO</p>
+                </div>
+                )}
+                <div className="bottom_outline" />
               </div>
             </div>
           </div>

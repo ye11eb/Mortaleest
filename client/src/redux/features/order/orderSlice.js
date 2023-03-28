@@ -13,3 +13,16 @@ export const createOrder = createAsyncThunk(
     }
   },
 );
+
+export const changeOrder = createAsyncThunk(
+  '/orders/changeOrder',
+  async (params) => {
+    try {
+      const { data } = await axios.post('/orders/changeOrder', params);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+);

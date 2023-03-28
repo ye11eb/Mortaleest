@@ -21,7 +21,6 @@ function EditSecondInfo({
   const [city, SetCity] = useState(userInfo.city);
   const [state, setState] = useState(userInfo.state);
   const [zipcode, setZipcode] = useState(userInfo.zipcode);
-  //   const { status } = useSelector((state) => state.auth);
   const [isHidenSecond, setIsHidenSecond] = useState(false);
 
   useEffect(() => {

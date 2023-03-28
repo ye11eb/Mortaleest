@@ -1,10 +1,16 @@
+/* eslint-disable import/no-named-as-default */
+/* eslint-disable react/jsx-closing-tag-location */
 import { useEffect, useState, React } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from '../utils/axios';
 import { createOrder } from '../redux/features/order/orderSlice';
+import OrdersMenu from './adminTools/OrdersMenu';
 
-function Cart({ cartItems, setCartItems, setIsMainOverlayed }) {
+function Cart({
+  cartItems, setCartItems, setIsMainOverlayed, isStaff, ukrLoc,
+}) {
+  const windowsize = window.innerWidth;
   const navigate = useNavigate();
   const [isHiden, setIsHiden] = useState(false);
   const [itemQuantity, setItemQuantity] = useState([]);
@@ -89,6 +95,12 @@ function Cart({ cartItems, setCartItems, setIsMainOverlayed }) {
       manufacturesPrice: subtotal,
       totalPrice: subtotal + deliveryPrice,
       payed: false,
+      orderStatus: {
+        eng: 'accepted',
+        ukr: 'прийнято',
+      },
+      trackNumber: 'noInfo',
+      priceValue: cartItems[0].priceValue,
     };
     dispatch(createOrder(data));
   };
@@ -99,9 +111,9 @@ function Cart({ cartItems, setCartItems, setIsMainOverlayed }) {
 
   const hiDeOverlay = () => {
     setIsHiden(true);
+    setIsMainOverlayed(false);
     setTimeout(() => {
       navigateToMain();
-      setIsMainOverlayed(false);
     }, 500);
   };
 
@@ -139,168 +151,227 @@ function Cart({ cartItems, setCartItems, setIsMainOverlayed }) {
   }
 
   return (
-    <div
-      className={isHiden ? 'hideOverlay Overlay' : 'showOverlay Overlay'}
-    >
-      <div className="crossHair_close" onClick={() => hiDeOverlay()}>
-        <p className="close">+</p>
-      </div>
-      {cartItems.length ? (
-        <div className="MainCart_container">
-          <h1>CART</h1>
-          <div>
-            <div className="cart_title">
-              <p className="cart_longer_part">Product</p>
-              <p>Total</p>
-            </div>
-            <div className="cart_items_container container">
-              <div className="cart_items scroll">
-                {cartItems.map((item) => (
-                  <div
-                    className="cart_item"
-                    key={item.title + item.name}
-                  >
-                    <div className="cart_product">
-                      <div className="cart_img">
-                        <img
-                          src={item.imgUrl[0]}
-                          alt=""
-                        />
-                      </div>
-                      <div className="cart_item_info">
-                        <div className="cart_item_info_line1">
-                          <p className="cart_item_title">
-                            {item.capture}
-                          </p>
-                          <p>{`${item.title}${item.name}`}</p>
-                          <span>
-                            {item.price}
-                            <p>
-                              {item.priceValue}
-                            </p>
-                          </span>
-                        </div>
-                        <div className="cart_item_info_line2">
-                          <div className="cart_item_info_item">
-                            <div>
-                              <div>
-                                <p>Size</p>
-                                <p>{item.size}</p>
-                              </div>
-                              <div>
-                                <p>Color</p>
-                                <p>{item.color}</p>
-                              </div>
-                            </div>
-                            <div className="cart_item_quantiti_div">
-                              <p>Quantity</p>
-                              <div className="cart_change_quantity">
-                                <div className="cart_item_minus cart_item_sign" onClick={() => ChangeQuantity(item, -1)}>
-                                  <div className="cart_sign_container">
-                                    <img src="./img/other/CartMinus.svg" alt="" />
-                                  </div>
-                                </div>
-                                <p className="cart_quantity_number">{item.quantity}</p>
-                                <div className="cart_item_plus cart_item_sign" onClick={() => ChangeQuantity(item, +1)}>
-                                  <div className="cart_sign_container">
-                                    <img src="./img/other/CartPlus.svg" alt="" />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <div className="cart_quantity">
-                      <div className="cart_change_quantity">
-                        <div
-                          className="cart_item_minus cart_item_sign"
-                          onClick={() => ChangeQuantity(item, -1)}
-                        >
-                          <div className="cart_sign_container">
-                            <div className="line" />
-                          </div>
-                        </div>
-                        <p className="cart_quantity_number">
-                          {item.quantity}
-                        </p>
-                        <div
-                          className="cart_item_plus cart_item_sign"
-                          onClick={() => ChangeQuantity(item, +1)}
-                        >
-                          <div className="cart_sign_container">
-                            <div className="fst_line line" />
-                            <div className="scd_line line" />
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
-                    <div className="cart_total">
-                      <p>{item.totalItemPrice}</p>
-                      <div className="cart_delete_item">
-                        <p>Delete</p>
-                        <div
-                          className="cart_delete"
-                          onClick={() => deleteCartItems(item)}
-                        />
-                      </div>
+    <div>
+      {isStaff ? (
+        <OrdersMenu
+          ukrLoc={ukrLoc}
+          isHiden={isHiden}
+          hiDeOverlay={hiDeOverlay}
+          navigateToMain={navigateToMain}
+        />
+      )
+      // eslint-disable-next-line react/jsx-wrap-multilines
+        : (<div
+            className={isHiden ? 'hideOverlay Overlay' : 'showOverlay Overlay'}
+        >
+          {cartItems.length ? (
+            <>
+              <div className="overlay-top absolute_top cart_page">
+                <div className="ItemOverlay_top-box">
+                  <div className="titleWarapperForBlur">
+                    <h1 className="headerOverlay">CART</h1>
+                    <div
+                      className="crossHair_close"
+                      onClick={() => hiDeOverlay()}
+                    >
+                      <p className="close">+</p>
                     </div>
                   </div>
-                ))}
+                  <div className="cart_title">
+                    <div className="cart_titles">
+                      <p className="cart_longer_part">Product</p>
+                      <p>Total</p>
+                    </div>
+                    <div className="overlay_Outline" />
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="cart_bottom">
-              <div className="cart_bottom_price">
+              <div className="MainCart_container">
                 <div>
-                  <p>Total</p>
-                  <p>Delivery</p>
-                  <p className="cart_bottom_price_subtotal">
-                    Subtotal
-                  </p>
-                </div>
-                <div className="cart_bottom_price_numbers">
-                  <div className="cart_price_numbers_fst">
-                    <p>{subtotal}</p>
-                    <p>{deliveryPrice}</p>
-                    <p className="cart_bottom_price_subtotal">
-                      {subtotal + deliveryPrice}
-                    </p>
-                  </div>
-                  <div className="cart_price_numbers_scnd">
-                    <p>{cartItems[0].priceValue}</p>
-                    <p>{cartItems[0].priceValue}</p>
-                    <p className="cart_bottom_price_subtotal">
-                      {cartItems[0].priceValue}
-                    </p>
+                  <div className="cart_items_container container">
+                    <div className="cart_items">
+                      {cartItems.map((item) => (
+                        <div
+                          className="cart_item"
+                          key={item.title + item.name}
+                        >
+                          <div className="cart_product">
+                            <div className="cart_img">
+                              <img
+                                src={item.imgUrl[0]}
+                                alt=""
+                              />
+                            </div>
+                            <div className="cart_item_info">
+                              <div className="cart_item_info_line1">
+                                <p className="cart_item_title">
+                                  {item.capture}
+                                </p>
+                                <p>{`${item.title}${item.name}`}</p>
+                                <span>
+                                  {item.price}
+                                  <p>
+                                    {item.priceValue}
+                                  </p>
+                                </span>
+                              </div>
+                              <div className="cart_item_info_line2">
+                                <div className="cart_item_info_item">
+                                  <div>
+                                    <div>
+                                      <p>Size</p>
+                                      <p>{item.size}</p>
+                                    </div>
+                                    <div>
+                                      <p>Color</p>
+                                      <p>{item.color}</p>
+                                    </div>
+                                  </div>
+                                  <div className="cart_item_quantiti_div">
+                                    <p>Quantity</p>
+                                    <div className="cart_change_quantity">
+                                      <div className="cart_item_minus cart_item_sign" onClick={() => ChangeQuantity(item, -1)}>
+                                        <div className="cart_sign_container">
+                                          <img src="./img/other/CartMinus.svg" alt="" />
+                                        </div>
+                                      </div>
+                                      <p className="cart_quantity_number">{item.quantity}</p>
+                                      <div className="cart_item_plus cart_item_sign" onClick={() => ChangeQuantity(item, +1)}>
+                                        <div className="cart_sign_container">
+                                          <img src="./img/other/CartPlus.svg" alt="" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="cart_total">
+                            <p>{item.totalItemPrice}</p>
+                            <div className="cart_delete_item">
+                              {window.innerWidth > 340 && <p>Delete</p>}
+                              <div
+                                className="cart_delete"
+                                onClick={() => deleteCartItems(item)}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      <div className="cart_bottom">
+                        <div className="overlay_Outline" />
+                        {windowsize > 800 ? (
+                          <div className="cartBottom_wraper">
+                            <div className="cart_bottom_price">
+                              <div>
+                                <p>Total</p>
+                                <p>Delivery</p>
+                                <p className="cart_bottom_price_subtotal">
+                                  Subtotal
+                                </p>
+                              </div>
+                              <div className="cart_bottom_price_numbers">
+                                <div className="cart_price_numbers_fst">
+                                  <p>{subtotal}</p>
+                                  <p>{deliveryPrice}</p>
+                                  <p className="cart_bottom_price_subtotal">
+                                    {subtotal + deliveryPrice}
+                                  </p>
+                                </div>
+                                <div className="cart_price_numbers_scnd">
+                                  <p>{cartItems[0].priceValue}</p>
+                                  <p>{cartItems[0].priceValue}</p>
+                                  <p className="cart_bottom_price_subtotal">
+                                    {cartItems[0].priceValue}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="cart_bottom_checkOut">
+                              <div
+                                className="checkOut_btn btn"
+                                onClick={() => CheckOut()}
+                              >
+                                <p>CHECK OUT</p>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="cartBottom_wraper">
+                            <div className="cart_bottom_price">
+                              <div className="cart_bottom_price_left">
+                                <div>
+                                  <p>Total</p>
+                                  <p>Delivery</p>
+                                </div>
+                                <div className="cart_bottom_price_numbers">
+                                  <div className="cart_price_numbers_fst">
+                                    <p>{subtotal}</p>
+                                    <p>{deliveryPrice}</p>
+                                  </div>
+                                  <div className="cart_price_numbers_scnd">
+                                    <p>{cartItems[0].priceValue}</p>
+                                    <p>{cartItems[0].priceValue}</p>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="cart_bottom_price_right">
+                                <div>
+                                  <p className="cart_bottom_price_subtotal">
+                                    Subtotal
+                                  </p>
+                                  <p className="cart_bottom_price_subtotal_nums">
+                                    {subtotal + deliveryPrice}
+                                  </p>
+                                  <p className="cart_bottom_price_subtotal_nums">
+                                    {cartItems[0].priceValue}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="cart_bottom_checkOut">
+                              <div
+                                className="checkOut_btn btn"
+                                onClick={() => CheckOut()}
+                              >
+                                <p>CHECK OUT</p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="cart_bottom_checkOut">
+
+            </>
+          ) : (
+            <div className="MainCart_container cart_page">
+              <div className="ItemOverlay_top-box container">
+                <h1 className="headerOverlay">CART</h1>
                 <div
-                  className="checkOut_btn btn"
-                  onClick={() => CheckOut()}
+                  className="crossHair_close"
+                  onClick={() => hiDeOverlay()}
                 >
-                  CHECK OUT
+                  <p className="close">+</p>
+                </div>
+              </div>
+              <div className="empty_cart">
+                <h1>YOUR CART IS EMPTY</h1>
+                <div
+                  className="emempty_cart_btn btn"
+                  onClick={() => hiDeOverlay()}
+                >
+                  <p>CONTINUE SHOPPING</p>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
-      ) : (
-        <div className="MainCart_container">
-          <h1>CART</h1>
-          <div className="empty_cart">
-            <h1>YOUR CART IS EMPTY</h1>
-            <div
-              className="emempty_cart_btn btn"
-              onClick={() => hiDeOverlay()}
-            >
-              CONTINUE SHOPPING
-            </div>
-          </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }

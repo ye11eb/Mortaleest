@@ -10,7 +10,6 @@ function EditEmailPass({
   setIsHidenPass,
 }) {
   const [email, setEmail] = useState(userInfo.email);
-  //   const { status } = useSelector((state) => state.auth);
   const [isHidenEmail, setIsHidenEmail] = useState(false);
 
   const navigateToPrev = () => {

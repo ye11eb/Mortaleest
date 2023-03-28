@@ -1,22 +1,21 @@
-/* eslint-disable  */
 import { React, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getAllManufactures } from '../redux/features/Manufactures/manuSlice';
+import Cookies from './Cookies';
 import Manufactures from './Manufactures';
 import { PrePage } from './PrePage';
 
 export function Main({
   setOpenedItem,
   ukrLoc,
-  sortedCollections,
   pickedSortOption,
-  sortedClothes,
-  mainTitle, 
+  mainTitle,
   setSortedClothes,
   setSortedCollections,
-  titleAnim
+  titleAnim,
 }) {
+  const isAuth = window.localStorage.getItem('token');
   const dispatch = useDispatch();
   const manufactures = useSelector(
     (state) => state.manufactures.manufactures,
@@ -25,26 +24,15 @@ export function Main({
   const changedManufactures = [];
   const [loadedManufactures, setLoadedManufactures] = useState(true);
   const [visibleTitle, setVisibleTitle] = useState();
-  // const [toSetList, setToSetList] = useState(true)
 
   useEffect(() => {
     setVisibleManufactures(manufactures);
     manufacturesSortedByClothes();
     manufacturesSortedBycollections();
-    // manufacturesSortedByClothes();
-    // manufacturesSortedBycollections();
   }, [manufactures]);
-
-
-  // useEffect(() => {
-    
-  // });
 
   useEffect(() => {
     dispatch(getAllManufactures());
-    // manufacturesSortedByClothes();
-    // manufacturesSortedBycollections();
-    // manufacturesSortedByClothes()
   }, [dispatch]);
 
   useEffect(() => {
@@ -53,41 +41,35 @@ export function Main({
       : setVisibleTitle(
         ukrLoc ? pickedSortOption.ukr : pickedSortOption.eng,
       );
-    // manufacturesSortedByClothes()
-  }, [pickedSortOption, mainTitle]);
+  }, [pickedSortOption, mainTitle, ukrLoc]);
 
   useEffect(() => {
     changeVisibleManufactures();
   }, [pickedSortOption]);
 
-  // useEffect(() => {
-  //   manufacturesSortedByClothes()
-  // }, [ukrLoc]);
-
   const manufacturesSortedBycollections = () => {
-    let clothes = []
+    const clothes = [];
     manufactures.forEach((element) => {
       if (
         !clothes.some(
           (item) => item.eng === element.colectionsEng,
         )
       ) {
-        // console.log(element)
         clothes.push({
           eng: element.colectionsEng,
           ukr: element.colections,
         });
       }
-      setSortedCollections(clothes)
+      setSortedCollections(clothes);
     });
   };
 
   const manufacturesSortedByClothes = () => {
-    let clothes = []
+    const clothes = [];
     manufactures.forEach((element) => {
       if (
         !clothes.some(
-          (item) => item.eng === element.colothesTypeEng,
+          (item) => item.eng === element.clothesTypeEng,
         )
       ) {
         clothes.push({
@@ -96,12 +78,12 @@ export function Main({
         });
       }
     });
-    setSortedClothes(clothes)
+    setSortedClothes(clothes);
   };
 
   const changeVisibleManufactures = () => {
     manufactures.forEach((item) => {
-      if (pickedSortOption.eng === 'all manufactures') {
+      if (pickedSortOption.eng === 'all') {
         changedManufactures.push(item);
       } else if (
         item.colectionsEng.includes(pickedSortOption.eng)
@@ -115,12 +97,13 @@ export function Main({
 
   return (
     <>
-      {loadedManufactures && (
-      <PrePage
-        manufactures={manufactures}
-        setLoadedManufactures={setLoadedManufactures}
-      />
-      )}
+      {loadedManufactures ? (
+        <PrePage
+          manufactures={manufactures}
+          setLoadedManufactures={setLoadedManufactures}
+        />
+      )
+        : !isAuth && (<Cookies ukrLoc={ukrLoc} />)}
       <div className="main_container">
         <div className="collection container">
           <div className="pickedOptionTitle">
@@ -153,9 +136,9 @@ export function Main({
               </Link>
             </div>
             <div>
-            <Link to="Policy">
-              <p>Privacy Policy </p>
-            </Link>
+              <Link to="Policy">
+                <p>Privacy Policy </p>
+              </Link>
             </div>
           </div>
           <h1>CONTACTS</h1>

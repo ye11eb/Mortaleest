@@ -1,13 +1,8 @@
 import { useEffect, useState, React } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { Main } from './components/Main';
-
 import { Navbar } from './components/Navbar';
-import 'react-toastify/dist/ReactToastify.css';
-
-// import { Register } from './components/Register';
 import { ItemOverlay } from './components/ItemOverlay';
 import { Login } from './components/Login';
 import { getMe } from './redux/features/auth/authSlice';
@@ -24,17 +19,13 @@ function App() {
   const isStaff = window.localStorage.getItem('isStaff');
   const [openedItem, setOpenedItem] = useState(false);
   const [cartItems, setCartItems] = useState([]);
-  // const [isOverlayed, setIsOverlayed] = useState(false)
   const [sortedCollections, setSortedCollections] = useState();
   const [sortedClothes, setSortedClothes] = useState();
   const [titleAnim, setTitleAnim] = useState(false);
-  // const sortedClothes = [];
-  // const sortedCollections = [];
-  // const sortedClothes = [];
   const [itemForEdit, setItemForEdit] = useState('');
   const [pickedSortOption, setPickedSortOption] = useState({
-    eng: 'all manufactures',
-    ukr: 'всі вироби',
+    eng: 'all',
+    ukr: 'усе',
   });
   const [mainTitle, setMainTitle] = useState('');
   const [isMainOverlayed, setIsMainOverlayed] = useState(false);
@@ -51,10 +42,8 @@ function App() {
   const hideBodyScroll = () => {
     if (isMainOverlayed === true) {
       document.body.style.overflow = 'hidden';
-      // document.body.style.paddingRight = '5px';
     } else if (isMainOverlayed === false) {
       document.body.style.overflow = 'visible';
-      // document.body.style.paddingRight = '0px';
     }
   };
 
@@ -77,6 +66,7 @@ function App() {
         mainTitle={mainTitle}
         setMainTitle={setMainTitle}
         setTitleAnim={setTitleAnim}
+        cartItems={cartItems}
       />
       <Main
         setOpenedItem={setOpenedItem}
@@ -91,7 +81,6 @@ function App() {
         setSortedClothes={setSortedClothes}
         titleAnim={titleAnim}
       />
-      <ToastContainer position="bottom-right" />
       <Routes>
         <Route path="/" element={<ForMainRoute />} />
 
@@ -113,14 +102,13 @@ function App() {
           )}
         />
         )}
-
-        {/* <Route path='register' element={<Register />} /> */}
-
         <Route
           path="cart"
           element={(
             <Cart
+              ukrLoc={ukrLoc}
               setCartItems={setCartItems}
+              isStaff={isStaff}
               cartItems={cartItems}
               setIsMainOverlayed={setIsMainOverlayed}
             />
@@ -133,6 +121,7 @@ function App() {
           path="profile"
           element={(
             <Profile
+              ukrLoc={ukrLoc}
               isStaff={isStaff}
               itemForEdit={itemForEdit}
               setIsMainOverlayed={setIsMainOverlayed}

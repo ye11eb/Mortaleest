@@ -1,11 +1,9 @@
 import Manufacture from "../models/Manufacture.js";
-// import path, {dirname} from "path";
-// import { fileURLToPath } from "url";
 
 //Create Manufacture
 export const CreateManufacture = async (req, res) => {
   try{
-    const {images, title, name, price, priceValue, colections,clothesType, description, options, titleEng, nameEng, priceEng, priceValueEng, colectionsEng,clothesTypeEng, descriptionEng, optionsEng} = req.body
+    const {images, title, name, price, priceValue, colections, clothesType, description, sizingText, sizingImg, materials, care, options, titleEng, nameEng, priceEng, priceValueEng, colectionsEng,clothesTypeEng, descriptionEng, sizingTextEng, sizingImgEng, materialsEng, careEng, optionsEng} = req.body
 
       const newManufacture = new Manufacture({
         imgUrl: images,
@@ -16,6 +14,10 @@ export const CreateManufacture = async (req, res) => {
         colections,
         clothesType,
         description,
+        sizingText,
+        sizingImg,
+        materials,
+        care,
         options,
         titleEng,
         nameEng,
@@ -24,10 +26,12 @@ export const CreateManufacture = async (req, res) => {
         colectionsEng,
         clothesTypeEng,
         descriptionEng,
+        sizingTextEng,
+        sizingImgEng,
+        materialsEng,
+        careEng,
         optionsEng
       })  
-
-
 
       await newManufacture.save()
 
@@ -43,7 +47,7 @@ export const CreateManufacture = async (req, res) => {
 //ChangeManufacture
 export const ChangeManufacture = async (req, res) => {
   try{
-    const {_id, images, title, name, price, priceValue, colections,clothesType, description, options, titleEng, nameEng, priceEng, priceValueEng, colectionsEng,clothesTypeEng, descriptionEng, optionsEng} = req.body
+    const {_id, images, title, name, price, priceValue, colections, clothesType, description, sizingText, sizingImg, materials, care, options, titleEng, nameEng, priceEng, priceValueEng, colectionsEng,clothesTypeEng, descriptionEng, sizingTextEng, sizingImgEng, materialsEng, careEng, optionsEng} = req.body
 
 
     const manufacture = await Manufacture.findById(_id)
@@ -56,6 +60,10 @@ export const ChangeManufacture = async (req, res) => {
         manufacture.colections = colections;
         manufacture.clothesType = clothesType;
         manufacture.description = description;
+        manufacture.sizingText = sizingText;
+        manufacture.sizingImg = sizingImg;
+        manufacture.materials = materials;
+        manufacture.care = care;
         manufacture.options = options;
         manufacture.titleEng = titleEng;
         manufacture.nameEng = nameEng;
@@ -64,6 +72,10 @@ export const ChangeManufacture = async (req, res) => {
         manufacture.colectionsEng = colectionsEng;
         manufacture.clothesTypeEng = clothesTypeEng;
         manufacture.descriptionEng = descriptionEng;
+        manufacture.sizingTextEng = sizingTextEng;
+        manufacture.sizingImgEng = sizingImgEng;
+        manufacture.materialsEng = materialsEng;
+        manufacture.careEng = careEng;
         manufacture.optionsEng = optionsEng
       }
     await manufacture.save()

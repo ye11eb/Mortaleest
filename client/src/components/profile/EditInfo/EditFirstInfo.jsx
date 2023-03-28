@@ -36,12 +36,9 @@ function EditFirstInfo({ SetAddShippingAddress, fetchUserInfo, userInfo }) {
                 isHidenFirst ? 'register hideRegister' : 'register showRegister'
             }
     >
-      <span
-        className="arrow_auth"
-        onClick={() => hiDeOverlay(navigateToProfile)}
-      >
+      <div className="arrow_close" onClick={() => hiDeOverlay(navigateToProfile)}>
         <img src="../../public/img/other/arrow_register.svg" alt="" />
-      </span>
+      </div>
       <form
         className="Register_Container"
         onSubmit={(e) => e.preventDefault()}
