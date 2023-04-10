@@ -5,7 +5,9 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from 'react-router-dom';
 
-export function ItemSlider({ openedItem, setIsHiden, setIsMainOverlayed }) {
+export function ItemSlider({
+  openedItem, setIsHiden, setIsMainOverlayed, SetZooomImg,
+}) {
   const settings = {
     infinite: false,
     slidesToShow: 1,
@@ -23,6 +25,7 @@ export function ItemSlider({ openedItem, setIsHiden, setIsMainOverlayed }) {
                       <div
                         className="slide slide-2"
                         key={openedItem.imgUrl.indexOf(img)}
+                        onClick={() => SetZooomImg(img)}
                       >
                         <img src={img} alt="" />
                       </div>

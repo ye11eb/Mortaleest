@@ -31,6 +31,10 @@ function Profile({
     }
   };
 
+  const Unlogin = () => {
+    localStorage.removeItem('token');
+  };
+
   useEffect(() => {
     fetchUserInfo();
     setIsMainOverlayed(true);
@@ -175,6 +179,12 @@ function Profile({
                     onClick={() => openOverlay(navigateToEditAddres())}
                   >
                     <p>EDIT SHIPPING ADRESS</p>
+                  </div>
+                  <div
+                    className="btn"
+                    onClick={() => Unlogin()}
+                  >
+                    <p>UNLOGIN</p>
                   </div>
                 </div>
 

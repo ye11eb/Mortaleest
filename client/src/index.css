@@ -847,7 +847,7 @@ textarea {
 
 .empty_cart {
     height: 150px;
-    margin-top: 7%;
+    margin-top: 30vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1473,6 +1473,24 @@ textarea {
     transition: all 0.2s;
 }
 
+
+.oneSizeButton{
+    width: 120px;
+}
+
+.oneSizeActiveButton{
+    width: 130px;
+    background-color: var(--secondColor);
+}
+
+.oneSizeActiveButton p {
+    font-family: var(--mainFont);
+    font-style: normal;
+    font-weight: 500 !important;
+    font-size: 18px;
+    color: white !important;
+}
+
 .sizeButton p {
     font-family: var(--mainFont);
     font-style: normal;
@@ -1667,6 +1685,52 @@ textarea {
     flex-direction: column;
 }
 
+.transformImg{
+    position: fixed;
+    z-index: 1001;
+    backdrop-filter: blur(34px);
+    top: 0;
+    left: 0;
+    transition: all .3s;
+    animation:transformImg .3s;
+}
+
+@keyframes transformImg {
+    0%{
+        backdrop-filter: blur(0px);
+    }
+    100%{
+        backdrop-filter: blur(34px);
+    }
+}
+
+
+
+.transformImg .crossHair_close{
+    top: 4.5vh;
+    left: 95vw;
+    z-index: 1002;
+}
+
+.react-transform-wrapper{
+    width: 100vw !important;
+    height: 100vh !important;
+    /* backdrop-filter: grayscale(0.5) opacity(0.8) blur(314px); */
+}
+
+.react-transform-component img{
+    height: 80vh;
+    transition: all .3s;
+}
+
+.transformImgHovered{
+    backdrop-filter: blur(0px)!important;
+}
+
+.transformImgHovered .react-transform-wrapper .react-transform-component img{
+    transform: translate(491.5px, 577.5px) scale(1)!important;
+}
+
 
 
 .overlayMain {
@@ -1715,11 +1779,13 @@ textarea {
 
 .slick-current .slide img{
   height: 90vh;
+  margin-top: 5vh;
 } 
 
 .slide img {
     transition: all 0.5s;
     height: 70vh;
+    margin-top: 15vh;
 }
 
 /* the parent */
@@ -1787,7 +1853,6 @@ textarea {
 
 .slick-slider {
     height: 100vh;
-    display: flex !important ;
     align-items: center;
 }
 
@@ -1863,7 +1928,7 @@ textarea {
     }
 }
 
-.register h1 {
+/* .register h1 {
     margin-bottom: 22px;
     font-family: var(--mainFont);
     font-style: normal;
@@ -1871,7 +1936,7 @@ textarea {
     font-weight: 500;
     font-size: 36px;
     color: var(--mainTextColor);
-}
+} */
 
 .register h4 {
     font-family: var(--mainFont);
@@ -2174,6 +2239,15 @@ effect 1
     flex-direction: column;
 }
 
+.account_main .btn{
+    margin-top: 20px;
+}
+
+.Address_info_container .btn{
+    height: 39px;
+    width: 88vw;
+}
+
 .account_split {
     display: flex;
     flex-direction: row;
@@ -2321,7 +2395,7 @@ effect 1
     border-top: 2px solid var(--secondColor);
     width: 400px;
     max-height: 70vh;
-    padding: 4px;
+    padding: 4px 0 4px 0px;
     display: flex;
     flex-direction: column;
 }
@@ -2401,7 +2475,7 @@ effect 1
 .history_orders::-webkit-scrollbar {
     width: 5px;
 }
-
+  
 /* Track */
 .history_orders::-webkit-scrollbar-track {
     background: rgba(52, 57, 54, 0.2);
@@ -3883,7 +3957,6 @@ select::-ms-expand {
     
     .slick-slider {
         height: 100vh;
-        display: flex !important ;
         align-items: flex-start;
         
     }
@@ -4073,7 +4146,6 @@ select::-ms-expand {
 
     .Register_Container {
         padding-top: 0px;
-        height: 55%;
     }
 
     /* faqs pages */
@@ -4368,7 +4440,6 @@ select::-ms-expand {
     
     .slick-slider {
         height: 100vh;
-        display: flex !important ;
         align-items: flex-start;
         
     }

@@ -13,6 +13,7 @@ import Cart from './components/Cart';
 import Delivery from './components/faqs_pages/Delivery';
 import ForMainRoute from './components/ForMainRoute';
 import Policy from './components/faqs_pages/Policy';
+import ImgZoom from './components/ImgZoom';
 
 function App() {
   const dispatch = useDispatch();
@@ -23,12 +24,17 @@ function App() {
   const [sortedClothes, setSortedClothes] = useState();
   const [titleAnim, setTitleAnim] = useState(false);
   const [itemForEdit, setItemForEdit] = useState('');
+  const [zoommedImg, setZoommedImg] = useState('');
   const [pickedSortOption, setPickedSortOption] = useState({
     eng: 'all',
     ukr: 'усе',
   });
   const [mainTitle, setMainTitle] = useState('');
   const [isMainOverlayed, setIsMainOverlayed] = useState(false);
+
+  const SetZooomImg = (img) => {
+    setZoommedImg(img);
+  };
 
   useEffect(() => {
     dispatch(getMe());
@@ -52,6 +58,7 @@ function App() {
   }, [isMainOverlayed]);
 
   const [ukrLoc, setUkrLoc] = useState(false);
+  console.log(zoommedImg);
 
   return (
     <div>
@@ -80,11 +87,11 @@ function App() {
         setSortedCollections={setSortedCollections}
         setSortedClothes={setSortedClothes}
         titleAnim={titleAnim}
+        SetZooomImg={SetZooomImg}
+        zoommedImg={zoommedImg}
       />
       <Routes>
         <Route path="/" element={<ForMainRoute />} />
-
-        {openedItem && (
         <Route
           path="item:id"
           element={(
@@ -98,10 +105,11 @@ function App() {
               setCartItems={setCartItems}
               cartItems={cartItems}
               setIsMainOverlayed={setIsMainOverlayed}
+              SetZooomImg={SetZooomImg}
+              zoommedImg={zoommedImg}
             />
           )}
         />
-        )}
         <Route
           path="cart"
           element={(
@@ -131,12 +139,13 @@ function App() {
 
         <Route path="editAddres" element={<EditInfo />} />
 
-        <Route path="Terms" element={<Terms setIsMainOverlayed={setIsMainOverlayed} />} />
+        <Route path="Terms" element={<Terms setIsMainOverlayed={setIsMainOverlayed} ukrLoc={ukrLoc} />} />
 
-        <Route path="Delivery" element={<Delivery setIsMainOverlayed={setIsMainOverlayed} />} />
+        <Route path="Delivery" element={<Delivery setIsMainOverlayed={setIsMainOverlayed} ukrLoc={ukrLoc} />} />
 
-        <Route path="Policy" element={<Policy setIsMainOverlayed={setIsMainOverlayed} />} />
+        <Route path="Policy" element={<Policy setIsMainOverlayed={setIsMainOverlayed} ukrLoc={ukrLoc} />} />
       </Routes>
+      {zoommedImg && <ImgZoom zoommedImg={zoommedImg} setZoommedImg={setZoommedImg} />}
     </div>
   );
 }
