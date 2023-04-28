@@ -1,10 +1,14 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable camelcase */
+/* eslint-disable no-unused-vars */
 /* eslint-disable import/no-named-as-default */
 /* eslint-disable react/jsx-closing-tag-location */
 import { useEffect, useState, React } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 import axios from '../utils/axios';
-import { createOrder } from '../redux/features/order/orderSlice';
+import { createOrder, payments } from '../redux/features/order/orderSlice';
 import OrdersMenu from './adminTools/OrdersMenu';
 
 function Cart({
@@ -79,7 +83,9 @@ function Cart({
 
   const CheckOut = () => {
     mapManufacturesCheckout();
+    const payment_id = uuid();
     const data = {
+      payment_id,
       firstName: userInfo.firstName,
       secondName: userInfo.secondName,
       number: userInfo.number,
@@ -94,7 +100,7 @@ function Cart({
       deliveryPrice,
       manufacturesPrice: subtotal,
       totalPrice: subtotal + deliveryPrice,
-      payed: false,
+      payed: true,
       orderStatus: {
         eng: 'accepted',
         ukr: 'прийнято',
@@ -102,7 +108,24 @@ function Cart({
       trackNumber: 'noInfo',
       priceValue: cartItems[0].priceValue,
     };
-    dispatch(createOrder(data));
+    // console.log(unique_id);
+    // console.log(`${subtotal + deliveryPrice}00`);
+    // console.log(cartItems[0].priceValue.toUpperCase());
+    const paymentData = {
+      payment_id,
+      totalPrice: `${subtotal + deliveryPrice}00`,
+      priceValue: cartItems[0].priceValue.toUpperCase(),
+      manufacturesCheckOut,
+    };
+    dispatch(payments(paymentData))
+      .then((res) => {
+        window.open(res.payload.data.checkout_url);
+        console.log(res.payload.data);
+        // if (res.payload.data.response_status === 'success') {
+        //   dispatch(createOrder(data));
+        // }
+      });
+    // window.open(`${resdata.data.checkout_url}`);
   };
 
   const navigateToMain = () => {

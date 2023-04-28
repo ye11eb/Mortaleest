@@ -3,11 +3,12 @@ import User from "../models/User.js"
 
 export const CreateOrder = async (req, res) => {
   try{
-    const {firstName, secondName, number, adress1, adress2, country, city, state, zipcode, userEmail,manufactures,deliveryPrice,manufacturesPrice, totalPrice, orderStatus, trackNumber, priceValue} = req.body
+    const {payment_id, firstName, secondName, number, adress1, adress2, country, city, state, zipcode, userEmail,manufactures,deliveryPrice,manufacturesPrice, totalPrice, orderStatus, trackNumber, priceValue} = req.body
 
       const user = await User.findOne({"email" : userEmail})
 
       const newOrder = new Order({
+        payment_id,
         firstName,
         secondName,
         number,
@@ -43,9 +44,10 @@ export const CreateOrder = async (req, res) => {
 
 export const ChangeOrders = async (req, res) => {
   try{
-    const {_id, firstName, secondName, number, adress1, adress2, country, city, state, zipcode, userEmail, manufactures, deliveryPrice, manufacturesPrice, totalPrice, priceValue, orderStatus, trackNumber} = req.body
+    const {payment_id, _id, firstName, secondName, number, adress1, adress2, country, city, state, zipcode, userEmail, manufactures, deliveryPrice, manufacturesPrice, totalPrice, priceValue, orderStatus, trackNumber} = req.body
     const order = await Order.findById(_id)
       if (order) {
+        order.payment_id = payment_id,
         order._id = _id,
         order.firstName = firstName, 
         order.secondName = secondName, 

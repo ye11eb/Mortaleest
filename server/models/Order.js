@@ -2,6 +2,10 @@ import mongoose from 'mongoose'
 
 const OrderSchema = new mongoose.Schema(
     {
+      payment_id:{
+        type: String,
+        required: true,
+      },
       firstName:{
         type: String,
         required: true,

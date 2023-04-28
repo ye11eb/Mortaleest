@@ -14,6 +14,20 @@ export const createOrder = createAsyncThunk(
   },
 );
 
+export const payments = createAsyncThunk(
+  '/payments/payments',
+  async (params) => {
+    try {
+      const { data } = await axios.post('/payments/payment', params);
+
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+);
+
 export const changeOrder = createAsyncThunk(
   '/orders/changeOrder',
   async (params) => {

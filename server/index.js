@@ -7,6 +7,7 @@ import fileUpload from 'express-fileupload'
 import authRote from './routes/auth.js'
 import manufacturesRote from './routes/manufactures.js'
 import ordersRote from './routes/orders.js'
+import paymentRote from "./routes/payments.js"
 
 const app = express()
 dotenv.config()
@@ -30,6 +31,7 @@ app.use(express.static('uploads'))
 app.use('/api/auth', authRote)
 app.use('/api/manufactures', manufacturesRote)
 app.use('/api/orders', ordersRote)
+app.use('/api/payments', paymentRote)
 
 async function start() {
   try{
