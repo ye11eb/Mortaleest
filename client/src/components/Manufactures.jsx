@@ -1,27 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function Manufactures({ manufacture, setOpenedItem, ukrLoc }) {
+function Manufactures({
+  manufacture, setOpenedItem, ukrLoc, isUaLocation,
+}) {
   const [title, setTitle] = useState(
     ukrLoc ? manufacture?.title : manufacture?.titleEng,
   );
-  const [price, setPrice] = useState(
-    ukrLoc ? manufacture?.price : manufacture?.priceEng,
-  );
-  const [priceValue, setPriceValue] = useState(
-    ukrLoc ? manufacture?.priceValue : manufacture?.priceValueEng,
-  );
+  const price = isUaLocation ? manufacture?.price : manufacture?.priceEng;
+
+  const priceValue = isUaLocation ? manufacture?.priceValue : manufacture?.priceValueEng;
 
   useEffect(() => {
     setTitle(ukrLoc ? manufacture?.title : manufacture?.titleEng);
-    setPrice(ukrLoc ? manufacture?.price : manufacture?.priceEng);
-    setPriceValue(
-      ukrLoc ? manufacture?.priceValue : manufacture?.priceValueEng,
-    );
   }, [ukrLoc]);
 
   return (
-    <Link to={`/item:${title}`} onClick={() => setOpenedItem(manufacture)}>
+    <Link to={`/item:${manufacture?._id}`} onClick={() => setOpenedItem(manufacture)}>
       <div className="manufacture">
         <div className="manufacture_img">
           {' '}

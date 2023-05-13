@@ -69,8 +69,8 @@ function BurgerMenu({
             <div
               className="category_list"
               onClick={() => changePickedOption({
-                eng: 'all manufactures',
-                ukr: 'всі вироби',
+                eng: 'all',
+                ukr: 'усе',
               })}
             >
               {ukrLoc ? <p>все</p> : <p>all</p>}
@@ -102,8 +102,8 @@ function BurgerMenu({
             <div
               className="category_list"
               onClick={() => changePickedOption({
-                eng: 'all manufactures',
-                ukr: 'всі вироби',
+                eng: 'all',
+                ukr: 'усе',
               })}
             >
               {ukrLoc ? <p>все</p> : <p>all</p>}

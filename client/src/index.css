@@ -37,6 +37,12 @@ html {
     width: 1070px;
 }
 
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
 .titleWarapperForBlur {
     width: 1074px;
     display: flex;
@@ -119,6 +125,17 @@ a:-webkit-any-link {
     background-color: rgba(249, 247, 239, 0.45);
     -webkit-backdrop-filter: blur(34px);
     backdrop-filter: blur(34px);
+}
+
+.ItemOverlay_top-box p{
+    font-family: var(--mainFont) ;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+}
+
+.cart_page .ItemOverlay_top-box {
+    width: 1074px;
 }
 
 
@@ -224,7 +241,7 @@ textarea {
     align-items: center;
     background-color: rgb(255, 255, 255);
     animation-name: PrepageAnim;
-    animation-duration: 1.5s;
+    animation-duration: 2s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     overflow: visible;
@@ -251,9 +268,10 @@ textarea {
 .PrePageSecond img {
     width: 4000vw;
     animation-name: PrepageSecondPAnim;
-    animation-duration: 1.5s;
+    animation-duration: 2s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+    opacity: 1;
 }
 
 @keyframes PrepageSecondPAnim {
@@ -266,8 +284,14 @@ textarea {
     50% {
         width: 80vw;
     }
+    70% {
+        height: 20000vh;
+        width: 25000vw;
+        opacity: 1;
+    }
+
     100% {
-        height: 1000vh;
+        opacity: 0;
     }
 }
 
@@ -700,7 +724,7 @@ textarea {
     font-size: 16px;
     color: var(--mainFontColor);
     text-decoration: none;
-    transition: all 4s;
+    /* transition: all 4s; */
 }
 
 .faqs_links_pages div {
@@ -808,6 +832,20 @@ textarea {
     top:35%;
 }
 
+.crossHair_close div{
+    margin-top: 10px;
+    transition: background-image .3s;
+    height: 15px;
+    width: 15px;
+    background-image: url('../public/img/other/crossHair_close.svg');
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+.crossHair_close:hover  div{
+    background-image: url('../public/img/other/crossHair_close_hovered.svg');
+}
+
 .overlay_Outline {
     display: flex;
     background-color: var(--secondColor);
@@ -852,6 +890,21 @@ textarea {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+
+.order_ended{
+    height: 350px;
+    margin-top: 20vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+
+.order_ended > p{
+    font-size: 22px;
+    font-family: var(--mainFont);
+    line-height: 50px;
 }
 
 .emempty_cart_btn {
@@ -951,7 +1004,7 @@ textarea {
   
   .cart_item_info_line1 span {
     display: flex;
-    margin-top: 10px;
+    margin-top: 0px;
   }
   
   .cart_item_info_line1 span p {
@@ -1095,16 +1148,40 @@ textarea {
     display: flex;
     flex-direction: row;
     align-items: center;
+    cursor: pointer;
   }
+
+  .cart_delete_item:hover .cart_delete{
+    background-image: url('../public/img/other/bucket_hovered.svg');
+    height: 15px;
+  }
+
+    .cart_delete_item p::after{
+        transition: all .3s;
+        content: '';
+        width: 0px;
+        height: 1px;
+        display: block;
+        background: var(--mainTextColor);
+    }
+    .cart_delete_item:hover p::after{
+        content: '';
+        width: 100%;
+        height: 1px;
+        display: block;
+        background: var(--mainTextColor);
+    }
   
   .cart_delete_item p{
     font-family: var(--mainFont);
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
+    transition: all .4s;
   }
   
   .cart_delete{
+    transition: all .4s;
     width: 15px;
     background-repeat: no-repeat;
     height: 15px;
@@ -1587,8 +1664,9 @@ textarea {
 .manuOverlay .overlay-top .ItemOverlay_top-box{
     padding: 15px 15px 20px 3vw;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 45vw;
+    align-items: flex-start;
     backdrop-filter: none;
     position: relative;
     justify-content:flex-start;
@@ -1695,6 +1773,10 @@ textarea {
     animation:transformImg .3s;
 }
 
+.transformImgHovered .crossHair_close {
+    left: 110vw !important;
+}
+
 @keyframes transformImg {
     0%{
         backdrop-filter: blur(0px);
@@ -1710,6 +1792,18 @@ textarea {
     top: 4.5vh;
     left: 95vw;
     z-index: 1002;
+    transition: all .3s;
+    animation:transformImgCloseCroshair .3s;
+}
+
+@keyframes transformImgCloseCroshair {
+    0%{
+        left: 110vw;
+    }
+
+    100%{
+        left: 95vw;
+    }
 }
 
 .react-transform-wrapper{
@@ -1721,6 +1815,13 @@ textarea {
 .react-transform-component img{
     height: 80vh;
     transition: all .3s;
+    animation: imgZoomInner .3s;
+}
+
+@keyframes imgZoomInner {
+    0%{transform: translate(-1040px, 63.5px) scale(1)}
+
+    100%{transform: translate(0px, 0px) scale(1)}
 }
 
 .transformImgHovered{
@@ -1728,7 +1829,7 @@ textarea {
 }
 
 .transformImgHovered .react-transform-wrapper .react-transform-component img{
-    transform: translate(491.5px, 577.5px) scale(1)!important;
+    transform: translate(1040px, 63.5px) scale(1)!important;
 }
 
 
@@ -1761,6 +1862,19 @@ textarea {
     align-items: center;
 }
 
+.orderStatusForAdmin > ul{
+    display: flex;
+    justify-content: space-between;
+}
+
+.orderStatusForAdmin > ul li{
+    min-height: 50px;
+    align-items: center;
+    display: flex;
+}
+
+
+
 .AddManuClose {
     position: relative;
     top: -20px;
@@ -1780,6 +1894,7 @@ textarea {
 .slick-current .slide img{
   height: 90vh;
   margin-top: 5vh;
+  filter: drop-shadow(0px 0px 2.7655999999999494px rgba(0, 0, 0, 0.25));
 } 
 
 .slide img {
@@ -1836,6 +1951,10 @@ textarea {
     visibility: hidden;
 }
 
+.slick-list, .slick-track, .slick-slide ,.slick-slide > div ,.slide{
+    height: 100%;
+}
+
 .slide {
     display: flex !important;
     align-items: center;
@@ -1887,6 +2006,23 @@ textarea {
     margin-top: 0;
 }
 
+.inputError{
+    color: red;
+    transition: all .1s;
+}
+
+.inputErrorhiden{
+    color: transparent;
+}
+
+.auth_container .inputError{
+    margin: 10px 0 0 0;
+}
+
+.auth_container .inputErrorhiden{
+    margin: -10px 0 20px 0;
+}
+
 .register {
     display: flex;
     justify-content: center;
@@ -1898,6 +2034,22 @@ textarea {
     flex-direction: column;
     background-color: #f6f5f1;
     height: 100%;
+}
+.register .arrow_close{
+    left: 5vw;
+}
+
+.register .arrow_closeWrapper {
+    top: 7.5vh;
+}
+
+.arrow_closeWrapper {
+    width: 1200px;
+    position: relative;
+}
+
+.arrow_closeWrapper .arrow_close{
+    top: 0;
 }
 
 .showRegister {
@@ -1959,7 +2111,7 @@ textarea {
 .Register_Container {
     margin-top: 20px;
     background-color: #f6f5f1;
-    height: 85%;
+    height: 95%;
     width: 70%;
     padding-top: 50px;
     display: flex;
@@ -1970,7 +2122,11 @@ textarea {
 
 .auth_container {
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
 
 .arrow_close {
     top: 6.8vh;
@@ -2243,9 +2399,13 @@ effect 1
     margin-top: 20px;
 }
 
+.Address_info_container{
+    width: 100%;
+}
+
 .Address_info_container .btn{
     height: 39px;
-    width: 88vw;
+    width: 100%;
 }
 
 .account_split {
@@ -2438,6 +2598,7 @@ effect 1
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
+    width: 200px;
     line-height: 14px;
 }
 
@@ -3018,6 +3179,10 @@ effect 1
     flex-direction: row;
 }
 
+.order_info .openedOrder_id{
+    font-size: 12px;
+}
+
 .orderSubtitle{
     padding: 6px;
     margin: 32px 0 32px 0;
@@ -3120,6 +3285,7 @@ effect 1
 
 .history_order_manu_info ul {
     list-style: none;
+    width: 80px;
 }
 
 .history_order_manu_info ul li{
@@ -3145,6 +3311,8 @@ effect 1
     align-items: center;
     transition: all .5s cubic-bezier(0.9, -0.15, 0.1, 1.15);
     animation: .5s cookiesWraper_anim cubic-bezier(0.9, -0.15, 0.1, 1.15);
+    z-index: 1001;
+    box-shadow: 0px 1px 9px 5px rgba(0, 0, 0, 0.25);
 }
 
 @keyframes cookiesWraper_anim {
@@ -3204,6 +3372,49 @@ effect 1
     line-height: 90%;
 }
 
+.cartErorContainer{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+}
+
+.cartErorContainer  > p{
+    width: 50%;
+    text-align: center;
+    font-weight: 400;
+    font-size: 16px;  
+    font-family: var(--mainFont);  
+    letter-spacing: 0.01em;
+    color: rgba(52, 57, 54, 0.86);
+}
+
+.cartErorContainer h1{
+    font-family: var(--mainFont);
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 90%;
+    text-align: center;
+    letter-spacing: 0.2em;
+    color: var(--secondColor);
+}
+
+.cartErorContainer .btn{
+    width: 251px;
+    height: 51px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cartErorContainer .btn p{
+    font-family: var(--mainFont);
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 90%;
+}
+
 .select_form {
     position: relative;
     display: inline-block;
@@ -3239,21 +3450,17 @@ effect 1
     pointer-events: none;
 }
 select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
     appearance: none;
     padding: 0 30px 0 10px;
-
-    border: 1px solid #e0e0e0;
-    border-radius: 3px;
+    border: 1px solid transparent;
+    /* border-radius: 3px; */
     line-height: 40px;
-    height: 45px;
-    font-size: 20px;
+    height: 41px;
+    font-size: 16px;
     box-shadow: inset 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
-    background: #fff;
-
-    min-width: 250px;
-    margin: 0 5px 5px 0;
+    width: 236px;
+    background: transparent;
+    min-width: 125px;
 }
 select::-ms-expand {
     display: none;
@@ -3290,6 +3497,10 @@ select::-ms-expand {
 @media (max-width: 1100px) {
     .overlay_Outline{
         width: 90%;
+    }
+
+    .arrow_closeWrapper{
+        width: 100%;
     }
 
     .arrow_close{
@@ -3443,6 +3654,12 @@ select::-ms-expand {
     .Edit_shipping_adress{
         width: 100%;
     }
+
+    .Address_info_container .btn{
+        height: 39px;
+        width: 88vw;
+    }
+    
     /* Account_address */
 
     .email_container > div{
@@ -3474,6 +3691,24 @@ select::-ms-expand {
 }
 @media (max-width: 800px) {
 
+    .transformImg .crossHair_close {
+        top: 6.5vh;
+        left: 90vw;
+        z-index: 1002;
+        transition: all .3s;
+        animation: transformImgCloseCroshair .3s;
+    }
+
+    @keyframes transformImgCloseCroshair {
+        0%{
+            left: 110vw;
+        }
+    
+        100%{
+            left: 90vw;
+        }
+    }
+
     #root > div {
         overflow-y: auto;
         overflow-x: clip;
@@ -3493,6 +3728,10 @@ select::-ms-expand {
             height: 30px;
             color: var(--mainFontColor);
         }
+    }
+
+    .cart_product{
+        width: 70%;
     }
 
     .navbar_item {
@@ -3811,6 +4050,7 @@ select::-ms-expand {
 
     .empty_cart{
         height: 70%;
+        margin-top: 10vh;
     }
 
     .cart_bottom{
@@ -3900,23 +4140,33 @@ select::-ms-expand {
         flex-direction: column;
         overflow: scroll;
         width: 100vw;
-        height: 110%;
+        height: 100%;
     }
     
      .slider{
-        padding-top: 70px;
+        padding-top: 20px;
         position: sticky;
         top: 0;
         height: 100vh;
         width: 100vw;
+        /* padding-top: 50vh;
+        margin-top: 20vh;
+        margin-bottom: 10vh;
+        position: relative;
+        top: 0; height: 100vh;
+        width: 100vw; */
     }
     
     .itemInfo{
         width: 100vw;
         height: 120%;
-        position: sticky;
+        position: relative;
         overflow: visible;
-        margin-top: 40vh;
+        margin-top: 30vh;
+        /* width: 100vw;
+        height: 120%;
+        position: relative;
+        overflow: visible; */
     }  
     
     .inherit_item_overlay{
@@ -4042,7 +4292,6 @@ select::-ms-expand {
     .logo_navbar .HeaderTitle{
         font-size: 12px;
     }
-
     
     
     @keyframes Header_title_show {
@@ -4145,7 +4394,7 @@ select::-ms-expand {
     /* Login / Register */
 
     .Register_Container {
-        padding-top: 0px;
+        padding-top: 10vh;
     }
 
     /* faqs pages */
@@ -4212,12 +4461,33 @@ select::-ms-expand {
         margin-left: 0;
     }
 
+    .order_info ul li{
+        font-family: var(--mainFont);
+        font-weight: 400;
+        font-size: 14px;
+        color: var(--mainFontColor);
+    }
+
+    .order_info .order_bold_text li {
+        font-family: var(--mainFont);
+        font-weight: 500;
+        font-size: 14px;
+        color: var(--mainFontColor);
+    }
+
+    .cart_item_info{
+        width: 55%;
+    }
+
 }
 
 
 @media (max-width: 450px) {
     .cookiesWraper{
         height: 200px;
+        width: 100%;
+        right: 0;
+        left: unset;
     }
 
     .cookiesContainer{
@@ -4229,10 +4499,10 @@ select::-ms-expand {
     }
     
     .cookiesContainer  > p{
-        width: 50%;
+        width: 90%;
         text-align: center;
         font-weight: 400;
-        font-size: 12px;  
+        font-size: 10px;  
         font-family: var(--mainFont);  
         letter-spacing: 0.01em;
         color: rgba(52, 57, 54, 0.86);
@@ -4241,7 +4511,7 @@ select::-ms-expand {
     .cookiesContainer h1{
         font-family: var(--mainFont);
         font-weight: 500;
-        font-size: 22px;
+        font-size: 18px;
         line-height: 90%;
         text-align: center;
         letter-spacing: 0.2em;
@@ -4269,6 +4539,7 @@ select::-ms-expand {
 
     .cart_item_info{
         margin-left: 12px;
+        width: 50%;
     }
 
     .cart_total{
@@ -4306,14 +4577,15 @@ select::-ms-expand {
     .cart_bottom_price_subtotal{
         font-size: 16px !important;
     }
-
+/* 
     .checkOut_btn{
         width: 90%;
-        height: 80%;
-    }
+        height: 29px;
+    } */
 
     .history_order div p {
         font-size: 10px;
+        width: 150px;
     }
 }
 
@@ -4387,7 +4659,7 @@ select::-ms-expand {
         flex-direction: column;
         overflow: scroll;
         width: 100vw;
-        height: 110%;
+        height: 100%;
     }
     
      .slider{

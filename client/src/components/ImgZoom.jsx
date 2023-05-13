@@ -9,18 +9,18 @@ function ImgZoom({ zoommedImg, setZoommedImg }) {
       setZoommedImg('');
     }, 300);
   };
+
   return (
     <div className={isZoomed ? 'transformImg' : 'transformImg transformImgHovered'}>
       <div
         className="crossHair_close"
         onClick={() => closeZoom()}
       >
-        <p className="close">+</p>
+        <div />
       </div>
       <TransformWrapper
-        // initialPositionX={window.innerWidth / 2.5}
+        onClick={() => closeZoom()}
         centerOnInit
-        // centerZoomedOut
       >
         <TransformComponent>
           <img src={zoommedImg} alt="test" />

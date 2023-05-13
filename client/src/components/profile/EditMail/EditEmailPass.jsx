@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import EditEmail from './EditEmail';
+import axios from '../../../utils/axios';
 
 function EditEmailPass({ userInfo, setNewEmail, fetchUserInfo }) {
   const [password, setPassword] = useState('');
   const [isHidenPass, setIsHidenPass] = useState(false);
   const [enterEmail, setEnterEmail] = useState(false);
+  const [isPasswordIncorrect, setIsPasswordIncorrect] = useState(false);
+  const token = window.localStorage.getItem('token');
 
   const navigateToProfile = () => {
     setNewEmail(false);
@@ -17,8 +20,35 @@ function EditEmailPass({ userInfo, setNewEmail, fetchUserInfo }) {
     }, 500);
   };
 
-  const handleSubmit = () => {
-    setEnterEmail(true);
+  const changePasswordHendler = (e) => {
+    setPassword(e.target.value);
+    setIsPasswordIncorrect(false);
+  };
+
+  const verifyPass = async (token, password) => {
+    try {
+      const { data } = await axios.post('auth/verifyPass', {
+        token,
+        password,
+      });
+
+      return data.status;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const isCorrectPass = await verifyPass(token, password);
+      if (isCorrectPass) {
+        setEnterEmail(true);
+      } else {
+        setIsPasswordIncorrect(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -27,11 +57,13 @@ function EditEmailPass({ userInfo, setNewEmail, fetchUserInfo }) {
                 isHidenPass ? 'register hideRegister' : 'register showRegister'
             }
     >
-      <div
-        className="arrow_close"
-        onClick={() => hiDeOverlay(navigateToProfile)}
-      >
-        <img src="../../public/img/other/arrow_register.svg" alt="" />
+      <div className="arrow_closeWrapper">
+        <div
+          className="arrow_close"
+          onClick={() => hiDeOverlay(navigateToProfile)}
+        >
+          <img src="../../public/img/other/arrow_register.svg" alt="" />
+        </div>
       </div>
       <form
         className="Register_Container"
@@ -52,7 +84,8 @@ function EditEmailPass({ userInfo, setNewEmail, fetchUserInfo }) {
               <input
                 id="first-name"
                 className="field__input"
-                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                onChange={(e) => changePasswordHendler(e)}
                 value={password}
                 placeholder="gdsfgfdgd"
               />
@@ -64,6 +97,7 @@ function EditEmailPass({ userInfo, setNewEmail, fetchUserInfo }) {
               </span>
             </div>
           </div>
+          <p className={isPasswordIncorrect ? 'inputError' : 'inputError inputErrorhiden'}>incorrect password</p>
         </div>
 
         <div className="auth_submit" onClick={() => handleSubmit()}>
@@ -78,6 +112,7 @@ function EditEmailPass({ userInfo, setNewEmail, fetchUserInfo }) {
           setIsHidenPass={setIsHidenPass}
           userInfo={userInfo}
           setNewEmail={setNewEmail}
+          token={token}
         />
       )}
     </div>

@@ -7,7 +7,7 @@ import EditEmailPass from './EditMail/EditEmailPass';
 import OrderDetails from './OrderDetails';
 
 function Profile({
-  isStaff, itemForEdit, setIsMainOverlayed, ukrLoc,
+  isStaff, itemForEdit, setIsMainOverlayed, ukrLoc, CountriesData,
 }) {
   const navigate = useNavigate();
   const [isHiden, setIsHiden] = useState(false);
@@ -16,6 +16,7 @@ function Profile({
   const [newEmail, setNewEmail] = useState(false);
   const [userInfo, setUserInfo] = useState([]);
   const [usersOrders, setUsersOrders] = useState([]);
+  const [usersNotChanged, setUsersNotChanged] = useState([]);
   const [openedOrder, setOpenedOrder] = useState();
   const editOrder = false;
 
@@ -24,7 +25,7 @@ function Profile({
       const { data } = await axios.get('/auth/myInfo');
       const ordersData = await axios.get('/orders/getOrders');
       setUserInfo(data);
-      setUsersOrders([]);
+      setUsersNotChanged([]);
       fetchUserOrders(ordersData, data);
     } catch (error) {
       console.log(error);
@@ -40,13 +41,31 @@ function Profile({
     setIsMainOverlayed(true);
   }, []);
 
+  useEffect(() => {
+    fetchUserInfo();
+  }, [addShippingAddress, newEmail]);
+
   const fetchUserOrders = (ordersData, data) => {
+    const fetcheduserOredrs = [];
     ordersData.data.orders.forEach((element) => {
       if (data.orders.includes(element._id)) {
-        usersOrders.push(element);
-        setUsersOrders(usersOrders);
+        fetcheduserOredrs.push(element);
+        setUsersNotChanged(fetcheduserOredrs);
       }
     });
+  };
+
+  useEffect(() => {
+    changeorderData();
+  }, [usersNotChanged]);
+
+  const changeorderData = () => {
+    const changedOrders = [];
+    usersNotChanged.forEach((el) => {
+      el.createdAt = el.createdAt.slice(0, 10);
+      changedOrders.push(el);
+    });
+    setUsersOrders(changedOrders);
   };
 
   if (!userInfo) {
@@ -88,6 +107,7 @@ function Profile({
           hiDeOverlay={hiDeOverlay}
           navigateToMain={navigateToMain}
           itemForEdit={itemForEdit}
+          setIsMainOverlayed={setIsMainOverlayed}
         />
       ) : (
         <div
@@ -98,12 +118,12 @@ function Profile({
           <div className="account_main">
             <div className="ItemOverlay_top-box">
               <div className="titleWarapperForBlur">
-                <h1 className="headerOverlay">ACCOUNT</h1>
+                <h1 className="headerOverlay">{ukrLoc ? 'АКАУНТ' : 'ACCOUNT'}</h1>
                 <div
                   className="crossHair_close"
                   onClick={() => hiDeOverlay(navigateToMain)}
                 >
-                  <p className="close">+</p>
+                  <div />
                 </div>
               </div>
               <div className="overlay_Outline" />
@@ -121,21 +141,21 @@ function Profile({
                 )}
 
                 <div className="email_container">
-                  <p>Email</p>
+                  <p>{ukrLoc ? 'email' : 'email'}</p>
                   <p className="email">{userInfo.email}</p>
                   <div onClick={() => setNewEmail(true)} className="btn">
-                    <p>EDIT EMAIL</p>
+                    <p>{ukrLoc ? 'ЗМІНИТИ ЕМАIL' : 'EDIT EMAIL'}</p>
                   </div>
                 </div>
                 <div className="Personal_info_container">
-                  <p>Personal information</p>
+                  <p>{ukrLoc ? 'Персональна інформація' : 'Personal information'}</p>
 
                   {userInfo && (
                     <div className="Personal_info">
                       <div className="Personal_info_capture">
-                        <p>First name</p>
-                        <p>Second name</p>
-                        <p>Number</p>
+                        <p>{ukrLoc ? 'Імя' : 'First name '}</p>
+                        <p>{ukrLoc ? 'Прізвище' : 'Second name'}</p>
+                        <p>{ukrLoc ? 'Номер' : 'Number'}</p>
                       </div>
 
                       <div className="Personal_info_info">
@@ -152,15 +172,15 @@ function Profile({
                 </div>
 
                 <div className="Address_info_container">
-                  <p>Adress</p>
+                  <p>{ukrLoc ? 'Aдрес' : 'Address'}</p>
                   <div className="Account_address">
                     <div className="Personal_info_capture">
-                      <p>Adress line 1</p>
-                      <p>Adress line 2</p>
-                      <p>Country / region</p>
-                      <p>City / town</p>
-                      <p>State</p>
-                      <p>Zipcode</p>
+                      <p>{ukrLoc ? 'Aдресний рядок 1' : 'Address line 1'}</p>
+                      <p>{ukrLoc ? 'Aдресний рядок 2' : 'Address line 2'}</p>
+                      <p>{ukrLoc ? 'Країна' : 'Country / region'}</p>
+                      <p>{ukrLoc ? 'Місто' : 'City / town'}</p>
+                      <p>{ukrLoc ? 'Область' : 'State'}</p>
+                      <p>{ukrLoc ? 'ЗІП код' : 'Zipcode'}</p>
                     </div>
 
                     {userInfo && (
@@ -178,13 +198,13 @@ function Profile({
                     className="Edit_shipping_adress btn"
                     onClick={() => openOverlay(navigateToEditAddres())}
                   >
-                    <p>EDIT SHIPPING ADRESS</p>
+                    <p>{ukrLoc ? 'ЗМІНИТИ АДРЕС ДОСТАВКИ' : 'EDIT SHIPPING ADDRES'}</p>
                   </div>
                   <div
                     className="btn"
                     onClick={() => Unlogin()}
                   >
-                    <p>UNLOGIN</p>
+                    <p>{ukrLoc ? 'ВИЙТИ' : 'UNLOGIN'}</p>
                   </div>
                 </div>
 
@@ -193,7 +213,7 @@ function Profile({
               <div className="account_container_v2">
                 <div className="history">
                   <div className="history_header">
-                    <p>History</p>
+                    <p>{ukrLoc ? 'Історія' : 'History'}</p>
                     <div />
                   </div>
                   <div className="history_orders">
@@ -204,17 +224,23 @@ function Profile({
                           onClick={() => showOrderDetails(order)}
                         >
                           <div className="history_order_capture">
-                            <p>Order number</p>
-                            <p>Summ</p>
-                            <p>delivery price</p>
-                            <p>Order placed on</p>
-                            <p>Order status</p>
+                            <p>{ukrLoc ? 'Номер замовлення' : 'Order number'}</p>
+                            <p>{ukrLoc ? 'Сума' : 'Summ'}</p>
+                            <p>{ukrLoc ? 'Ціна доставки' : 'delivery price'}</p>
+                            <p>{ukrLoc ? 'Дата замовлення' : 'Order placed on'}</p>
+                            <p>{ukrLoc ? 'Статус замовлення' : 'Order status'}</p>
                           </div>
 
                           <div className="history_order_info">
                             <p>{order._id}</p>
-                            <p>{order.deliveryPrice}</p>
-                            <p>{order.manufacturesPrice}</p>
+                            <p>
+                              {`${order.totalPrice}
+                              ${order.priceValue}`}
+                            </p>
+                            <p>
+                              {`${order.deliveryPrice} 
+                              ${order.priceValue}`}
+                            </p>
                             <p>{order.createdAt}</p>
                             <p>{ukrLoc ? order.orderStatus.ukr : order.orderStatus.eng}</p>
                           </div>
@@ -238,6 +264,8 @@ function Profile({
               fetchUserInfo={fetchUserInfo}
               userInfo={userInfo}
               SetAddShippingAddress={SetAddShippingAddress}
+              CountriesData={CountriesData}
+              ukrLoc={ukrLoc}
             />
             )}
             {newEmail && (
@@ -245,6 +273,7 @@ function Profile({
               fetchUserInfo={fetchUserInfo}
               userInfo={userInfo}
               setNewEmail={setNewEmail}
+              ukrLoc={ukrLoc}
             />
             )}
             {orderDetails && (

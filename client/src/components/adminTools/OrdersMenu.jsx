@@ -73,6 +73,8 @@ function OrdersMenu({
             <option value="in the way">in the way</option>
             <option value="at the post office">at the post office</option>
             <option value="ended">ended</option>
+            <option value="not payed">not payed</option>
+            <option value="denied">denied</option>
           </select>
         </form>
       </div>

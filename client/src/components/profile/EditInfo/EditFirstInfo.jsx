@@ -3,19 +3,35 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import EditSecondInfo from './EditSecondInfo';
 
-function EditFirstInfo({ SetAddShippingAddress, fetchUserInfo, userInfo }) {
+function EditFirstInfo({
+  SetAddShippingAddress, fetchUserInfo, userInfo, CountriesData, ukrLoc,
+}) {
   const [firstName, setFirstName] = useState(userInfo.firstName);
   const [secondName, setSecondName] = useState(userInfo.secondName);
   const [number, setNumber] = useState(userInfo.number);
   const { status } = useSelector((state) => state.auth);
   const [secondInfo, setSecondInfo] = useState(false);
   const [isHidenFirst, setIsHidenFirst] = useState(false);
+  const [isInfoIncorrect, setIsInfoIncorrect] = useState(false);
 
   useEffect(() => {
     if (status) {
       toast(status);
     }
   }, [status]);
+
+  const auditData = () => {
+    if (firstName && secondName && number) {
+      setSecondInfo(true);
+    } else {
+      setIsInfoIncorrect(true);
+    }
+  };
+
+  const changeHandler = (state, e) => {
+    state(e);
+    setIsInfoIncorrect(false);
+  };
 
   const navigateToProfile = () => {
     SetAddShippingAddress(false);
@@ -27,8 +43,6 @@ function EditFirstInfo({ SetAddShippingAddress, fetchUserInfo, userInfo }) {
       func();
     }, 500);
   };
-
-  //   const dispatch = useDispatch();
 
   return (
     <div
@@ -43,8 +57,10 @@ function EditFirstInfo({ SetAddShippingAddress, fetchUserInfo, userInfo }) {
         className="Register_Container"
         onSubmit={(e) => e.preventDefault()}
       >
-        <h1 className="headerOverlay">ADD SHIPPING INFO</h1>
-        <h4> Enter your personal information </h4>
+        <h1 className="headerOverlay">{ukrLoc ? 'ІНФОРМАЦІЯ ДЛЯ ДОСТАВКИ' : 'ADD SHIPPING INFO'}</h1>
+        <h4>
+          {ukrLoc ? 'Введіть свою особисту інформацію' : 'Enter your personal information'}
+        </h4>
         <div className="auth_container Container_email">
           <div className="inputContainer">
             <div className="field">
@@ -57,7 +73,7 @@ function EditFirstInfo({ SetAddShippingAddress, fetchUserInfo, userInfo }) {
               <input
                 id="first-name"
                 className="field__input"
-                onChange={(e) => setFirstName(e.target.value)}
+                onChange={(e) => changeHandler(setFirstName, e.target.value)}
                 value={firstName}
                 placeholder="gdsfgfdgd"
               />
@@ -65,7 +81,7 @@ function EditFirstInfo({ SetAddShippingAddress, fetchUserInfo, userInfo }) {
                 className="field__label-wrap"
                 aria-hidden="true"
               >
-                <span className="field__label">First name</span>
+                <span className="field__label">{ukrLoc ? "Ім'я" : 'First name'}</span>
               </span>
             </div>
           </div>
@@ -83,7 +99,7 @@ function EditFirstInfo({ SetAddShippingAddress, fetchUserInfo, userInfo }) {
               <input
                 id="first-name"
                 className="field__input"
-                onChange={(e) => setSecondName(e.target.value)}
+                onChange={(e) => changeHandler(setSecondName, e.target.value)}
                 value={secondName}
                 placeholder="gdsfgfdgd"
               />
@@ -92,7 +108,7 @@ function EditFirstInfo({ SetAddShippingAddress, fetchUserInfo, userInfo }) {
                 aria-hidden="true"
               >
                 <span className="field__label">
-                  Second name
+                  {ukrLoc ? 'Прізвище' : 'Second name'}
                 </span>
               </span>
             </div>
@@ -111,8 +127,9 @@ function EditFirstInfo({ SetAddShippingAddress, fetchUserInfo, userInfo }) {
               <input
                 id="first-name"
                 className="field__input"
-                type="email"
-                onChange={(e) => setNumber(e.target.value)}
+                type="number"
+                pattern="[1-9]"
+                onChange={(e) => changeHandler(setNumber, e.target.value)}
                 value={number}
                 placeholder="gdsfgfdgd"
               />
@@ -120,15 +137,15 @@ function EditFirstInfo({ SetAddShippingAddress, fetchUserInfo, userInfo }) {
                 className="field__label-wrap"
                 aria-hidden="true"
               >
-                <span className="field__label">Number</span>
+                <span className="field__label">{ukrLoc ? 'Номер' : 'Number'}</span>
               </span>
             </div>
           </div>
+          <p className={isInfoIncorrect ? 'inputError' : 'inputError inputErrorhiden'}>{ukrLoc ? 'вам потрібно заповнити всі поля' : 'you need to fill in all the fields'}</p>
         </div>
-
         <div
           className="auth_submit"
-          onClick={() => setSecondInfo(true)}
+          onClick={() => auditData()}
         >
           <p>Next</p>
         </div>
@@ -146,6 +163,8 @@ function EditFirstInfo({ SetAddShippingAddress, fetchUserInfo, userInfo }) {
           setSecondName={setSecondName}
           number={number}
           setNumber={setNumber}
+          CountriesData={CountriesData}
+          ukrLoc={ukrLoc}
         />
       )}
     </div>

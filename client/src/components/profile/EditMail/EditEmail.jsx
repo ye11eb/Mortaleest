@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { changeEmail } from '../../../redux/features/auth/authSlice';
+import axios from '../../../utils/axios';
 
 function EditEmailPass({
   userInfo,
   setEnterEmail,
-  password,
   setNewEmail,
+  token,
   setIsHidenPass,
 }) {
   const [email, setEmail] = useState(userInfo.email);
   const [isHidenEmail, setIsHidenEmail] = useState(false);
-
+  const [isEmailIncorrect, setIsEmailIncorrect] = useState(false);
   const navigateToPrev = () => {
     setEnterEmail(false);
   };
@@ -27,15 +26,30 @@ function EditEmailPass({
     setNewEmail(false);
   };
 
-  const dispatch = useDispatch();
-
-  const handleSubmit = () => {
+  const changeMail = async (email, token) => {
     try {
-      dispatch(changeEmail({ email, password }));
-      setIsHidenPass(true);
-      setTimeout(() => {
-        navigateToProfile();
-      }, 500);
+      const { data } = await axios.post('auth/changeMail', {
+        email,
+        token,
+      });
+
+      return data.status;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const isEmailCorrect = await changeMail(email, token);
+      if (isEmailCorrect) {
+        setIsHidenPass(true);
+        setTimeout(() => {
+          navigateToProfile();
+        }, 500);
+      } else {
+        setIsEmailIncorrect(true);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -47,11 +61,13 @@ function EditEmailPass({
         isHidenEmail ? 'register hideRegister' : 'register showRegister'
       }
     >
-      <div
-        className="arrow_close"
-        onClick={() => hiDeOverlay(navigateToPrev)}
-      >
-        <img src="../../public/img/other/arrow_register.svg" alt="" />
+      <div className="arrow_closeWrapper">
+        <div
+          className="arrow_close"
+          onClick={() => hiDeOverlay(navigateToPrev)}
+        >
+          <img src="../../public/img/other/arrow_register.svg" alt="" />
+        </div>
       </div>
       <form
         className="Register_Container"
@@ -73,6 +89,7 @@ function EditEmailPass({
                 id="first-name"
                 className="field__input"
                 onChange={(e) => setEmail(e.target.value)}
+                type="email"
                 value={email}
                 placeholder="gdsfgfdgd"
               />
@@ -84,10 +101,11 @@ function EditEmailPass({
               </span>
             </div>
           </div>
+          <p className={isEmailIncorrect ? 'inputError' : 'inputError inputErrorhiden'}>this email alredy exist</p>
         </div>
 
         <div className="auth_submit" onClick={() => handleSubmit()}>
-          <p>Next</p>
+          <p>Confirm</p>
         </div>
       </form>
     </div>

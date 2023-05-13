@@ -6,14 +6,14 @@ import { toast } from 'react-toastify';
 import { loginUser, checkIsAuth } from '../redux/features/auth/authSlice';
 import Register from './Register';
 
-export function Login() {
+export function Login({ isUaLocation, ukrLoc }) {
   const [registerOver, setRegisterOver] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { status } = useSelector((state) => state.auth);
   const isAuth = useSelector(checkIsAuth);
-
-  // to hide overlay
+  const [isCorrectLogin, setIsCorrectLogin] = useState(false);
+  const [inputError, setInputError] = useState('none');
 
   const [isHiden, setIsHiden] = useState(false);
   const navigate = useNavigate();
@@ -23,7 +23,6 @@ export function Login() {
   };
 
   const navigateToRegister = () => {
-    // navigate('/register')
     setRegisterOver(true);
   };
 
@@ -38,12 +37,17 @@ export function Login() {
     }, 500);
   };
 
+  const changeHandler = (state, e) => {
+    state(e);
+    setIsCorrectLogin(false);
+  };
+
   useEffect(() => {
     if (status) {
       toast(status);
     }
     if (isAuth) {
-      navigateToAccount();
+      hiDeOverlay(navigateToAccount);
     }
   }, [status]);
 
@@ -51,9 +55,15 @@ export function Login() {
 
   const handleSubmit = () => {
     try {
-      dispatch(loginUser({ email, password }));
-      setPassword('');
-      setEmail('');
+      dispatch(loginUser({ email, password }))
+        .then((res) => {
+          setIsCorrectLogin(res.payload.message);
+          setInputError(res.payload.message);
+          if (res.payload.status) {
+            setPassword('');
+            setEmail('');
+          }
+        });
       console.table(password, email);
     } catch (error) {
       console.log(error);
@@ -70,14 +80,14 @@ export function Login() {
             className="crossHair_close"
             onClick={() => hiDeOverlay(navigateToMain)}
           >
-            <p className="close">+</p>
+            <div />
           </div>
         </div>
         <form
           className="Register_Container"
           onSubmit={(e) => e.preventDefault()}
         >
-          <h1 className="headerOverlay">Login</h1>
+          <h1 className="headerOverlay">{ukrLoc ? 'Вхід' : 'Login'}</h1>
           <div className="auth_container Container_email">
             <div className="inputContainer">
               <div className="field">
@@ -90,7 +100,7 @@ export function Login() {
                 <input
                   id="first-name"
                   className="field__input"
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => changeHandler(setEmail, e.target.value)}
                   value={email}
                   type="email"
                   placeholder="gdsfgfdgd"
@@ -112,12 +122,12 @@ export function Login() {
                   htmlFor="first-name"
                   className="ha-screen-reader"
                 >
-                  Password
+                  {ukrLoc ? 'пароль' : 'password'}
                 </label>
                 <input
                   id="first-name"
                   className="field__input"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => changeHandler(setPassword, e.target.value)}
                   value={password}
                   type="password"
                   placeholder="loh"
@@ -127,30 +137,36 @@ export function Login() {
                   aria-hidden="true"
                 >
                   <span className="field__label">
-                    Password
+                    {ukrLoc ? 'пароль' : 'password'}
                   </span>
                 </span>
               </div>
             </div>
-            <p className="resetPass">Forgot your password</p>
+            <p className={isCorrectLogin ? 'inputError' : 'inputError inputErrorhiden'}>{inputError}</p>
           </div>
           <div
             className="auth_submit btn"
             onClick={() => handleSubmit()}
           >
-            <p>SIGN IN</p>
+            <p>{ukrLoc ? 'ВВІЙТИ' : 'SIGN IN'}</p>
             <span />
           </div>
           <p
             className="switchAuth"
             onClick={() => navigateToRegister()}
           >
-            Create account
+            {ukrLoc ? 'Створити акаун' : 'Create account'}
           </p>
         </form>
       </div>
 
-      {registerOver && <Register setRegisterOver={setRegisterOver} />}
+      {registerOver && (
+      <Register
+        setRegisterOver={setRegisterOver}
+        isUaLocation={isUaLocation}
+        ukrLoc={ukrLoc}
+      />
+      )}
     </>
   );
 }

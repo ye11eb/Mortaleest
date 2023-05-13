@@ -11,6 +11,7 @@
     },
     "plugins": ["react"],
     "rules": {
+        "no-nested-ternary": "off",
         "linebreak-style": 0,
         "no-console": "off",
         "no-shadow": "off",

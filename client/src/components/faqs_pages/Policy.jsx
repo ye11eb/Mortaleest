@@ -29,7 +29,7 @@ function Policy({ ukrLoc, setIsMainOverlayed }) {
               className="crossHair_close"
               onClick={() => hiDeOverlay()}
             >
-              <p className="close">+</p>
+              <div />
             </div>
           </div>
           <div className="overlay_Outline" />

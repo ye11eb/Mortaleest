@@ -207,8 +207,9 @@ export function Navbar({
                           <p>{item.eng}</p>
                         )}
                       </div>
-                      {sortedCollections.indexOf(item) !== sortedCollections.length - 1
-                        ? (<div className="outline" />) : (<div />)}
+                      {sortedCollections && (sortedCollections.indexOf(item)
+                      !== sortedCollections.length - 1
+                        ? (<div className="outline" />) : (<div />))}
                     </div>
                   ))}
                 </div>
@@ -251,8 +252,8 @@ export function Navbar({
                           <p>{item.eng}</p>
                         )}
                       </div>
-                      {sortedClothes.indexOf(item) !== sortedClothes.length - 1
-                        ? (<div className="outline" />) : (<div />)}
+                      {sortedClothes && (sortedClothes.indexOf(item) !== sortedClothes.length - 1
+                        ? (<div className="outline" />) : (<div />))}
                     </div>
                   ))}
                 </div>
@@ -264,12 +265,14 @@ export function Navbar({
 
           <div className="logo_navbar">
             {headerLogo && (
-              <img
-                src="./img/logo_black.svg"
-                alt=""
-                className={headerAnim ? 'mortaleestAnim'
-                  : 'headerMortaleest'}
-              />
+              <a href="https://www.instagram.com/mortaleest/" type="_blank">
+                <img
+                  src="./img/logo_black.svg"
+                  alt=""
+                  className={headerAnim ? 'mortaleestAnim'
+                    : 'headerMortaleest'}
+                />
+              </a>
             )}
             {headerLogo === false ? (
               <p
@@ -308,10 +311,10 @@ export function Navbar({
                 className="cart_navbar"
                 onClick={whenCartClicked}
               >
-                {cartItems.length > 0
+                {cartItems?.length > 0
                 && (
                 <div className="num_in_cart_wraper">
-                  <p>{cartItems.length}</p>
+                  <p>{cartItems?.length}</p>
                 </div>
                 )}
               </div>

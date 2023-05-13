@@ -7,6 +7,7 @@ const initialState = {
   isStaff: null,
   isLoading: false,
   status: null,
+  isPasswordCorrect: null,
 };
 
 export const registerUser = createAsyncThunk(
@@ -97,12 +98,15 @@ export const deliveryInfo = createAsyncThunk(
 
 export const changeEmail = createAsyncThunk(
   'auth/changeEmail',
-  async ({ email, password }) => {
+  async ({ token, password }) => {
     try {
       const { data } = await axios.post('auth/changeEmail', {
-        email,
+        token,
         password,
       });
+
+      console.log(data.isPasswordCorrect);
+      console.log(data);
 
       return data;
     } catch (error) {
@@ -168,10 +172,30 @@ export const authSlice = createSlice({
       state.status = action.payload.message;
       state.isLoading = false;
     },
+
+    // changemail
+
+    // [changeEmail.pending]: (state) => {
+    //   state.isLoading = true;
+    //   state.status = null;
+    // },
+    // [changeEmail.fulfilled]: (state, action) => {
+    //   state.isLoading = false;
+    //   state.status = null;
+    //   state.isPasswordCorrect = action.payload?.isPasswordCorrect;
+    //   // console.log(action.payload?.isPasswordCorrect);
+    //   state.isStaff = action.payload?.isStaff;
+    //   state.user = action.payload?.user;
+    //   state.token = action.payload?.token;
+    // },
+    // [changeEmail.rejected]: (state, action) => {
+    //   state.status = action.payload.message;
+    //   state.isLoading = false;
+    // },
   },
 });
 
 export const checkIsAuth = (state) => Boolean(state.auth.token);
+export const checkIsPassCorrect = (state) => Boolean(state.auth.isPasswordCorrect);
 export const checkIsStaff = (state) => Boolean(state.auth.isStaff);
-
 export default authSlice.reducer;

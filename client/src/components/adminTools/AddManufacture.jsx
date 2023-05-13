@@ -12,6 +12,7 @@ function AddManufacture({
   hiDeOverlay,
   navigateToMain,
   itemForEdit,
+  setIsMainOverlayed,
 }) {
   const [images, setImages] = useState([]);
   const [image, setImage] = useState('');
@@ -47,6 +48,7 @@ function AddManufacture({
 
   useEffect(() => {
     checkIsItemEdited();
+    return () => setIsMainOverlayed(false);
   }, []);
 
   const checkIsItemEdited = () => {
@@ -118,8 +120,6 @@ function AddManufacture({
       console.log(error);
     }
   };
-
-  // Options state
 
   const [optionColorEng, setOptionColorEng] = useState('');
   const [optionSizeEng, setOptionSizeEng] = useState('');
@@ -196,8 +196,6 @@ function AddManufacture({
     setArray(itemsWhithoutDeleted);
   };
 
-  // Eng
-
   const addColorEng = () => {
     setOptionsEng([
       ...optionsEng,
@@ -222,7 +220,7 @@ function AddManufacture({
         className="crossHair_close"
         onClick={() => hiDeOverlay(navigateToMain)}
       >
-        <p className="close">+</p>
+        <div />
       </div>
       <div className="branch scroll">
         <p className="capture addManu_capture">Options</p>
@@ -322,6 +320,7 @@ function AddManufacture({
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                maxLength="15"
               />
               <span
                 className="field__label-wrap"
@@ -342,6 +341,7 @@ function AddManufacture({
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                maxLength="23"
               />
               <span
                 className="field__label-wrap"
@@ -627,6 +627,7 @@ function AddManufacture({
                 type="text"
                 value={titleEng}
                 onChange={(e) => setTitleEng(e.target.value)}
+                maxLength="15"
               />
               <span
                 className="field__label-wrap"
@@ -647,6 +648,7 @@ function AddManufacture({
                 type="text"
                 value={nameEng}
                 onChange={(e) => setNameEng(e.target.value)}
+                maxLength="23"
               />
               <span
                 className="field__label-wrap"

@@ -6,7 +6,7 @@ import {
 } from '../../redux/features/order/orderSlice';
 
 function OrderDetails({
-  setOrderDetails, openedOrder, ukrLoc, editOrder,
+  setOrderDetails, openedOrder, ukrLoc, editOrder, isStaff,
 }) {
   const windowsize = window.innerWidth;
   const [isHiden, setIsHiden] = useState(false);
@@ -70,8 +70,6 @@ function OrderDetails({
   };
   return (
     <div className={isHiden ? 'Overlay orderOverlay hideRegister' : 'Overlay orderOverlay showRegister'}>
-      {/* <div className="account_main">
-      </div> */}
       <div className="order_main_container">
         <div className="ItemOverlay_top-box">
           <div className="titleWarapperForBlur">
@@ -90,7 +88,7 @@ function OrderDetails({
         </div>
         <div className="order_split container">
           <div className="branch">
-            <div className="order_info orderBottomBorder">
+            <div className={isStaff ? 'order_info orderBottomBorder orderStatusForAdmin' : 'order_info orderBottomBorder'}>
               <ul className="order_bold_text">
                 <li>Order status</li>
                 <li>Track number </li>
@@ -108,20 +106,41 @@ function OrderDetails({
                         <option value='{"eng":"in the way","ukr":"В дорозі"}'>in the way</option>
                         <option value='{"eng":"at the post office","ukr":"у відділені пошти"}'>at the post office</option>
                         <option value='{"eng":"ended","ukr":"завершено"}'>ended</option>
+                        <option value='{"eng":"not payed","ukr":"не оплачено"}'>not payed</option>
+                        <option value='{"eng":"denied","ukr":"відмовлено"}'>denied</option>
                       </select>
                     </form>
                   )
-                    : openedOrder.trackNumber}
+                    : (
+                      <li>
+                        {ukrLoc ? openedOrder.orderStatus.ukr
+                          : openedOrder.orderStatus.eng}
+                      </li>
+                    )}
 
                 </li>
                 {editOrder ? (
-                  <input
-                    type="text"
-                    value={trackNumber}
-                    onChange={(e) => setTrackNumber(e.target.value)}
-                  />
+                  <div className="inputContainer">
+                    <div className="field">
+                      <label className="ha-screen-reader">
+                        Track number
+                      </label>
+                      <input
+                        className="field__input"
+                        type="text"
+                        value={trackNumber}
+                        onChange={(e) => setTrackNumber(e.target.value)}
+                      />
+                      <span
+                        className="field__label-wrap"
+                        aria-hidden="true"
+                      >
+                        <span className="field__label">title</span>
+                      </span>
+                    </div>
+                  </div>
                 )
-                  : (<li>{ukrLoc ? openedOrder.orderStatus.ukr : openedOrder.orderStatus.eng}</li>)}
+                  : openedOrder.trackNumber}
               </ul>
             </div>
 
@@ -148,7 +167,7 @@ function OrderDetails({
                 <li>{openedOrder.state}</li>
               </ul>
             </div>
-            <div className="orderSubtitle"><p>Customer information</p></div>
+            <div className="orderSubtitle"><p>Order information</p></div>
             <div className="order_info orderBottomBorder">
               <ul className="order_bold_text">
                 <li>Order number</li>
@@ -157,7 +176,7 @@ function OrderDetails({
                 <li>Delivery</li>
               </ul>
               <ul>
-                <li>
+                <li className="openedOrder_id">
                   {openedOrder._id}
                 </li>
                 <li>{openedOrder.createdAt}</li>

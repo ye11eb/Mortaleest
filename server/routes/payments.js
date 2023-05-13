@@ -1,11 +1,17 @@
 import { Router } from 'express'
-import { Payments } from '../controllers/payments.js'
-import { checkAuth } from '../utils/checkAuth.js'
+import { Payments, callBack, finalResponse } from '../controllers/payments.js'
+import bodyParser from 'body-parser'
 
 const router = new Router()
 
-//Login
+//payments
 router.post('/payment', Payments)
+
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+router.post('/callback', urlencodedParser, callBack)
+
+router.post('/finalResponse', urlencodedParser, finalResponse)
 
 
 export default router

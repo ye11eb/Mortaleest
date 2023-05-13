@@ -62,7 +62,8 @@ export const login = async (req, res) => {
 
     if(!user){
       return res.json({
-        message: 'this user is not exist'
+        message: 'this user is not exist',
+        status: false,
       })
     }
 
@@ -70,7 +71,8 @@ export const login = async (req, res) => {
 
     if(!isPasswordCorrect) {
       res.json({
-        message:"incorrect password"
+        message:"incorrect password",
+        status: false,
       })
     }
 
@@ -81,12 +83,12 @@ export const login = async (req, res) => {
     )
 
     res.json({
-      token, user, isStaff, message: "You success enter in system"
+      token, user, isStaff, message: "You success enter in system",status: true,
     })
 
   }
   catch (error) {
-    res.json({message: 'error while login'})
+    res.json({message: 'incorrect email or password', status: false})
   }
 }
 
@@ -176,11 +178,12 @@ export const deliveryInfo = async (req, res) => {
     await user.save()
 
     
-    res.json(user)
+    res.json({user, status: true})
   }
   catch (error) {
     res.json({
-      message: "no permision"
+      message: "${error}",
+      status: false,
     })
     
   }
@@ -190,12 +193,84 @@ export const deliveryInfo = async (req, res) => {
 //login user
 export const changeMail = async (req, res) => {
   try {
-    const { email, password } = req.body
+ 
+    const { email } = await req.body
+    console.log(email);
     const user = await User.findById(req.userID)
 
     if(!user){
       return res.json({
-        message: 'this user is not exist'
+        message: 'this user is not exist',
+        status: false,
+      })
+    }
+
+    const isUsed = await User.findOne({email})
+
+    if(isUsed){
+      return res.json({
+        message: "this email alredy used",
+        status: false,
+      })
+    }
+
+    // const isPasswordCorrect = await bcrypt.compare(password, user.password)
+
+    // if(!isPasswordCorrect) {
+    //   res.json({
+    //     message:"incorrect password"
+    //   })
+    // }
+
+    // const token = jwt.sign({
+    //   id: user._id,
+    //   },process.env.JWT_SECRET,
+    //   {expiresIn: '30d'},
+    // )
+
+    user.email = await email
+
+    console.log(user.email);
+
+    console.log(user);
+
+    await user.save()
+
+    if(user) {
+      res.json({user, message: 'succes', status: true})
+    }
+    
+  }
+  catch (error) {
+    console.log(error);
+    res.json({message: `error while login:${error}`})
+  }
+}
+
+
+export const verifyPass = async (req, res) => {
+  try {
+
+    const {token, password} = req.body
+    let userID = 0
+    console.log(req.body);
+
+    jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+      if (err) {
+        console.log('Invalid token:', err);
+      } else {
+        console.log('Decoded token:', decoded);
+        userID = decoded
+      }
+    });
+
+
+    const user = await User.findById(userID.id)
+
+    if(!user){
+      return res.json({
+        message: 'this user is not exist',
+        status: false,
       })
     }
 
@@ -203,24 +278,18 @@ export const changeMail = async (req, res) => {
 
     if(!isPasswordCorrect) {
       res.json({
-        message:"incorrect password"
+        message:"incorrect password",
+        isPasswordCorrect,
+        status: false,
       })
     }
 
-    const token = jwt.sign({
-      id: user._id,
-      },process.env.JWT_SECRET,
-      {expiresIn: '30d'},
-    )
-
-    user.email = email
-
-    await user.save()
-
+    if(isPasswordCorrect && user) {
+      res.json({user, message: 'correct', status: true})
+    }
     
-    res.json(user, message)
   }
   catch (error) {
-    res.json({message: `error while login:${error}`})
+    res.json({message: `error while login:${error}`, status: false})
   }
 }

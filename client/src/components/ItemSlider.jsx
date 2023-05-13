@@ -1,12 +1,10 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useNavigate } from 'react-router-dom';
 
 export function ItemSlider({
-  openedItem, setIsHiden, setIsMainOverlayed, SetZooomImg,
+  SetZooomImg, images,
 }) {
   const settings = {
     infinite: false,
@@ -20,14 +18,16 @@ export function ItemSlider({
     <div className="slider">
 
       <Slider {...settings}>
-        {openedItem
-                    && openedItem.imgUrl.map((img) => (
+        {images
+                    && images.map((img) => (
                       <div
                         className="slide slide-2"
-                        key={openedItem.imgUrl.indexOf(img)}
-                        onClick={() => SetZooomImg(img)}
                       >
-                        <img src={img} alt="" />
+                        <img
+                          src={img}
+                          alt=""
+                          onClick={() => SetZooomImg(img)}
+                        />
                       </div>
                     ))}
       </Slider>
