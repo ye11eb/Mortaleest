@@ -44,7 +44,7 @@ function OrderSuccess({ setIsMainOverlayed, isUaLocation }) {
                 className="emempty_cart_btn btn"
                 onClick={() => hiDeOverlay()}
               >
-                <p>CONTINUE SHOPPING</p>
+                <p>{isUaLocation ? 'ПРОДОВЖИТИ' : 'CONTINUE SHOPPING'}</p>
               </div>
             </div>
           )

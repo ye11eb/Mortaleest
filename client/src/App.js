@@ -11,7 +11,6 @@ import EditInfo from './components/profile/EditInfo/EditFirstInfo';
 import Terms from './components/faqs_pages/Terms';
 import Cart from './components/Cart';
 import Delivery from './components/faqs_pages/Delivery';
-import ForMainRoute from './components/ForMainRoute';
 import Policy from './components/faqs_pages/Policy';
 import ImgZoom from './components/ImgZoom';
 import OrderSuccess from './components/OrderSuccess';
@@ -31,6 +30,7 @@ function App() {
     eng: 'all',
     ukr: 'усе',
   });
+  const [clientCountry, setClientCountry] = useState(null);
   const [isUaLocation, setIsUaLocation] = useState(false);
   const [mainTitle, setMainTitle] = useState('');
   const [isMainOverlayed, setIsMainOverlayed] = useState(false);
@@ -255,19 +255,33 @@ function App() {
     })
       .then((response) => response.json())
       .then((json) => {
-        console.log(json.country);
         setIsUaLocation(json.country.iso_code === 'UA');
       });
   });
 
   useEffect(() => {
     dispatch(getMe());
-    setCartItems(JSON.parse(localStorage.getItem('cart')));
+    if (JSON.parse(localStorage.getItem('cart'))) {
+      setCartItems(JSON.parse(localStorage.getItem('cart')));
+    }
+    if (JSON.parse(localStorage.getItem('clientCountry'))) {
+      setClientCountry(JSON.parse(localStorage.getItem('clientCountry')))
+    }
   }, [dispatch]);
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cartItems));
+    if (cartItems) {
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+    }
   }, [cartItems]);
+
+  useEffect(() => {
+    if (cartItems) {
+      localStorage.setItem('clientCountry', JSON.stringify(clientCountry));
+    }
+  }, [clientCountry]);
+
+  
 
   const hideBodyScroll = () => {
     if (isMainOverlayed === true) {
@@ -317,7 +331,6 @@ function App() {
         zoommedImg={zoommedImg}
       />
       <Routes>
-        <Route path="/" element={<ForMainRoute />} />
         <Route
           path="item:id"
           element={(
@@ -349,6 +362,8 @@ function App() {
               setIsMainOverlayed={setIsMainOverlayed}
               setOrderEnded={setOrderEnded}
               CountriesData={CountriesData}
+              clientCountry={clientCountry}
+              setClientCountry={setClientCountry}
             />
           )}
         />

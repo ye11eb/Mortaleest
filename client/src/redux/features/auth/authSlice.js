@@ -46,6 +46,8 @@ export const loginUser = createAsyncThunk(
       }
       if (data.isStaff) {
         window.localStorage.setItem('isStaff', data.isStaff);
+      }else{
+        window.localStorage.setItem('isStaff', false);
       }
       return data;
     } catch (error) {
@@ -57,6 +59,9 @@ export const loginUser = createAsyncThunk(
 export const getMe = createAsyncThunk('auth/me', async () => {
   try {
     const { data } = await axios.get('auth/me');
+    if (data.user) {
+      window.localStorage.setItem('isStaff', data.user.isStaff);
+    }
     return data;
   } catch (error) {
     console.log(error);
@@ -104,9 +109,6 @@ export const changeEmail = createAsyncThunk(
         token,
         password,
       });
-
-      console.log(data.isPasswordCorrect);
-      console.log(data);
 
       return data;
     } catch (error) {
@@ -174,24 +176,6 @@ export const authSlice = createSlice({
     },
 
     // changemail
-
-    // [changeEmail.pending]: (state) => {
-    //   state.isLoading = true;
-    //   state.status = null;
-    // },
-    // [changeEmail.fulfilled]: (state, action) => {
-    //   state.isLoading = false;
-    //   state.status = null;
-    //   state.isPasswordCorrect = action.payload?.isPasswordCorrect;
-    //   // console.log(action.payload?.isPasswordCorrect);
-    //   state.isStaff = action.payload?.isStaff;
-    //   state.user = action.payload?.user;
-    //   state.token = action.payload?.token;
-    // },
-    // [changeEmail.rejected]: (state, action) => {
-    //   state.status = action.payload.message;
-    //   state.isLoading = false;
-    // },
   },
 });
 

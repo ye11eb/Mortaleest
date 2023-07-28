@@ -31,7 +31,7 @@ const ManufactureSchema = new mongoose.Schema(
         required: true,
       },
       description: {
-        type: Array,
+        type: String,
         required: true,
       },
       sizingText: {
@@ -101,7 +101,23 @@ const ManufactureSchema = new mongoose.Schema(
       options: {
         type: Array,
         required: true,
-      }
+      },
+      outOfStock: {
+        type: Boolean,
+        required: true,
+      },
+      preOrder: {
+        type: Boolean,
+        required: true,
+      },
+      preOrderTime: {
+        type: String,
+        required: false,
+      },
+      preOrderTimeEng: {
+        type: String,
+        required: false,
+      },
     },
     { timestamps: true },
 )

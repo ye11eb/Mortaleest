@@ -24,7 +24,7 @@ export function ItemSlider({
                         className="slide slide-2"
                       >
                         <img
-                          src={img}
+                          src={`http://localhost:5000/${img}`}
                           alt=""
                           onClick={() => SetZooomImg(img)}
                         />

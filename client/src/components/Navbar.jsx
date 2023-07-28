@@ -1,5 +1,8 @@
 import { React, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+// import { useSelector } from 'react-redux';
+// import { checkIsAuth } from '../redux/features/auth/authSlice';
+import { useSelector } from 'react-redux';
 import BurgerMenu from './BurgerMenu';
 
 export function Navbar({
@@ -16,7 +19,7 @@ export function Navbar({
 }) {
   const isAuth = window.localStorage.getItem('token');
   const navigate = useNavigate();
-
+  const { user } = useSelector((state) => state.auth);
   const [collections, setCollections] = useState(false);
   const [collectionsClosed, setCollectionsClosed] = useState(false);
   const [sort, setSort] = useState(false);
@@ -26,11 +29,16 @@ export function Navbar({
   const [isBurgerShowed, setIsBurgerShowed] = useState(true);
   const [closeBurger, setCloseBurger] = useState(true);
 
-  const windowsize = window.innerWidth;
+  const [width, setWidth] = useState(window.innerWidth)
+  function handleWindowSizeChange() {
+    setWidth(window.innerWidth);
+  }
+
+  window.addEventListener('resize', handleWindowSizeChange);
   const handleScroll = () => {
     const position = window.pageYOffset;
     const windowsize = window.innerWidth;
-    if (windowsize < 600) {
+    if (width < 600) {
       if (position >= 20) {
         setHeaderAnim(true);
         setTitleAnim(true);
@@ -46,7 +54,7 @@ export function Navbar({
           changeBar('lover');
         }
       }
-    } else if ((windowsize >= 600)) {
+    } else if ((width >= 600)) {
       if (position >= 60) {
         setHeaderAnim(true);
         setTitleAnim(true);
@@ -162,13 +170,13 @@ export function Navbar({
       <div className="navbar-container filter">
         <div className="navbar container">
           <div className="navbar_item categories_navbar">
-            {windowsize <= 800 && (
+            {width <= 800 && (
             <div className={closeBurger ? 'navbar_burger_container' : 'navbar_burger_container navbar_burger_container_rev'} onClick={() => setCloseBurger(!closeBurger)}>
               <div className="navbar_burger_line" />
               <div className="navbar_burger_line" />
             </div>
             )}
-            {windowsize > 800 && (
+            {width > 800 && (
             <>
               <div
                 onClick={() => setCollectionsFunc()}
@@ -284,7 +292,7 @@ export function Navbar({
             ) : (<p />)}
           </div>
           <div className="navbar_item login_navbar">
-            {windowsize > 800 && (
+            {width > 800 && (
             <div className="lang_navbar_container">
               <div className="lang_navbar">
                 <p onClick={() => changeLang(false)}>ENG</p>
@@ -301,7 +309,7 @@ export function Navbar({
             </div>
             )}
             <div className="navbar_items">
-              {windowsize > 800 && (
+              {width > 800 && (
               <div
                 className="account_navbar"
                 onClick={whenAccClicked}

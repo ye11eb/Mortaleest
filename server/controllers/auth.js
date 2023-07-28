@@ -10,9 +10,7 @@ export const register = async (req, res) => {
     const isUsed = await User.findOne({email})
 
     if(isUsed){
-      return res.json({
-        message: "this email alredy used",
-      })
+      return res.json({message: {eng: 'this email alredy used', ukr:'цей email вже використовується'}})
     }
 
     const salt = bcrypt.genSaltSync(10)
@@ -33,21 +31,21 @@ export const register = async (req, res) => {
       isStaff: false,
     })
 
-    const token = jwt.sign({
-      id: newUser._id,
-      },process.env.JWT_SECRET,
-      {expiresIn: '30d'},
-    )
+    // const token = jwt.sign({
+    //   id: newUser._id,
+    //   },process.env.JWT_SECRET,
+    //   {expiresIn: '30d'},
+    // )
 
 
     await newUser.save()
 
     res.json({
-      newUser, message: 'register is success'
+      newUser,message: {eng: 'register is success', ukr:'реєстрація успішна'}, status: 200
     })
   }
   catch (error) {
-    res.json({message: `error while creating user${error}`})
+    res.json({message: {eng: `error while creating user${error}`, ukr:`проблема підчас створення користувача${error}`}})
   }
 }
 
@@ -62,7 +60,7 @@ export const login = async (req, res) => {
 
     if(!user){
       return res.json({
-        message: 'this user is not exist',
+        message: {eng: 'incorrect email or password', ukr:'не вірний email або пароль'},
         status: false,
       })
     }
@@ -71,7 +69,7 @@ export const login = async (req, res) => {
 
     if(!isPasswordCorrect) {
       res.json({
-        message:"incorrect password",
+        message: {eng: 'incorrect email or password', ukr:'не вірний email або пароль'},
         status: false,
       })
     }
@@ -83,19 +81,20 @@ export const login = async (req, res) => {
     )
 
     res.json({
-      token, user, isStaff, message: "You success enter in system",status: true,
+      token, user, isStaff, message: {eng: 'You success enter in system', ukr:'Ви успішно ввійшли в систему'},status: true,
     })
 
   }
   catch (error) {
-    res.json({message: 'incorrect email or password', status: false})
+    res.json({message: {eng: 'incorrect email or password', ukr:'не вірний email або пароль'}, status: false})
   }
 }
 
 //get me
 export const getMe = async (req, res) => {
   try {
-    const {user} = await User.findById(req.userId)
+    const user = await User.findById(req.userID)
+
 
     if(!user){
       return res.json({
@@ -104,7 +103,7 @@ export const getMe = async (req, res) => {
     }
 
     const token = jwt.sign({
-      id: _id,
+      id: user._id,
       },process.env.JWT_SECRET,
       {expiresIn: '30d'},
     )
@@ -117,6 +116,7 @@ export const getMe = async (req, res) => {
 
   }
   catch (error) {
+    console.log(error);
     res.json({
       message: "no permision"
     })
@@ -195,7 +195,6 @@ export const changeMail = async (req, res) => {
   try {
  
     const { email } = await req.body
-    console.log(email);
     const user = await User.findById(req.userID)
 
     if(!user){
@@ -230,10 +229,6 @@ export const changeMail = async (req, res) => {
 
     user.email = await email
 
-    console.log(user.email);
-
-    console.log(user);
-
     await user.save()
 
     if(user) {
@@ -253,13 +248,11 @@ export const verifyPass = async (req, res) => {
 
     const {token, password} = req.body
     let userID = 0
-    console.log(req.body);
 
     jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
       if (err) {
         console.log('Invalid token:', err);
       } else {
-        console.log('Decoded token:', decoded);
         userID = decoded
       }
     });

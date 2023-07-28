@@ -15,12 +15,13 @@ function Manufactures({
     setTitle(ukrLoc ? manufacture?.title : manufacture?.titleEng);
   }, [ukrLoc]);
 
+
   return (
     <Link to={`/item:${manufacture?._id}`} onClick={() => setOpenedItem(manufacture)}>
       <div className="manufacture">
         <div className="manufacture_img">
           {' '}
-          <img src={manufacture?.imgUrl[0]} alt="img" />
+          <img src={`http://localhost:5000/${manufacture?.imgUrl?.[0]}`} alt="img" />
         </div>
         <p className="manufacture_title">{title}</p>
         <span className="manufacture_price">
@@ -28,6 +29,8 @@ function Manufactures({
           {' '}
           <p>{priceValue}</p>
         </span>
+        {manufacture.outOfStock === true && (<div className="outOfStock"><p>OUT OF STOCK</p></div>)}
+        {manufacture.preOrder === true && (<div className="preOrder"><p>PRE ORDER</p></div>)}
       </div>
     </Link>
   );

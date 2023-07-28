@@ -7,7 +7,7 @@ const router = new Router()
 //CreateManufacture
 router.post('/createManufacture',checkAuth, CreateManufacture)
 
-//ChangeManufacture https://contest-drilling-agrees-physically.trycloudflare.com/
+//ChangeManufacture
 router.post('/changeManufacture',checkAuth, ChangeManufacture)
 
 //GetManufactures

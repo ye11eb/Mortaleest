@@ -57,8 +57,13 @@ export function Login({ isUaLocation, ukrLoc }) {
     try {
       dispatch(loginUser({ email, password }))
         .then((res) => {
-          setIsCorrectLogin(res.payload.message);
-          setInputError(res.payload.message);
+          if (ukrLoc) {
+            setIsCorrectLogin(res.payload.message.ukr);
+            setInputError(res.payload.message.ukr);
+          } else {
+            setIsCorrectLogin(res.payload.message.eng);
+            setInputError(res.payload.message.eng);
+          }
           if (res.payload.status) {
             setPassword('');
             setEmail('');
@@ -155,7 +160,7 @@ export function Login({ isUaLocation, ukrLoc }) {
             className="switchAuth"
             onClick={() => navigateToRegister()}
           >
-            {ukrLoc ? 'Створити акаун' : 'Create account'}
+            {ukrLoc ? 'Створити акаунт' : 'Create account'}
           </p>
         </form>
       </div>

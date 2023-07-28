@@ -4,6 +4,7 @@ import React, {
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ItemSlider } from './ItemSlider';
+import axios from '../utils/axios';
 import {
   getAllManufactures,
   deleteManufacture,
@@ -14,7 +15,6 @@ export function ItemOverlay({
   openedItem,
   setCartItems,
   cartItems,
-  isStaff,
   setItemForEdit,
   setOpenedItem,
   setIsMainOverlayed,
@@ -36,11 +36,23 @@ export function ItemOverlay({
   const [title, setTitle] = useState();
   const [name, setName] = useState();
   const [images, setImages] = useState(openedItem?.imgUrl);
-  let description = '';
+  const [description, setDescription] = useState([])
   const [price, setPrice] = useState();
   const [priceValue, setPriceValue] = useState();
+  const [preorderTime, setPreorderTime] = useState('')
   const isRegistered = localStorage.getItem('token');
+  const [outOfStock, setOutOfStock] = useState('');
+  const [isActualyStaff, setIsActualyStaff] = useState(false)
+  const [isCorrectAddToCart, setIsCorrectAddToCart] = useState(true)
 
+  const fetchUserInfo = async () => {
+    try {
+      const {data} = await axios.get('/auth/myInfo');
+      setIsActualyStaff(data.isStaff)
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const fetchManuLink = () => {
     function neadedItem(manu) {
       return manu._id === window.location.href.slice(-24);
@@ -50,26 +62,32 @@ export function ItemOverlay({
 
   useLayoutEffect(() => {
     fetchInfoItem();
+    fetchUserInfo()
   }, [openedItem]);
+
 
   const fetchInfoItem = () => {
     if (openedItem) {
-      setOptions(ukrLoc ? openedItem.options : openedItem.optionsEng);
+      const parsedOptions = JSON.parse(openedItem.options)
+      const parsedOptionsEng = JSON.parse(openedItem.optionsEng)
+      setOptions(ukrLoc ? parsedOptions : parsedOptionsEng);
       setImages(openedItem?.imgUrl);
-      setActualColor(ukrLoc ? openedItem.options[0].color
-        : openedItem.optionsEng[0].OtherOptions.color);
-      setActualSize(ukrLoc ? openedItem.options[0].OtherOptions.size
-        : openedItem.optionsEng[0].OtherOptions.size);
+      setPreorderTime(ukrLoc ? openedItem.preOrderTime : openedItem.preOrderTimeEng);
+      setActualColor(ukrLoc ? parsedOptions[0].color
+        : parsedOptionsEng[0].color);
+      setActualSize(ukrLoc ? parsedOptions[0].OtherOptions.size
+        : parsedOptionsEng[0].OtherOptions.size);
       setSizingText(ukrLoc ? openedItem.sizingText : openedItem.sizingTextEng);
       setMaterials(ukrLoc ? openedItem.materials : openedItem.materialsEng);
       setCare(ukrLoc ? openedItem.care : openedItem.careEng);
       setTitle(ukrLoc ? openedItem.title : openedItem.titleEng);
-      description = ukrLoc ? openedItem.description : openedItem.descriptionEng;
+      setDescription(ukrLoc ? JSON.parse(openedItem.description) : JSON.parse(openedItem.descriptionEng));
       setPrice(isUaLocation ? openedItem.price : openedItem.priceEng);
       setPriceValue(isUaLocation ? openedItem.priceValue : openedItem.priceValueEng);
       setName(ukrLoc ? openedItem.name : openedItem.nameEng);
-      setCurrentColor(ukrLoc ? openedItem.options[0].OtherOptions
-        : openedItem.optionsEng[0].OtherOptions);
+      setCurrentColor(ukrLoc ? parsedOptions[0].OtherOptions
+        : parsedOptionsEng[0].OtherOptions);
+      setOutOfStock(openedItem.outOfStock);
     } else {
       fetchManuLink();
     }
@@ -79,9 +97,17 @@ export function ItemOverlay({
     setIsMainOverlayed(true);
   }, []);
 
+
+  useEffect(() => {
+    setIsCorrectAddToCart(true);
+  }, [actualSize, actualColor]);
+
+
   useEffect(() => {
     dispatch(getAllManufactures());
   }, [dispatch]);
+
+
   useEffect(() => {
     fetchManuLink();
   }, [manufactures]);
@@ -109,10 +135,12 @@ export function ItemOverlay({
   };
 
   const addToBag = () => {
-    if (!isRegistered) {
+    if (!actualSize || !actualSize) {
+      setIsCorrectAddToCart(false)
+    }
+    else if (!isRegistered) {
       hiDeOverlay(navigateToLogin);
     } else if (cartItems?.[0]) {
-      console.log('loh');
       if (cartItems.find((e) => e._id === openedItem._id)
      && cartItems.find((e) => e.size === actualSize)
      && cartItems.find((e) => e.color === actualColor)
@@ -155,7 +183,7 @@ export function ItemOverlay({
         color: actualColor,
         quantity: 1,
       };
-      setCartItems([...cartItems, orderBag]);
+      setCartItems([orderBag]);
     }
   };
 
@@ -252,6 +280,7 @@ export function ItemOverlay({
               </div>
             ))}
               </div>
+              <p className={isCorrectAddToCart ?'inputError inputErrorhiden' : 'inputError'}>{ukrLoc ? 'вам потрібно вибрати розмір та колір для довалення в корзину' : 'you need to select the size and color to add to cart'}</p>
               <div className="ItemSellect color">
                 {ukrLoc ? (
                   <p className="sellect_capture">Колір</p>
@@ -276,7 +305,7 @@ export function ItemOverlay({
                 </div>
                 )}
               </div>
-              {isStaff ? (
+              {isActualyStaff ? (
                 <div>
                   <button
                     type="submit"
@@ -293,7 +322,7 @@ export function ItemOverlay({
                     <p>DELETE ITEM</p>
                   </button>
                 </div>
-              ) : (
+              ) : outOfStock === false ? (
                 <div>
                   <button
                     type="submit"
@@ -307,17 +336,31 @@ export function ItemOverlay({
                     )}
                   </button>
                 </div>
+              ) : (
+                <div>
+                  <button
+                    type="submit"
+                    className="addToBag OutOfStockButton btn"
+                  >
+                    {ukrLoc ? (
+                      <p>НЕМАЄ В НАЯВНОСТІ</p>
+                    ) : (
+                      <p>OUT OF STOCK</p>
+                    )}
+                  </button>
+                </div>
               )}
               <ul className="dropDownList_Item">
+                <li>{preorderTime}</li>
                 <li className="OpenedDropDownList">
                   <div className="dropDownList_Item_fstLine">
                     {ukrLoc ? <p>Опис</p> : <p>Description</p>}
                   </div>
                   <div className="dropDownList_Item_element">
-                    <p>
-                      {description}
-
-                    </p>
+                  {description?.map((desc) => (
+                    <p className='descPartp'
+                    >{desc}</p>
+                  ))}
                   </div>
                   <div className="manuOverlay_outline" />
                 </li>

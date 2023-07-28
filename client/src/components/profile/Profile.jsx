@@ -5,6 +5,7 @@ import AddManufacture from '../adminTools/AddManufacture';
 import EditFirstInfo from './EditInfo/EditFirstInfo';
 import EditEmailPass from './EditMail/EditEmailPass';
 import OrderDetails from './OrderDetails';
+import { useDispatch } from 'react-redux';
 
 function Profile({
   isStaff, itemForEdit, setIsMainOverlayed, ukrLoc, CountriesData,
@@ -17,6 +18,7 @@ function Profile({
   const [userInfo, setUserInfo] = useState([]);
   const [usersOrders, setUsersOrders] = useState([]);
   const [usersNotChanged, setUsersNotChanged] = useState([]);
+  const [isActualyStaff, setIsActualyStaff] = useState(false)
   const [openedOrder, setOpenedOrder] = useState();
   const editOrder = false;
 
@@ -25,6 +27,7 @@ function Profile({
       const { data } = await axios.get('/auth/myInfo');
       const ordersData = await axios.get('/orders/getOrders');
       setUserInfo(data);
+      setIsActualyStaff(data.isStaff)
       setUsersNotChanged([]);
       fetchUserOrders(ordersData, data);
     } catch (error) {
@@ -101,7 +104,7 @@ function Profile({
 
   return (
     <div>
-      {isStaff ? (
+      {isActualyStaff ? (
         <AddManufacture
           isHiden={isHiden}
           hiDeOverlay={hiDeOverlay}

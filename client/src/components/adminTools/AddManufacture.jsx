@@ -14,14 +14,15 @@ function AddManufacture({
   itemForEdit,
   setIsMainOverlayed,
 }) {
+  const [oldImages, setOldImages] = useState([]);
   const [images, setImages] = useState([]);
   const [image, setImage] = useState('');
-
   const [titleEng, setTitleEng] = useState('');
   const [nameEng, setNameEng] = useState('');
   const [priceEng, setPriceEng] = useState();
-  const [priceValueEng, setPriceValueEng] = useState('');
-  const [descriptionEng, setDescriptionEng] = useState('');
+  const [priceValueEng, setPriceValueEng] = useState('USD');
+  const [descriptionEng, setDescriptionEng] = useState([]);
+  const [descriptionEngPart, setDescriptionEngPart] = useState('');
   const [sizingTextEng, setSizingTextEng] = useState('');
   const [sizingImgEng, setSizingImgEng] = useState('');
   const [materialsEng, setMaterialsEng] = useState('');
@@ -29,12 +30,15 @@ function AddManufacture({
   const [optionsEng, setOptionsEng] = useState([]);
   const [colectionsEng, setColectionsEng] = useState('');
   const [clothesTypeEng, setClothesTypeEng] = useState('');
+  const [preOrderTime, setPreorderTime] = useState('')
+  const [preOrderTimeEng, setPreOrderTimeEng] = useState('')
 
   const [title, setTitle] = useState('');
   const [name, setName] = useState('');
   const [price, setPrice] = useState();
-  const [priceValue, setPriceValue] = useState('');
-  const [description, setDescription] = useState('');
+  const [priceValue, setPriceValue] = useState('UAH');
+  const [description, setDescription] = useState([]);
+  const [descriptionPart, setDescriptionPart] = useState('');
   const [sizingText, setSizingText] = useState('');
   const [sizingImg, setSizingImg] = useState('');
   const [materials, setMaterials] = useState('');
@@ -42,9 +46,11 @@ function AddManufacture({
   const [options, setOptions] = useState([]);
   const [colections, setColections] = useState('');
   const [clothesType, setClothesType] = useState('');
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [outOfStock, setOutofStock] = useState(false);
+  const [preOrder, setPreOrder] = useState(false);
+  const dispatch = useDispatch(false);
+  const navigate = useNavigate(false);
+  const [s, setS] = useState()
 
   useEffect(() => {
     checkIsItemEdited();
@@ -53,65 +59,79 @@ function AddManufacture({
 
   const checkIsItemEdited = () => {
     if (itemForEdit !== '') {
-      setImages(itemForEdit.imgUrl);
+      setOldImages(itemForEdit.imgUrl)
       setTitleEng(itemForEdit.titleEng);
       setNameEng(itemForEdit.nameEng);
       setPriceEng(itemForEdit.priceEng);
       setPriceValueEng(itemForEdit.priceValueEng);
-      setDescriptionEng(itemForEdit.descriptionEng);
+      // setDescriptionEng(JSON.parse(itemForEdit.descriptionEng));
       setSizingTextEng(itemForEdit.sizingTextEng);
       setSizingImgEng(itemForEdit.sizingImgEng);
       setMaterialsEng(itemForEdit.materialsEng);
       setCareEng(itemForEdit.careEng);
       setColectionsEng(itemForEdit.colectionsEng);
       setClothesTypeEng(itemForEdit.clothesTypeEng);
-      setOptions(itemForEdit.options);
+      setOptions(JSON.parse(itemForEdit.options));
+      setPreorderTime(itemForEdit.preOrderTime);
 
       setTitle(itemForEdit.title);
       setName(itemForEdit.name);
       setPrice(itemForEdit.price);
       setPriceValue(itemForEdit.priceValue);
-      setDescription(itemForEdit.description);
+      // setDescription(JSON.parse(itemForEdit.description));
       setSizingText(itemForEdit.sizingText);
       setSizingImg(itemForEdit.sizingImg);
       setMaterials(itemForEdit.materials);
       setCare(itemForEdit.care);
       setColections(itemForEdit.colections);
       setClothesType(itemForEdit.clothesType);
-      setOptionsEng(itemForEdit.optionsEng);
+      setOptionsEng(JSON.parse(itemForEdit.optionsEng));
+      setOutofStock(itemForEdit.outOfStock);
+      setPreOrder(itemForEdit.preOrder);
+      setPreOrderTimeEng(itemForEdit.preOrderTimeEng);
     }
   };
 
   const changeManuHandler = () => {
     try {
-      const data = {
-        _id: itemForEdit._id,
-        images,
-        title,
-        name,
-        price,
-        priceValue,
-        colections,
-        clothesType,
-        description,
-        sizingTextEng,
-        sizingImgEng,
-        materialsEng,
-        careEng,
-        options,
-        titleEng,
-        nameEng,
-        priceEng,
-        priceValueEng,
-        colectionsEng,
-        clothesTypeEng,
-        descriptionEng,
-        sizingText,
-        sizingImg,
-        materials,
-        care,
-        optionsEng,
-      };
+      const data = new FormData()
+
+      data.append('_id', itemForEdit._id)
+      images.forEach((el) => {
+        data.append('images', el)
+      })
+      oldImages.forEach((el) => {
+        data.append('oldImages', el)
+      })
+      data.append('title', title)
+      data.append('name', name)
+      data.append('price', price)
+      data.append('priceValue', priceValue)
+      data.append('colections', colections)
+      data.append('clothesType', clothesType)
+      data.append('description', JSON.stringify(description))
+      data.append('sizingTextEng', sizingTextEng)
+      data.append('sizingImgEng', sizingImgEng)
+      data.append('materialsEng', materialsEng)
+      data.append('careEng', careEng)
+      data.append('titleEng', titleEng)
+      data.append('nameEng', nameEng)
+      data.append('priceEng', priceEng)
+      data.append('priceValueEng', priceValueEng)
+      data.append('colectionsEng', colectionsEng)
+      data.append('clothesTypeEng', clothesTypeEng)
+      data.append('descriptionEng', JSON.stringify(descriptionEng))
+      data.append('sizingText', sizingText)
+      data.append('sizingImg', sizingImg)
+      data.append('materials', materials)
+      data.append('care', care)
+      data.append('outOfStock', outOfStock)
+      data.append('preOrder', preOrder)
+      data.append('options', JSON.stringify(options));
+      data.append('optionsEng', JSON.stringify(optionsEng));
+      data.append('preOrderTimeEng', preOrderTimeEng);
+      data.append('preOrderTime', preOrderTime);
+
       clearformHeandler();
       dispatch(changeManufacture(data));
       dispatch(getAllManufactures());
@@ -123,42 +143,47 @@ function AddManufacture({
 
   const [optionColorEng, setOptionColorEng] = useState('');
   const [optionSizeEng, setOptionSizeEng] = useState('');
-  const [optionQuantityEng, setOptionQuantityEng] = useState('');
+  const [optionQuantityEng, setOptionQuantityEng] = useState(1);
 
   const [optionColor, setOptionColor] = useState('');
   const [optionSize, setOptionSize] = useState('');
-  const [optionQuantity, setOptionQuantity] = useState('');
+  const [optionQuantity, setOptionQuantity] = useState(1);
 
   const submitHandler = () => {
     try {
-      const data = {
-        images,
-        title,
-        name,
-        price,
-        priceValue,
-        colections,
-        clothesType,
-        description,
-        sizingTextEng,
-        sizingImgEng,
-        materialsEng,
-        careEng,
-        options,
-        titleEng,
-        nameEng,
-        priceEng,
-        priceValueEng,
-        colectionsEng,
-        clothesTypeEng,
-        descriptionEng,
-        sizingText,
-        sizingImg,
-        materials,
-        care,
-        optionsEng,
-      };
-      clearformHeandler();
+      const data = new FormData()
+      images.forEach((el) => {
+        data.append('images', el)
+      })
+      data.append('title', title)
+      data.append('name', name)
+      data.append('price', price)
+      data.append('priceValue', priceValue)
+      data.append('colections', colections)
+      data.append('clothesType', clothesType)
+      data.append('description', JSON.stringify(description))
+      data.append('sizingTextEng', sizingTextEng)
+      data.append('sizingImgEng', sizingImgEng)
+      data.append('materialsEng', materialsEng)
+      data.append('careEng', careEng)
+      data.append('titleEng', titleEng)
+      data.append('nameEng', nameEng)
+      data.append('priceEng', priceEng)
+      data.append('priceValueEng', priceValueEng)
+      data.append('colectionsEng', colectionsEng)
+      data.append('clothesTypeEng', clothesTypeEng)
+      data.append('descriptionEng', JSON.stringify(descriptionEng))
+      data.append('sizingText', sizingText)
+      data.append('sizingImg', sizingImg)
+      data.append('materials', materials)
+      data.append('care', care)
+      data.append('outOfStock', outOfStock)
+      data.append('preOrder', preOrder)
+      data.append('options', JSON.stringify(options));
+      data.append('optionsEng', JSON.stringify(optionsEng));
+      data.append('preOrderTimeEng', preOrderTimeEng);
+      data.append('preOrderTime', preOrderTime);
+
       dispatch(createManufacture(data));
       dispatch(getAllManufactures());
       navigate('/');
@@ -208,7 +233,17 @@ function AddManufacture({
       size: optionSizeEng,
       quantity: optionQuantityEng,
     });
+    setS(!s)
   };
+
+  const addDescPart = (setProp, prop, newPart) => {
+    setProp([...prop,newPart])
+  }
+
+
+  const delDescPart = (setProp, prop, delPart) => {
+    setProp(prop.filter((el) => el !== delPart))
+  }
 
   return (
     <div
@@ -280,6 +315,25 @@ function AddManufacture({
             </div>
           ))}
         </div>
+
+        <div className='descriptionOptsWrapper'>
+          <p className="capture addManu_capture">Description</p>
+          {description.map((desc) => (
+          <p className='descPartp'
+            onClick={() => delDescPart(setDescription, description, desc)}
+          >{desc}</p>
+        ))}
+        </div>
+
+        <div className='descriptionOptsWrapper'>
+          <p className="capture addManu_capture">Description eng</p>
+          {descriptionEng.map((desc) => (
+          <p className='descPartp'
+            onClick={() => delDescPart(setDescriptionEng, descriptionEng, desc)}
+          >{desc}</p>
+        ))}
+        </div>
+
       </div>
       <div className="addManufacture_box">
         <form
@@ -288,28 +342,80 @@ function AddManufacture({
         >
           <p className="capture">Add image</p>
           <div className="inputContainer options_input_box">
-            <div className="field">
+            <div className="field" htmlFor='field__input_file'>
+              <label className='field__input_fileForm' htmlFor='field__input_file'>
+                Click to add image
+              </label>
               <label className="ha-screen-reader">
                 title
               </label>
               <input
-                type="text"
-                className="field__input"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
+                type="file"
+                id='field__input_file'
+                className="field__input field__input_file"
+                onChange={(e) => setImage(e.target.files[0])}
               />
-              <span className="field__label-wrap">
-                <span className="field__label">
-                  {' '}
-                  imgurl
-                </span>
-              </span>
             </div>
             <p onClick={() => setImages([...images, image])}>
               +
             </p>
           </div>
 
+          <span className="optionsRadioSubtitle">
+            pre order
+          </span>
+
+
+
+          <div className="inputContainer">
+            <div className={preOrder === true ? "radio radioChecked" : "radio"}
+              onClick={() => setPreOrder(true)}>
+              <p>TRUE</p>
+            </div>
+            <div className={preOrder === false ? "radio radioChecked" : "radio"}
+              onClick={() => setPreOrder(false)}>
+              <p>FALSE</p>
+            </div>
+          </div>
+
+          {preOrder == true && 
+            <div className="inputContainer inputContainer_description">
+            <div className="field">
+              <label className="ha-screen-reader">
+                preOrderTime
+              </label>
+              <textarea
+                className="field__input textArea"
+                rows={5}
+                cols={10}
+                type="text"
+                value={preOrderTime}
+                onChange={(e) => setPreorderTime(e.target.value)}
+              />
+              <span
+                className="field__label-wrap"
+                aria-hidden="true"
+              >
+                <span className="field__label">
+                  pre order time
+                </span>
+              </span>
+            </div>
+          </div>}
+
+          <p className='optionsRadioSubtitle'>out of stock</p>
+          <div className="inputContainer">
+            <div className={outOfStock === true ? "radio radioChecked" : "radio"}
+              onClick={() => setOutofStock(true)}>
+              <p>TRUE</p>
+            </div>
+            <div className={outOfStock === false ? "radio radioChecked" : "radio"}
+              onClick={() => setOutofStock(false)}>
+              <p>FALSE</p>
+            </div>
+          </div>
+
+            
           <div className="inputContainer">
             <div className="field">
               <label className="ha-screen-reader">
@@ -394,29 +500,28 @@ function AddManufacture({
             </div>
           </div>
 
-          <div className="inputContainer inputContainer_description">
-            <div className="field">
-              <label className="ha-screen-reader">
-                title
-              </label>
-              <textarea
-                className="field__input textArea"
-                rows={5}
-                cols={10}
-                type="text"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-              <span
-                className="field__label-wrap"
-                aria-hidden="true"
-              >
-                <span className="field__label">
-                  description
+          <div className="inputContainer options_input_box">
+              <div className="field">
+                <label className="ha-screen-reader">
+                  title
+                </label>
+                <input
+                  className="field__input"
+                  type="text"
+                  value={descriptionPart}
+                  onChange={(e) => setDescriptionPart(e.target.value)}
+                />
+                <span className="field__label-wrap">
+                  <span className="field__label">
+                    {' '}
+                    description
+                  </span>
                 </span>
-              </span>
-            </div>
+              </div>
+              <p onClick={() => addDescPart(setDescription, description, descriptionPart)}>+</p>
           </div>
+
+          
 
           <div className="inputContainer inputContainer_description">
             <div className="field">
@@ -617,6 +722,31 @@ function AddManufacture({
 
           <p className="capture">Eng version</p>
 
+          {preOrder && 
+            <div className="inputContainer inputContainer_description">
+            <div className="field">
+              <label className="ha-screen-reader">
+                preOrderTime
+              </label>
+              <textarea
+                className="field__input textArea"
+                rows={5}
+                cols={10}
+                type="text"
+                value={preOrderTimeEng}
+                onChange={(e) => setPreOrderTimeEng(e.target.value)}
+              />
+              <span
+                className="field__label-wrap"
+                aria-hidden="true"
+              >
+                <span className="field__label">
+                  pre order time
+                </span>
+              </span>
+            </div>
+          </div>}
+
           <div className="inputContainer">
             <div className="field">
               <label className="ha-screen-reader">
@@ -701,28 +831,25 @@ function AddManufacture({
             </div>
           </div>
 
-          <div className="inputContainer inputContainer_description">
-            <div className="field">
-              <label className="ha-screen-reader">
-                title
-              </label>
-              <textarea
-                className="field__input textArea"
-                rows={5}
-                cols={10}
-                type="text"
-                value={descriptionEng}
-                onChange={(e) => setDescriptionEng(e.target.value)}
-              />
-              <span
-                className="field__label-wrap"
-                aria-hidden="true"
-              >
-                <span className="field__label">
-                  description
+          <div className="inputContainer options_input_box">
+              <div className="field">
+                <label className="ha-screen-reader">
+                  title
+                </label>
+                <input
+                  className="field__input"
+                  type="text"
+                  value={descriptionEngPart}
+                  onChange={(e) => setDescriptionEngPart(e.target.value)}
+                />
+                <span className="field__label-wrap">
+                  <span className="field__label">
+                    {' '}
+                    description
+                  </span>
                 </span>
-              </span>
-            </div>
+              </div>
+              <p onClick={() => addDescPart(setDescriptionEng, descriptionEng, descriptionEngPart)}>+</p>
           </div>
 
           <div className="inputContainer inputContainer_description">
@@ -945,7 +1072,17 @@ function AddManufacture({
             key={img}
             onClick={() => deleteAdedItem(img, images, setImages)}
           >
-            <img src={img} alt="" />
+            <img src={URL.createObjectURL(img)} alt="" />
+            <div>DELETE</div>
+          </div>
+        ))}
+        {oldImages.map((img) => (
+          <div
+            className="images_addManu"
+            key={img}
+            onClick={() => deleteAdedItem(img, oldImages, setOldImages)}
+          >
+            <img src={`http://localhost:5000/${img}`} alt="" />
             <div>DELETE</div>
           </div>
         ))}

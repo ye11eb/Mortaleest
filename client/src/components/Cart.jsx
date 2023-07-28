@@ -6,6 +6,8 @@ import axios from '../utils/axios';
 import { createOrder, payments } from '../redux/features/order/orderSlice';
 import OrdersMenu from './adminTools/OrdersMenu';
 import CartError from './CartError';
+import Country from './Country';
+import { TailSpin } from 'react-loader-spinner'
 
 function Cart({
   cartItems,
@@ -15,8 +17,15 @@ function Cart({
   ukrLoc,
   isUaLocation,
   CountriesData,
+  clientCountry,
+  setClientCountry
 }) {
-  const windowsize = window.innerWidth;
+  const [width, setWidth] = useState(window.innerWidth)
+  function handleWindowSizeChange() {
+    setWidth(window.innerWidth);
+  }
+
+  window.addEventListener('resize', handleWindowSizeChange);
   const [cartError, setCartError] = useState(false);
   const navigate = useNavigate();
   const [isHiden, setIsHiden] = useState(false);
@@ -25,23 +34,46 @@ function Cart({
   const [userInfo, setUserInfo] = useState([]);
   const [deliveryPrice, setDeliveryPrice] = useState(0);
   const [showwedDeliveryPrice, setShowwedDeliveryPrice] = useState(0);
+  const [showCountryAsk, setShowCountryAsk] = useState(false);
+  const [isActualyStaff, setIsActualyStaff] = useState(false)
+  const [willbeRedirected,setWillbeRedirected] = useState(false)
+  const [transitionpaymentPage, setTransitionpaymentPage] = useState(false)
+  const [errorPaymentPage, setErrorPaymentPage] = useState(false)
   let totalPrice = 0;
   const manufacturesCheckOut = [];
   const dispatch = useDispatch();
   const fetchUserInfo = async () => {
     try {
-      const data = await axios.get('/auth/myInfo');
-      const userData = data.data;
-      setUserInfo(userData);
-      setDeliveryPrice(isUaLocation ? infoCountry(userData).priceUkr : infoCountry(userData).price);
-      setShowwedDeliveryPrice(isUaLocation ? infoCountry(userData).priceUkr / 100
-        : infoCountry(userData).price / 100);
+      const {data} = await axios.get('/auth/myInfo');
+      setIsActualyStaff(data.isStaff)
+      setUserInfo(data);
+      setDeliveryPrice(isUaLocation ? infoCountry(data).priceUkr : infoCountry(data).price);
+      setShowwedDeliveryPrice(isUaLocation ? infoCountry(data).priceUkr / 100
+        : infoCountry(data).price / 100);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const infoCountry = (userData) => CountriesData.find((item) => item.Country === userData.country);
+  useEffect(() => {
+    if (!clientCountry && cartItems.length > 0) {
+      setTimeout(() => {
+        setShowCountryAsk(true)
+      }, 500);
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchUserInfo()
+  }, [clientCountry])
+  
+  const infoCountry = (data) => {
+    if (data.country !== 'no info') {
+      return CountriesData.find((item) => item.Country === data.country);
+    }else{
+      return CountriesData.find((item) => item.Country === clientCountry);
+    }
+  }
 
   const setItemQuantityFunc = () => {
     cartItems?.forEach((item) => {
@@ -87,6 +119,7 @@ function Cart({
   };
 
   const CheckOut = () => {
+    setTransitionpaymentPage(true)
     mapManufacturesCheckout();
     const paymentId = uuid();
     if (paymentId
@@ -130,13 +163,23 @@ function Cart({
       };
 
       dispatch(createOrder(data));
-      dispatch(payments(paymentData))
-        .then((res) => {
-          window.location.replace(res.payload.data.checkout_url);
-        });
-      clearCart();
+      dispatch(payments(paymentData)).then((res) => {
+        if (res.payload.data.checkout_url) {
+          setTimeout(() => {
+            setWillbeRedirected(true)
+            clearCart();
+            setTransitionpaymentPage(false)
+            setTimeout(() => {
+              window.location.replace(res.payload.data.checkout_url);
+          }, 1000);
+        }, 1000); 
+        }else {
+          setTransitionpaymentPage(false)
+          setErrorPaymentPage(res.payload.data.message)
+        }
+      });
     } else {
-      setCartError(true);
+      setCartError(message);
     }
   };
 
@@ -201,6 +244,79 @@ function Cart({
     setSubtotalFunc();
   }
 
+  if (transitionpaymentPage) {
+    return (
+      <div>
+        <div
+            className={isHiden ? 'hideOverlay Overlay' : 'showOverlay Overlay'}
+          >
+        <div className="MainCart_container cart_page">
+          <div className="ItemOverlay_top-box container">
+            <h1 className="headerOverlay">{ukrLoc ? 'КОРЗИНА' : 'CART'}</h1>
+          </div>
+          <div className="empty_cart">
+          <TailSpin
+          height="80"
+          width="80"
+          color="#343936"
+          ariaLabel="tail-spin-loading"
+          radius="1"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+          </div>
+        </div>
+      </div>
+    </div>
+    )
+  }
+
+  if (willbeRedirected) {
+    return (
+      <div>
+        <div
+            className={isHiden ? 'hideOverlay Overlay' : 'showOverlay Overlay'}
+          >
+        <div className="MainCart_container cart_page">
+          <div className="ItemOverlay_top-box container">
+            <h1 className="headerOverlay">{ukrLoc ? 'КОРЗИНА' : 'CART'}</h1>
+          </div>
+          <div className="empty_cart">
+            <h1>{ukrLoc ? 'ВАС БУДЕ ПЕРЕВЕДЕНО НА СТОРІНКУ ОПЛАТИ' : 'YOU WILL BE REDIRECTED TO THE PAYMENT PAGE'}</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    )
+  }
+
+
+  if (errorPaymentPage) {
+    return (
+      <div>
+        <div
+            className={isHiden ? 'hideOverlay Overlay' : 'showOverlay Overlay'}
+          >
+        <div className="MainCart_container cart_page">
+          <div className="ItemOverlay_top-box container">
+            <h1 className="headerOverlay">{ukrLoc ? 'КОРЗИНА' : 'CART'}</h1>
+          </div>
+          <div className="empty_cart">
+            <h1>{ukrLoc ? 'ЩОСЬ ПІШЛО НЕ ТАК, ЗВЕРНІТЬСЯ У СЛУЖБУ ПІДТРИМКИ' : 'SOMETHING HAS GONE WRONG, CONTACT SUPPORT'}</h1>
+            <div
+              className="emempty_cart_btn btn"
+              onClick={() => hiDeOverlay(navigateToMain)}
+            >
+              <p>{ukrLoc ? 'ПРОДОВЖИТИ' : 'CONTINUE'}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    )
+  }
+
   return (
     <div>
       {cartError && (
@@ -210,7 +326,16 @@ function Cart({
         navigateAccount={navigateAccount}
       />
       )}
-      {isStaff ? (
+      {showCountryAsk && (
+        <Country 
+          CountriesData={CountriesData}
+          clientCountry={clientCountry}
+          setClientCountry={setClientCountry}
+          setShowCountryAsk={setShowCountryAsk}
+          ukrLoc={ukrLoc}
+        />
+      )}
+      {isActualyStaff ? (
         <OrdersMenu
           ukrLoc={ukrLoc}
           isHiden={isHiden}
@@ -257,7 +382,7 @@ function Cart({
                             <div className="cart_product">
                               <div className="cart_img">
                                 <img
-                                  src={item.imgUrl[0]}
+                                  src={`http://localhost:5000/${item.imgUrl[0]}`}
                                   alt=""
                                 />
                               </div>
@@ -321,7 +446,7 @@ function Cart({
                         ))}
                         <div className="cart_bottom">
                           <div className="overlay_Outline" />
-                          {windowsize > 800 ? (
+                          {width > 800 ? (
                             <div className="cartBottom_wraper">
                               <div className="cart_bottom_price">
                                 <div>
@@ -412,13 +537,6 @@ function Cart({
               <div className="MainCart_container cart_page">
                 <div className="ItemOverlay_top-box container">
                   <h1 className="headerOverlay">{ukrLoc ? 'КОРЗИНА' : 'CART'}</h1>
-                  <div
-                    className="crossHair_close"
-                    onClick={() => hiDeOverlay(navigateToMain)}
-                  >
-                    {/* <p className="close">+</p> */}
-                    <div />
-                  </div>
                 </div>
                 <div className="empty_cart">
                   <h1>{ukrLoc ? 'ВАША КОРЗИНА ПОРОЖНЯ' : 'YOUR CART IS EMPTY'}</h1>

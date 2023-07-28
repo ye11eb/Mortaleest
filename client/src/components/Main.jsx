@@ -94,8 +94,8 @@ export function Main({
       if (pickedSortOption.eng === 'all') {
         changedManufactures.push(item);
       } else if (
-        item.colectionsEng.includes(pickedSortOption.eng)
-                || item.clothesTypeEng.includes(pickedSortOption.eng)
+        item.colectionsEng === pickedSortOption.eng
+                || item.clothesTypeEng === pickedSortOption.eng
       ) {
         changedManufactures.push(item);
       }

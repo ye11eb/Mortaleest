@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { registerUser } from '../redux/features/auth/authSlice';
 
-function Register({ setRegisterOver, isUaLocation, ukrLoc }) {
+function Register({ setRegisterOver, ukrLoc }) {
   const [firstName, setFirstName] = useState('');
   const [secondName, setSecondName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { status } = useSelector((state) => state.auth);
   const [isHiden, setIsHiden] = useState(false);
-  const [isCorrectLogin, setIsCorrectLogin] = useState(true);
+  const [isCorrectLogin, setIsCorrectLogin] = useState(false);
   const [inputError, setInputError] = useState('none');
 
   useEffect(() => {
@@ -44,8 +44,13 @@ function Register({ setRegisterOver, isUaLocation, ukrLoc }) {
           email, password, firstName, secondName,
         }))
           .then((res) => {
-            setIsCorrectLogin(res.payload.message);
-            setInputError(res.payload.message);
+            if (ukrLoc) {
+              setIsCorrectLogin(res.payload.message.ukr);
+              setInputError(res.payload.message.ukr);
+            } else {
+              setIsCorrectLogin(res.payload.message.eng);
+              setInputError(res.payload.message.eng);
+            }
             if (res.payload.status) {
               setFirstName('');
               setSecondName('');
@@ -59,7 +64,7 @@ function Register({ setRegisterOver, isUaLocation, ukrLoc }) {
       }
     } else {
       setIsCorrectLogin(true);
-      setInputError(isUaLocation ? 'вам потрібно заповнити всі поля' : 'you need to fill in all the fields');
+      setInputError(ukrLoc ? 'вам потрібно заповнити всі поля' : 'you need to fill in all the fields');
     }
   };
 

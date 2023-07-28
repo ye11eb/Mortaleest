@@ -8,7 +8,12 @@ import {
 function OrderDetails({
   setOrderDetails, openedOrder, ukrLoc, editOrder, isStaff,
 }) {
-  const windowsize = window.innerWidth;
+  const [width, setWidth] = useState(window.innerWidth)
+  function handleWindowSizeChange() {
+    setWidth(window.innerWidth);
+  }
+
+  window.addEventListener('resize', handleWindowSizeChange);
   const [isHiden, setIsHiden] = useState(false);
   const dispatch = useDispatch();
   const [ordersManu, setOrdersManu] = useState([]);
@@ -81,7 +86,7 @@ function OrderDetails({
           <div className="cart_title">
             <div className="cart_titles">
               <p className="cart_longer_part">Product</p>
-              {windowsize > 800 && <p>Total</p>}
+              {width > 800 && <p>Total</p>}
             </div>
             <div className="overlay_Outline" />
           </div>
@@ -196,7 +201,7 @@ function OrderDetails({
               <div className="container_for_scroll ">
                 {ordersManu && ordersManu.map((item) => (
                   <div className="history_order_manu" key={item.manufacture._id}>
-                    <img src={item.manufacture.imgUrl[0]} alt="" />
+                    <img alt="" src={`http://localhost:5000/${item.manufacture.imgUrl[0]}`}/>
                     <div className="history_order_manu_text">
                       <div className="history_order_manu_capture">
                         <p>{item.manufacture.titleEng}</p>

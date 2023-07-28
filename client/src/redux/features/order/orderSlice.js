@@ -20,7 +20,6 @@ export const payments = createAsyncThunk(
     try {
       const { data } = await axios.post('/payments/payment', params);
 
-      console.log(data);
       return data;
     } catch (error) {
       console.log(error);

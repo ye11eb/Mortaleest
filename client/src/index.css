@@ -107,7 +107,6 @@ a:-webkit-any-link {
 }
 
 .container_for_scroll {
-    margin: 4px;
     width: 100%;
     overflow-y: visible;
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
@@ -625,6 +624,182 @@ textarea {
     justify-content: center;
 }
 
+
+.list-choice{
+  width:300px;
+  margin:1em auto;
+  position: relative;
+  cursor: pointer;  
+}
+.list-choice input[type="radio"]{
+  position:absolute;
+  left:-9999px;
+}
+
+.list-choice-title {
+width: 100%;
+display: block;
+background: #F6F5F1;
+border-bottom: 1px solid grey;
+text-align: center;
+padding: 0.55em 1em;
+box-sizing: border-box;
+font-family: var(--mainFont);
+color: #000000;
+text-shadow: 0 1px 0 #CACACA;
+border-radius: 0.2em;
+}
+.list-choice:hover .list-choice-title {
+border-radius:0.2em 0.2em 0 0;
+}
+.list-choice-objects label:nth-last-of-type(1) span{
+  border-radius:0 0 0.2em 0.2em;
+}
+.list-choice input[type="radio"] + span {
+color: #000000;
+font-family: var(--mainFont);
+background: #F6F5F1;
+padding: 0.55em 1em;
+display: block;
+text-align: center;
+box-sizing: border-box;
+cursor: pointer;
+width: 100%;
+}
+.list-choice-objects {
+position: absolute;
+top: 0;
+padding-top: 2.1em;
+box-sizing: border-box;
+width: 100%;
+overflow: hidden;
+max-height: 0;
+transition: all 250ms ease;
+}
+.list-choice:hover .list-choice-objects  input[type="radio"] + span {
+position: relative;
+top: 0;
+transition: all 250ms ease-in-out;
+}
+.list-choice:hover input[type="radio"] + span:hover {
+background:#BBB;
+}
+.list-choice:hover input[type="radio"]:checked + span:hover {
+background:#74D68E;
+}
+.list-choice input[type="radio"]:checked + span {
+background: #F6F5F1;
+position: absolute;
+top: 0em;
+border-radius: 0.2em;
+}
+.list-choice:hover input[type="radio"]:checked + span {
+border-radius: 0;
+}
+.list-choice:hover .list-choice-objects label:nth-last-of-type(1) input[type="radio"]:checked + span{
+  border-radius:0 0 0.2em 0.2em;
+}
+
+
+.CountryPickSelect select {
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    padding: 0 1em 0 0;
+    margin: 0;
+    font-size: 20px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-family: var(--mainFont);
+    font-size: inherit;
+    background-repeat: no-repeat;
+    background-position: right;
+    cursor: inherit;
+    /* background-image: url('../../public/img/dropdown_arrow.svg'); */
+    line-height: inherit;
+    outline: none;
+}
+
+.CountryPickSelect{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.CountryPickSelect select option{
+    font-family: var(--mainFont);
+    text-align: center;
+    font-size: 20px;
+    border: none;
+    outline: none;
+    height: 30px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.CountryPickSelect select {
+-webkit-appearance: button;
+-moz-appearance: button;
+-webkit-user-select: none;
+-moz-user-select: none;
+-webkit-padding-start: 2px;
+-moz-padding-start: 2px;
+background-position: center right;
+background-repeat: no-repeat;
+border-radius: 2px;
+box-shadow: 0px 1px 3px rgb(0, 0, 0);
+font-size: inherit;
+margin: 0;
+overflow: hidden;
+margin-bottom: 20px;
+padding-top: 2px;
+padding-bottom: 2px;
+text-overflow: ellipsis;
+white-space: nowrap;
+}
+
+.list-choice:hover .list-choice-objects {
+    overflow-y: scroll;
+    max-height: 340px;
+    -ms-overflow-style: none; 
+    scrollbar-width: none;  
+}
+
+.list-choice-objects::-webkit-scrollbar { 
+    display: none;
+}
+
+/* .TransitionMainOnChange{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 100vw;
+    animation: TransitionMainOnChange 1s;
+}
+
+@keyframes TransitionMainOnChange {
+    0%{
+        background: #ffffff00;
+    }
+
+    30%{
+        background: #ffffff;
+    }
+
+    60%{
+        background: #ffffff;
+    }
+
+    100%{
+        background: #ffffff00;
+    }
+} */
+
 .collection {
     margin-top: 227px;
     display: flex;
@@ -671,6 +846,54 @@ textarea {
     display: flex;
     flex-direction: column;
     margin: 0 0px 34px 0;
+    position: relative;
+}
+
+.outOfStock{
+    width: 100%;
+    height: calc(100% - 40px);
+    position: absolute;
+    /*background-color: rgba(0, 0, 0, 0.418);
+    display: flex;
+    justify-content: center;
+    align-items: center; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.outOfStock p{
+    font-size: 45px;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    color: white;
+    background: #000000cb;
+    user-select: none;
+    text-align: center;
+}
+
+.preOrder{
+    width: 100%;
+    height: 40px;
+    position: absolute;
+    color: white;
+    background: #000000cb;
+}
+
+.preOrder p {
+    font-size: 35px;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    color: white;
+    background: #000000cb;
+    user-select: none;
+    text-align: center;
 }
 
 .manufacture_img img {
@@ -911,6 +1134,11 @@ textarea {
     margin-top: 32px;
     width: 226px;
     height: 39px;
+}
+
+.subtitle {
+    font-size: 14;
+    font-family: vart(--mainFont);
 }
 
 .cart_items_container {
@@ -1536,11 +1764,12 @@ textarea {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 10px;
+    background-color: #f6f5f1;
 }
 
 .sizeButton {
     cursor: pointer;
-    width: 39px;
+    width: 50px;
     height: 39px;
     border: 1.4px solid var(--secondColor);
     appearance: none;
@@ -1580,7 +1809,7 @@ textarea {
 .activeSize {
     border: 1.4px solid var(--secondColor);
     background-color: var(--secondColor);
-    width: 52px;
+    width: 60px;
     height: 39px;
 }
 
@@ -1643,6 +1872,15 @@ textarea {
     margin: 50px 10px 0 0;
 }
 
+.OutOfStockButton{
+    background-color: var(--secondColor);
+    border:1.4px solid #F6F5F1;
+}
+
+.OutOfStockButton > p {
+    color: #F6F5F1 !important;
+}
+
 .addToBag p {
     font-family: var(--mainFont);
     font-style: normal;
@@ -1671,6 +1909,31 @@ textarea {
     position: relative;
     justify-content:flex-start;
 }
+
+.descriptionOptsWrapper{
+    width: 100%;
+}
+
+.descriptionOptsWrapper .addManu_capture{
+    width: 100%;
+    text-align: center;
+}
+
+.descriptionOptsWrapper .descPartp{
+    width: 100%;
+    margin: 30px 0;
+    list-style: none;
+    font-family: var(--mainFont);
+    font-size: 16px;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.AdminTool .descriptionOptsWrapper .descPartp:hover {
+   background: rgba(255, 0, 0, 0.493);
+}
+
+
 
 .manuOverlay .overlay_Outline{
     background-color: var(--mainTextColor);
@@ -2009,6 +2272,7 @@ textarea {
 .inputError{
     color: red;
     transition: all .1s;
+    font-family: var(--mainFont);
 }
 
 .inputErrorhiden{
@@ -2016,7 +2280,7 @@ textarea {
 }
 
 .auth_container .inputError{
-    margin: 10px 0 0 0;
+    margin: 10px 0 0px 0;
 }
 
 .auth_container .inputErrorhiden{
@@ -2167,6 +2431,43 @@ textarea {
     align-items: center;
 }
 
+.inputContainer .radio{
+    width: 100%;
+    display: flex;
+    background: transparent;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    border: 1px solid var(--secondColor);
+    transition: all .3s;
+}
+
+.inputContainer .radio p{
+    font-family: var(--mainFont);
+    color: black;
+    height: 100%;
+    text-align: center;
+    font-size: 20px;
+    transition: all .3s;
+    margin-bottom: 0;
+}
+
+.inputContainer .radioChecked {
+    background-color: var(--secondColor);
+}
+
+.inputContainer .radioChecked p{
+    color: white;
+}
+
+.optionsRadioSubtitle{
+    font-family: var(--mainFont);
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
 .ha-screen-reader {
     width: var(--ha-screen-reader-width, 1px);
     height: var(--ha-screen-reader-height, 1px);
@@ -2183,6 +2484,24 @@ textarea {
 RESET STYLES
 =====
 */
+
+.field__input_file{
+    display: none;
+}
+
+.field__input_fileForm{
+    /* border:  1px solid #000000; */
+    width: 10px;
+    height: 100px;
+    width: 211px;
+    font-family: var(--mainFont);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 33px;
+    margin: 0 !important;
+}
 
 .field__input {
     --uiFieldPlaceholderColor: var(--fieldPlaceholderColor, #767676);
@@ -2338,6 +2657,37 @@ effect 1
     color: var(--mainTextColor);
     transition: all 1s;
 }
+/* 
+.addShippingAddresSeccond{
+
+} */
+
+/* .addShippingAddresSeccond .Register_Container{
+} */
+
+.addShippingAddresSeccond .Register_Container .addShippingAddresInner{
+    width: 100%;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    flex-direction: column;
+    height: 740px;
+    padding: 50px 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.addShippingAddresInner .auth_submit{
+    min-height: 41px;
+}
+
+.addShippingAddresInner::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+
 
 .auth_submit span {
     width: 59px;
@@ -4245,6 +4595,31 @@ select::-ms-expand {
 
     /* header */
 
+    .outOfStock{
+        height: 268px;
+    }
+
+    .preOrder{
+        width: 100%;
+        height: 20px;
+        position: absolute;
+        color: white;
+        background: #000000cb;
+    }
+    
+    .preOrder p {
+        font-size: 35px;
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        color: white;
+        background: #000000cb;
+        user-select: none;
+        text-align: center;
+    }
+
     .titleAnimRev{
         animation: .3s titleAnimReverse;
         position: relative;
@@ -4489,6 +4864,15 @@ select::-ms-expand {
         right: 0;
         left: unset;
     }
+
+    .CountryPickSelect select option{
+        font-size:14px;
+    }
+
+    .CountryPickSelect select{
+        font-size:14px;
+    }
+    
 
     .cookiesContainer{
         display: flex;

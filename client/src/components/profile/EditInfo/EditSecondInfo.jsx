@@ -107,8 +107,8 @@ function EditSecondInfo({
     <div
       className={
                 isHidenSecond
-                  ? 'register hideRegister'
-                  : 'register showRegister'
+                  ? 'register addShippingAddresSeccond hideRegister'
+                  : 'register addShippingAddresSeccond showRegister'
             }
     >
       <div className="arrow_close" onClick={() => hiDeOverlay(navigateToFirst)}>
@@ -122,177 +122,180 @@ function EditSecondInfo({
         <h4>
           {ukrLoc ? 'Введіть свою особисту інформацію' : 'Enter your personal information'}
         </h4>
-        <div className="auth_container Container_email">
-          <div className="inputContainer">
-            <div className="field">
-              <label
-                htmlFor="first-name"
-                className="ha-screen-reader"
-              >
-                First name
-              </label>
-              <input
-                id="first-name"
-                className="field__input"
-                onChange={(e) => changeHandler(setAdress1, e.target.value)}
-                value={adress1}
-                placeholder="gdsfgfdgd"
-              />
-              <span
-                className="field__label-wrap"
-                aria-hidden="true"
-              >
-                <span className="field__label">
-                  {ukrLoc ? 'Aдресний рядок 1' : 'Address line 1'}
+
+        <div className="addShippingAddresInner">
+          <div className="auth_container Container_email">
+            <div className="inputContainer">
+              <div className="field">
+                <label
+                  htmlFor="first-name"
+                  className="ha-screen-reader"
+                >
+                  First name
+                </label>
+                <input
+                  id="first-name"
+                  className="field__input"
+                  onChange={(e) => changeHandler(setAdress1, e.target.value)}
+                  value={adress1}
+                  placeholder="gdsfgfdgd"
+                />
+                <span
+                  className="field__label-wrap"
+                  aria-hidden="true"
+                >
+                  <span className="field__label">
+                    {ukrLoc ? 'Aдресний рядок 1' : 'Address line 1'}
+                  </span>
                 </span>
-              </span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="auth_container Container_email">
-          <div className="inputContainer">
-            <div className="field">
-              <label
-                htmlFor="first-name"
-                className="ha-screen-reader"
-              >
-                First name
-              </label>
-              <input
-                id="first-name"
-                className="field__input"
-                onChange={(e) => changeHandler(setAdress2, e.target.value)}
-                value={adress2}
-                placeholder="gdsfgfdgd"
-              />
-              <span
-                className="field__label-wrap"
-                aria-hidden="true"
-              >
-                <span className="field__label">
-                  {ukrLoc ? 'Aдресний рядок 2' : 'Address line 2'}
+          <div className="auth_container Container_email">
+            <div className="inputContainer">
+              <div className="field">
+                <label
+                  htmlFor="first-name"
+                  className="ha-screen-reader"
+                >
+                  First name
+                </label>
+                <input
+                  id="first-name"
+                  className="field__input"
+                  onChange={(e) => changeHandler(setAdress2, e.target.value)}
+                  value={adress2}
+                  placeholder="gdsfgfdgd"
+                />
+                <span
+                  className="field__label-wrap"
+                  aria-hidden="true"
+                >
+                  <span className="field__label">
+                    {ukrLoc ? 'Aдресний рядок 2' : 'Address line 2'}
+                  </span>
                 </span>
-              </span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="auth_container Container_email">
-          <div className="inputContainer">
-            <div className="field">
-              {/* <label
-                htmlFor="first-name"
-                className="ha-screen-reader"
-              >
-                First name
-              </label> */}
-              <select
-                name="select "
-                id="select_id"
-                value={country}
-                onChange={() => changeHandler(SetCountry, document.getElementById('select_id').value)}
-              >
-                <option value="no info">{ukrLoc ? 'Виберіть країну' : 'Choose country'}</option>
-                {CountriesData.map((item) => (
-                  <option value={item.Country}>{item.Country}</option>
-                ))}
-              </select>
-              {/* <span
-                className="field__label-wrap"
-                aria-hidden="true"
-              >
-                <span className="field__label">
-                  Country / region
+          <div className="auth_container Container_email">
+            <div className="inputContainer">
+              <div className="field">
+                {/* <label
+                  htmlFor="first-name"
+                  className="ha-screen-reader"
+                >
+                  First name
+                </label> */}
+                <select
+                  name="select "
+                  id="select_id"
+                  value={country}
+                  onChange={() => changeHandler(SetCountry, document.getElementById('select_id').value)}
+                >
+                  <option value="no info">{ukrLoc ? 'Виберіть країну' : 'Choose country'}</option>
+                  {CountriesData.map((item) => (
+                    <option value={item.Country}>{item.Country}</option>
+                  ))}
+                </select>
+                {/* <span
+                  className="field__label-wrap"
+                  aria-hidden="true"
+                >
+                  <span className="field__label">
+                    Country / region
+                  </span>
+                </span> */}
+              </div>
+            </div>
+          </div>
+
+          <div className="auth_container Container_email">
+            <div className="inputContainer">
+              <div className="field">
+                <label
+                  htmlFor="first-name"
+                  className="ha-screen-reader"
+                >
+                  First name
+                </label>
+                <input
+                  id="first-name"
+                  className="field__input"
+                  onChange={(e) => changeHandler(SetCity, e.target.value)}
+                  value={city}
+                  placeholder="gdsfgfdgd"
+                />
+                <span
+                  className="field__label-wrap"
+                  aria-hidden="true"
+                >
+                  <span className="field__label">
+                    {ukrLoc ? 'Місто' : 'City / town'}
+                  </span>
                 </span>
-              </span> */}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="auth_container Container_email">
-          <div className="inputContainer">
-            <div className="field">
-              <label
-                htmlFor="first-name"
-                className="ha-screen-reader"
-              >
-                First name
-              </label>
-              <input
-                id="first-name"
-                className="field__input"
-                onChange={(e) => changeHandler(SetCity, e.target.value)}
-                value={city}
-                placeholder="gdsfgfdgd"
-              />
-              <span
-                className="field__label-wrap"
-                aria-hidden="true"
-              >
-                <span className="field__label">
-                  {ukrLoc ? 'Місто' : 'City / town'}
+          <div className="auth_container Container_email">
+            <div className="inputContainer">
+              <div className="field">
+                <label
+                  htmlFor="first-name"
+                  className="ha-screen-reader"
+                >
+                  First name
+                </label>
+                <input
+                  id="first-name"
+                  className="field__input"
+                  onChange={(e) => changeHandler(setState, e.target.value)}
+                  value={state}
+                  placeholder="gdsfgfdgd"
+                />
+                <span
+                  className="field__label-wrap"
+                  aria-hidden="true"
+                >
+                  <span className="field__label">{ukrLoc ? 'Область' : 'State'}</span>
                 </span>
-              </span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="auth_container Container_email">
-          <div className="inputContainer">
-            <div className="field">
-              <label
-                htmlFor="first-name"
-                className="ha-screen-reader"
-              >
-                First name
-              </label>
-              <input
-                id="first-name"
-                className="field__input"
-                onChange={(e) => changeHandler(setState, e.target.value)}
-                value={state}
-                placeholder="gdsfgfdgd"
-              />
-              <span
-                className="field__label-wrap"
-                aria-hidden="true"
-              >
-                <span className="field__label">{ukrLoc ? 'Область' : 'State'}</span>
-              </span>
+          <div className="auth_container Container_email">
+            <div className="inputContainer">
+              <div className="field">
+                <label
+                  htmlFor="first-name"
+                  className="ha-screen-reader"
+                >
+                  First name
+                </label>
+                <input
+                  id="first-name"
+                  className="field__input"
+                  onChange={(e) => changeHandler(setZipcode, e.target.value)}
+                  value={zipcode}
+                  placeholder="gdsfgfdgd"
+                />
+                <span
+                  className="field__label-wrap"
+                  aria-hidden="true"
+                >
+                  <span className="field__label">{ukrLoc ? 'ЗІП код' : 'Zipcode'}</span>
+                </span>
+              </div>
             </div>
+            <p className={isInfoIncorrect ? 'inputError' : 'inputError inputErrorhiden'}>{isInfoIncorrect}</p>
           </div>
-        </div>
 
-        <div className="auth_container Container_email">
-          <div className="inputContainer">
-            <div className="field">
-              <label
-                htmlFor="first-name"
-                className="ha-screen-reader"
-              >
-                First name
-              </label>
-              <input
-                id="first-name"
-                className="field__input"
-                onChange={(e) => changeHandler(setZipcode, e.target.value)}
-                value={zipcode}
-                placeholder="gdsfgfdgd"
-              />
-              <span
-                className="field__label-wrap"
-                aria-hidden="true"
-              >
-                <span className="field__label">{ukrLoc ? 'ЗІП код' : 'Zipcode'}</span>
-              </span>
-            </div>
+          <div className="auth_submit" onClick={() => auditData()}>
+            <p>Next</p>
           </div>
-          <p className={isInfoIncorrect ? 'inputError' : 'inputError inputErrorhiden'}>{isInfoIncorrect}</p>
-        </div>
-
-        <div className="auth_submit" onClick={() => auditData()}>
-          <p>Next</p>
         </div>
       </form>
     </div>

@@ -12,7 +12,7 @@ function CartError({ ukrLoc, hiDeOverlay, navigateAccount }) {
 
   useEffect(() => {
     setTitle(ukrLoc ? 'Введених данних не достатньо для покупки' : 'The data entered is insufficient to make a purchase');
-    setText(ukrLoc ? 'Нам потрібно більше данних для доставки ваших товарівб перейдіть у налаштування акаунту та додайте необхідну інформацію' : 'We need more data to deliver your goods, go to account settings and add the necessary information');
+    setText(ukrLoc ? 'Нам потрібно більше данних для доставки ваших товарів, перейдіть у налаштування акаунту та додайте необхідну інформацію' : 'We need more data to deliver your goods, go to account settings and add the necessary information');
   }, [ukrLoc]);
 
   return (

@@ -23,7 +23,7 @@ function ImgZoom({ zoommedImg, setZoommedImg }) {
         centerOnInit
       >
         <TransformComponent>
-          <img src={zoommedImg} alt="test" />
+          <img src={`http://localhost:5000/${zoommedImg}`} alt="test" />
         </TransformComponent>
       </TransformWrapper>
     </div>

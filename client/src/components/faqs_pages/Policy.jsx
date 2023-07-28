@@ -163,25 +163,6 @@ function Policy({ ukrLoc, setIsMainOverlayed }) {
 
             {ukrLoc ? (
               <p className="rule_subtitle">
-                5. ПОСИЛАННЯ
-              </p>
-            ) : (
-              <p className="rule_subtitle">
-                5. LINKS
-              </p>
-            )}
-            {ukrLoc ? (
-              <p className="rule_text">
-                5.1. На нашому Веб-сайті ми можемо розміщувати посилання на інші Веб-сайти, зокрема на наші сторінки в соціальних мережах. У цьому випадку ми не встановлюємо правил обробки ваших персональних даних, які можна збирати на таких Веб-сайтах або в соціальних мережах, і ми не можемо нести відповідальність за таку обробку. Для отримання більш детальної інформації ви можете ознайомитися з правилами конфіденційності відповідних Веб-сайтів та соціальних мереж.
-              </p>
-            ) : (
-              <p className="rule_text">
-                5.1. 5.1. On our Website, we may place links to other websites, including our pages on social networks. In this case, we do not establish rules for processing your personal data, which may be collected on such websites or social networks, and we cannot be held responsible for such processing. For more detailed information, you can familiarize yourself with the privacy policies of the relevant websites and social networks.
-              </p>
-            )}
-
-            {ukrLoc ? (
-              <p className="rule_subtitle">
                 6. КОНТАКТИ
               </p>
             ) : (
