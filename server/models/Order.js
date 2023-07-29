@@ -2,6 +2,10 @@ import mongoose from 'mongoose'
 
 const OrderSchema = new mongoose.Schema(
     {
+      payment_id:{
+        type: String,
+        required: true,
+      },
       firstName:{
         type: String,
         required: true,
@@ -74,9 +78,21 @@ const OrderSchema = new mongoose.Schema(
         required: true,
         type: Number,
       },
+      priceValue: {
+        required: true,
+        type: String,
+      },
       payed:{
         required: true,
         type: Boolean,
+      },
+      orderStatus:{
+        required: true,
+        type: Object,
+      },
+      trackNumber:{
+        required: true,
+        type: String,
       }
     },
     { timestamps: true },

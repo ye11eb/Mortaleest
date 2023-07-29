@@ -1,26 +1,35 @@
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css";
+import React from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
-
-export const ItemSlider = ({openedItem}) => {
+export function ItemSlider({
+  SetZooomImg, images,
+}) {
   const settings = {
-    className: "center",
-    centerMode: true,
     infinite: false,
-    centerPadding: "120px",
     slidesToShow: 1,
     speed: 500,
-    prewArrow: '.arrowPrev'
-  }
+    prewArrow: '.arrowPrev',
+    centerMode: true,
+  };
+
   return (
     <div className="slider">
+
       <Slider {...settings}>
-        {openedItem && openedItem['imgUrl'].map((img) => (
-        <div className="slide slide-2" key={openedItem['imgUrl'].indexOf(img)}>
-          <img src={img} alt=""/>
-        </div>
-        ))}
+        {images
+                    && images.map((img) => (
+                      <div
+                        className="slide slide-2"
+                      >
+                        <img
+                          src={`http://localhost:5000/${img}`}
+                          alt=""
+                          onClick={() => SetZooomImg(img)}
+                        />
+                      </div>
+                    ))}
       </Slider>
     </div>
   );

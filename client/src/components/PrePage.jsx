@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react';
 
-
-
-
-export const PrePage = ({manufactures, setLoadedManufactures}) => {
+export function PrePage({ setLoadedManufactures }) {
   const [stage, setStage] = useState(false);
 
   setTimeout(() => {
-    if (manufactures?.length) {
-      setStage(true)
-      setTimeout(() => {
-        setLoadedManufactures(false)
-      }, 1290);
-    }
-  }, 1290);
-      
+    setStage(true);
+    setTimeout(() => {
+      setLoadedManufactures(false);
+    }, 1700);
+  }, 1500);
+
   return (
-    <div className={stage == true ? 'PrePageSecond' : 'PrePage'}><p>Mortaleest</p></div>
-  )
+    <div className={stage === true ? 'PrePageSecond' : 'PrePage'}>
+      <img
+        src="./img/logo_black.svg"
+        alt=""
+      />
+    </div>
+  );
 }
